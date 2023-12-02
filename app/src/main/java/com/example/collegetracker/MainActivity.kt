@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
             val addAttended=dialog.findViewById<EditText>(R.id.addAttended)
             val addButton=dialog.findViewById<Button>(R.id.addButton)
 
+
             addButton.setOnClickListener {
                 var subjectName: String=""
                 var conductedName: String=""
