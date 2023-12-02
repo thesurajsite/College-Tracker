@@ -1,64 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="08dp"
-    android:layout_marginLeft="05dp"
-    android:layout_marginRight="5dp">
-
-    <androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:elevation="20dp"
-        app:cardCornerRadius="15dp"
-        android:backgroundTint="@color/light_grey">
+        android:background="@color/light_grey"
+        app:layout_constraintBaseline_toBottomOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="100dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:cardBackgroundColor="@color/peace"
+            app:cardElevation="100dp">
+
+
+            <TextView
+                android:id="@+id/percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="25%"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="60dp"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imgAttendance"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@color/blue"
-                android:src="@drawable/bulleticon"
-                app:tint="@color/white" />
+            <TextView
+                android:id="@+id/subject"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="3dp"
+                android:fontFamily="@font/allerta_stencil"
+                android:text="Subject Name"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
 
             <LinearLayout
-                android:layout_width="285dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="10dp">
-
-                <TextView
-                    android:id="@+id/subject"
-                    android:layout_width="285dp"
-                    android:layout_height="wrap_content"
-                    android:text="Subject Name"
-                    android:textSize="30dp"
-                    android:textColor="@color/white"/>
+                android:layout_marginTop="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp">
 
                     <TextView
-                        android:layout_width="120dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="Conducted:"
-                        android:textSize="20dp"
+                        android:textSize="15dp"
                         android:textColor="@color/white"/>
 
                     <ImageView
                         android:id="@+id/conductMinus"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:background="@color/white"
                         android:src="@drawable/minus"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="5dp"
                         android:backgroundTint="@color/light_grey"/>
 
                     <TextView
@@ -66,82 +80,84 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="25"
-                        android:textSize="25dp"
-                        android:layout_marginLeft="15dp"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/white"/>
 
 
 
                     <ImageView
                         android:id="@+id/conductPlus"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:background="@color/white"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="5dp"
                         android:src="@drawable/plus"
                         android:backgroundTint="@color/light_grey"/>
 
-
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp">
 
                     <TextView
-                        android:layout_width="120dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:text="Attended:"
-                        android:textSize="20dp"
+                        android:text="Conducted:"
+                        android:textSize="15dp"
                         android:textColor="@color/white"/>
 
                     <ImageView
                         android:id="@+id/attendMinus"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:background="@color/white"
                         android:src="@drawable/minus"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="5dp"
                         android:backgroundTint="@color/light_grey"/>
 
                     <TextView
                         android:id="@+id/attendNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="30"
-                        android:textSize="25dp"
-                        android:layout_marginLeft="15dp"
+                        android:text="25"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/white"/>
+
+
 
                     <ImageView
                         android:id="@+id/attendPlus"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:background="@color/white"
+                        android:layout_marginLeft="5dp"
                         android:src="@drawable/plus"
-                        android:layout_marginLeft="15dp"
                         android:backgroundTint="@color/light_grey"/>
-
 
                 </LinearLayout>
 
+
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/percentage"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:text="30%"
-                android:textSize="25dp"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/white"
-                android:background="@color/blue"
-                android:paddingTop="18dp"/>
-
 
         </LinearLayout>
 
 
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
+    <View
+        android:id="@+id/horizontalLine"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
-</LinearLayout>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

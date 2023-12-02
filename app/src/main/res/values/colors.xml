@@ -5,5 +5,9 @@
     <color name="blue">#FF2196F3</color>
     <color name="light_grey">#FF404040</color>
     <color name="dark_grey">#FF2B2B2B</color>
+    <color name="peace">#FFB366</color>
+    <color name="light_white"> #60ffffff</color>
+
+
 
 </resources>
