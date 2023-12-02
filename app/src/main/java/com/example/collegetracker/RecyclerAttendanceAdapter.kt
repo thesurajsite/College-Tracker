@@ -13,6 +13,8 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
 
+        // subject, conductNumber, attendNumber (FROM THE attendance_row LAYOUT)
+        val percentage=itemView.findViewById<TextView>(R.id.percentage)
         val subject = itemView.findViewById<TextView>(R.id.subject)
         val conductNumber=itemView.findViewById<TextView>(R.id.conductNumber)
         val attendNumber=itemView.findViewById<TextView>(R.id.attendNumber)
@@ -34,6 +36,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        holder.percentage.text=arrAttendance[position].percentage
         holder.subject.text=arrAttendance[position].subject
         holder.attendNumber.text=arrAttendance[position].attended
         holder.conductNumber.text=arrAttendance[position].conducted
