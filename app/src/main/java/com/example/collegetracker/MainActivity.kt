@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         val floatingActionButton=findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val adapter = RecyclerAttendanceAdapter(this, arrAttendance)
 
+
         floatingActionButton.setOnClickListener {
           // Toast.makeText(this, "hii", Toast.LENGTH_SHORT).show()
 
@@ -35,14 +38,47 @@ class MainActivity : AppCompatActivity() {
             val addConducted=dialog.findViewById<EditText>(R.id.addConducted)
             val addAttended=dialog.findViewById<EditText>(R.id.addAttended)
             val addButton=dialog.findViewById<Button>(R.id.addButton)
+            val minusConducted=dialog.findViewById<ImageView>(R.id.minusConducted)
+            val plusConducted=dialog.findViewById<ImageView>(R.id.plusConducted)
+            val minusAttended=dialog.findViewById<ImageView>(R.id.minusAttended)
+            val plusAttended=dialog.findViewById<ImageView>(R.id.plusAttended)
+
+            // subjectName AND SIMILAR STORES THE STRING VALUES THAT WE GET FROM THE add_update_layout
+            var subjectName: String=""
+            var conductedName: String="0"
+            var attendedName: String="0"
+            var percentageName: Int=0;
+            var percentageString: String=""
 
 
+            var tempConducted=conductedName.toInt()
+            var tempAttended=attendedName.toInt()
+
+            // PLUS MINUS BUTTON CONTROLS
+            minusConducted.setOnClickListener {
+                tempConducted--
+                addConducted.setText(tempConducted.toString())
+            }
+            plusConducted.setOnClickListener {
+                tempConducted++
+                addConducted.setText(tempConducted.toString())
+            }
+
+            minusAttended.setOnClickListener {
+                tempAttended--
+                addAttended.setText(tempAttended.toString())
+            }
+
+            plusAttended.setOnClickListener {
+                tempAttended++
+                addAttended.setText(tempAttended.toString())
+            }
+
+
+
+            //ADD BUTTON ON CLICK LISTENER
             addButton.setOnClickListener {
-                var subjectName: String=""
-                var conductedName: String=""
-                var attendedName: String=""
-                var percentageName: Int=0;
-                var percentageString: String=""
+
 
                 // subjectName AND SIMILAR STORES THE STRING VALUES THAT WE GET FROM THE add_update_layout
                 // AND FINALLY DISPLAYS IN THE RECYCLER VIEW
@@ -54,10 +90,6 @@ class MainActivity : AppCompatActivity() {
 
                 if(subjectName!="")
                 {
-                    if(conductedName=="")
-                        conductedName="0"
-                    if(attendedName=="")
-                        attendedName="0"
 
                     // PERCENATGE CALCULATION
                     percentageName=((attendedName.toDouble()/conductedName.toDouble())*100).toInt()
@@ -83,6 +115,9 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+
+
+
 
 
 

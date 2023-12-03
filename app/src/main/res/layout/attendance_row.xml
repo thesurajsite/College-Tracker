@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
+        android:id="@+id/recyclerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_grey"
@@ -105,7 +106,7 @@
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:text="Conducted:"
+                        android:text="Attended:"
                         android:textSize="15dp"
                         android:textColor="@color/white"/>
 
@@ -146,14 +147,18 @@
         </LinearLayout>
 
 
+
     </LinearLayout>
+
+
     <View
         android:id="@+id/horizontalLine"
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
         android:background="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerLayout"
         />
+
 
 
 

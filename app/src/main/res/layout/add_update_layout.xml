@@ -28,7 +28,7 @@
 
 
             <TextView
-                android:id="@+id/addContactTitle"
+                android:id="@+id/addSubjectTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -42,7 +42,7 @@
 
             <EditText
                 android:id="@+id/addSubject"
-                android:layout_width="300dp"
+                android:layout_width="270dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
@@ -55,35 +55,84 @@
                 android:textColorHint="#404040"
                 android:textSize="30dp" />
 
-            <EditText
-                android:id="@+id/addConducted"
-                android:layout_width="300dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="#60ffffff"
-                android:gravity="center_horizontal"
-                android:hint="Classes Conducted"
-                android:inputType="number"
-                android:textColor="#FF404040"
-                android:textColorHint="#404040"
-                android:textSize="30dp" />
+                android:layout_marginTop="20dp">
 
-            <EditText
-                android:id="@+id/addAttended"
-                android:layout_width="300dp"
+                <ImageView
+                    android:id="@+id/minusConducted"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/minus"
+                    android:layout_marginRight="40dp"
+                    app:tint="@color/white" />
+
+                <EditText
+                    android:id="@+id/addConducted"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="40dp"
+                    android:background="#60ffffff"
+                    android:gravity="center_horizontal"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:textColor="#FF404040"
+                    android:textColorHint="#404040"
+                    android:textSize="30dp" />
+
+                <ImageView
+                    android:id="@+id/plusConducted"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/plus"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="20dp"
-                android:background="#60ffffff"
-                android:gravity="center_horizontal"
-                android:hint="Classes Attended"
-                android:inputType="number"
-                android:textColor="#FF404040"
-                android:textColorHint="#404040"
-                android:textSize="30dp" />
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/minusAttended"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/minus"
+                    app:tint="@color/white"
+                    android:layout_marginRight="40dp"/>
+
+                <EditText
+                    android:id="@+id/addAttended"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="40dp"
+                    android:background="#60ffffff"
+                    android:gravity="center_horizontal"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:textColor="#FF404040"
+                    android:textColorHint="#404040"
+                    android:textSize="30dp" />
+
+                <ImageView
+                    android:id="@+id/plusAttended"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/plus"
+                    app:tint="@color/white"/>
+
+            </LinearLayout>
+
+
+
+
+
+
 
             <Button
                 android:id="@+id/addButton"

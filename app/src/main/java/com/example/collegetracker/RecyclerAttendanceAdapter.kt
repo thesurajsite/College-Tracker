@@ -1,11 +1,17 @@
 package com.example.collegetracker
 
 
+import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 
@@ -18,6 +24,19 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         val subject = itemView.findViewById<TextView>(R.id.subject)
         val conductNumber=itemView.findViewById<TextView>(R.id.conductNumber)
         val attendNumber=itemView.findViewById<TextView>(R.id.attendNumber)
+
+        val conductMinus=itemView.findViewById<ImageView>(R.id.conductMinus)
+        val conductPlus=itemView.findViewById<ImageView>(R.id.conductPlus)
+        val attendMinus=itemView.findViewById<ImageView>(R.id.attendMinus)
+        val attendPlus=itemView.findViewById<ImageView>(R.id.attendPlus)
+
+        val recyclerLayout=itemView.findViewById<LinearLayout>(R.id.recyclerLayout)
+
+
+
+
+
+
 
 
 
@@ -40,6 +59,78 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         holder.subject.text=arrAttendance[position].subject
         holder.attendNumber.text=arrAttendance[position].attended
         holder.conductNumber.text=arrAttendance[position].conducted
+
+
+        holder.recyclerLayout.setOnLongClickListener {
+           // Toast.makeText(context, "hiii", Toast.LENGTH_SHORT).show()
+
+            val dialog= Dialog(context)
+            dialog.setContentView(R.layout.add_update_layout)
+
+            val addSubject=dialog.findViewById<EditText>(R.id.addSubject)
+            val addConducted=dialog.findViewById<EditText>(R.id.addConducted)
+            val addAttended=dialog.findViewById<EditText>(R.id.addAttended)
+            val addSubjectTitle=dialog.findViewById<TextView>(R.id.addSubjectTitle)
+            val addButton=dialog.findViewById<Button>(R.id.addButton)
+            val minusConducted=dialog.findViewById<ImageView>(R.id.minusConducted)
+            val plusConducted=dialog.findViewById<ImageView>(R.id.plusConducted)
+            val minusAttended=dialog.findViewById<ImageView>(R.id.minusAttended)
+            val plusAttended=dialog.findViewById<ImageView>(R.id.plusAttended)
+
+
+            addSubject.setText(arrAttendance[position].subject)
+            addConducted.setText(arrAttendance[position].conducted)
+            addAttended.setText(arrAttendance[position].attended)
+            addSubjectTitle.setText("Update Subject")
+            addButton.setText("Update")
+
+            var tempConducted=arrAttendance[position].conducted.toInt()
+            var tempAttended=arrAttendance[position].attended.toInt()
+
+            minusConducted.setOnClickListener {
+                tempConducted--
+                addConducted.setText(tempConducted.toString())
+            }
+
+            plusConducted.setOnClickListener {
+                tempConducted++
+                addConducted.setText(tempConducted.toString())
+            }
+
+            minusAttended.setOnClickListener {
+                tempAttended--
+                addAttended.setText(tempAttended.toString())
+            }
+
+            plusAttended.setOnClickListener {
+                tempAttended++
+                addAttended.setText(tempAttended.toString())
+            }
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+            dialog.show()
+            true
+
+        }
+
+
 
 
 
