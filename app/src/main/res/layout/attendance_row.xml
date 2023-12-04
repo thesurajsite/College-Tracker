@@ -7,7 +7,7 @@
         android:id="@+id/recyclerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_grey"
+        android:background="@color/light_yellow"
         app:layout_constraintBaseline_toBottomOf="parent">
 
         <androidx.cardview.widget.CardView
@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="100%"
+                android:fontFamily="@font/courier_prime"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
         </androidx.cardview.widget.CardView>
@@ -43,106 +44,67 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
-                android:fontFamily="@font/allerta_stencil"
+                android:fontFamily="@font/abel"
                 android:text="Subject Name"
-                android:textColor="@color/white"
-                android:textSize="20dp" />
+                android:textColor="@color/black"
+                android:textSize="25dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp">
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_gravity="center_vertical">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp">
+                    android:text="C:"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:textColor="@color/black"/>
 
-                    <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="Conducted:"
-                        android:textSize="15dp"
-                        android:textColor="@color/white"/>
-
-                    <ImageView
-                        android:id="@+id/conductMinus"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@color/white"
-                        android:src="@drawable/minus"
-                        android:layout_marginLeft="5dp"
-                        android:backgroundTint="@color/light_grey"/>
-
-                    <TextView
-                        android:id="@+id/conductNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="25"
-                        android:textSize="15dp"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="@color/white"/>
-
-
-
-                    <ImageView
-                        android:id="@+id/conductPlus"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@color/white"
-                        android:layout_marginLeft="5dp"
-                        android:src="@drawable/plus"
-                        android:backgroundTint="@color/light_grey"/>
-
-                </LinearLayout>
-                <LinearLayout
+                <TextView
+                    android:id="@+id/conductNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp">
+                    android:text="25"
+                    android:fontFamily="@font/noto_sans"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"/>
 
-                    <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="Attended:"
-                        android:textSize="15dp"
-                        android:textColor="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|"
+                    android:fontFamily="@font/noto_sans"
+                    android:textSize="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"/>
 
-                    <ImageView
-                        android:id="@+id/attendMinus"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@color/white"
-                        android:src="@drawable/minus"
-                        android:layout_marginLeft="5dp"
-                        android:backgroundTint="@color/light_grey"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A:"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:textColor="@color/black"/>
 
-                    <TextView
-                        android:id="@+id/attendNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="25"
-                        android:textSize="15dp"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="@color/white"/>
-
-
-
-                    <ImageView
-                        android:id="@+id/attendPlus"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@color/white"
-                        android:layout_marginLeft="5dp"
-                        android:src="@drawable/plus"
-                        android:backgroundTint="@color/light_grey"/>
-
-                </LinearLayout>
-
+                <TextView
+                    android:id="@+id/attendNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"/>
 
             </LinearLayout>
+
+
 
         </LinearLayout>
 
@@ -152,10 +114,11 @@
 
 
     <View
+        android:visibility="visible"
         android:id="@+id/horizontalLine"
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
-        android:background="@android:color/white"
+        android:background="@color/purple"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerLayout"
         />
 

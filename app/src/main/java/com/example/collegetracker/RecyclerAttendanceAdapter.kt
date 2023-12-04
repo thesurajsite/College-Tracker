@@ -25,10 +25,10 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         val conductNumber=itemView.findViewById<TextView>(R.id.conductNumber)
         val attendNumber=itemView.findViewById<TextView>(R.id.attendNumber)
 
-        val conductMinus=itemView.findViewById<ImageView>(R.id.conductMinus)
-        val conductPlus=itemView.findViewById<ImageView>(R.id.conductPlus)
-        val attendMinus=itemView.findViewById<ImageView>(R.id.attendMinus)
-        val attendPlus=itemView.findViewById<ImageView>(R.id.attendPlus)
+//        val conductMinus=itemView.findViewById<ImageView>(R.id.conductMinus)
+//        val conductPlus=itemView.findViewById<ImageView>(R.id.conductPlus)
+//        val attendMinus=itemView.findViewById<ImageView>(R.id.attendMinus)
+//        val attendPlus=itemView.findViewById<ImageView>(R.id.attendPlus)
 
         val recyclerLayout=itemView.findViewById<LinearLayout>(R.id.recyclerLayout)
 

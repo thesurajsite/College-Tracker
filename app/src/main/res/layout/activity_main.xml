@@ -5,12 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/dark_grey">
+    android:background="@color/light_yellow">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:id="@+id/toolbar"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="550dp"
+        android:fontFamily="@font/courier_prime"
+        android:text="Long Press to Edit or Update"
+        android:textColor="@color/purple" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="570dp"
+        android:fontFamily="@font/courier_prime"
+        android:text="C: Classes Conducted"
+        android:textColor="@color/purple" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="590dp"
+        android:fontFamily="@font/courier_prime"
+        android:text="A: Classes Attended"
+        android:textColor="@color/purple" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -23,7 +57,7 @@
         android:layout_marginBottom="45dp"
         app:srcCompat="@drawable/floatbutton"
         android:tint="@color/blue"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/purple"
         android:layout_marginRight="45dp"/>
 
 

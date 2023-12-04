@@ -91,6 +91,11 @@ class MainActivity : AppCompatActivity() {
                 if(subjectName!="")
                 {
 
+                    if(conductedName.isEmpty())
+                        conductedName="0"
+                    if(attendedName.isEmpty())
+                        attendedName="0"
+
                     // PERCENATGE CALCULATION
                     percentageName=((attendedName.toDouble()/conductedName.toDouble())*100).toInt()
                     percentageString=percentageName.toString()+"%"

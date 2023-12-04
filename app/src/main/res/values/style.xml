@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Toolbar_Text">
+        <item name="android:textSize">30dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/abel</item>
+        <!-- You can customize other text attributes here -->
+    </style>
+
+</resources>
