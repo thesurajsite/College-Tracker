@@ -107,22 +107,41 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                 addAttended.setText(tempAttended.toString())
             }
 
+            // subjectName AND SIMILAR STORES THE STRING VALUES THAT WE GET FROM THE add_update_layout
+            var subjectName: String=""
+            var conductedName: String="0"
+            var attendedName: String="0"
+            var percentageName: Int=0;
+            var percentageString: String=""
+
+            addButton.setOnClickListener {
+
+                subjectName=addSubject.text.toString()
+                conductedName=addConducted.text.toString()
+                attendedName=addAttended.text.toString()
+
+                if(subjectName!="")
+                {
+
+                    // PERCENATGE CALCULATION
+                    percentageName=((attendedName.toDouble()/conductedName.toDouble())*100).toInt()
+                    percentageString=percentageName.toString()+"%"
 
 
+                    //Passing data to Attendence Array
+                    arrAttendance.set(position, AttendenceModel(percentageString,subjectName,conductedName,attendedName))
+                    notifyItemChanged(position)
+
+                    dialog.dismiss()
+
+                }
+                else{
+                    Toast.makeText(context, "Subject can't be Empty", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
 
 
-            
-
-
-
-
-
-
-
-
-
-
-
+            }
 
 
             dialog.show()
