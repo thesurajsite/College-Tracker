@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
 //        val databaseHelper = DatabaseHelper.getDB(this)
 //        val AttendanceDao: AttendanceDao = databaseHelper.AttendanceDao()
 //        val arrAttendances: java.util.ArrayList<Attendance> = databaseHelper.AttendanceDao().getAllAttendance()
