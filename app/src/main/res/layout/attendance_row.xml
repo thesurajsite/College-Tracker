@@ -60,8 +60,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="C:"
-                    android:textSize="20dp"
-                    android:fontFamily="@font/noto_sans"
+                    android:textSize="25dp"
+                    android:fontFamily="@font/abel"
                     android:textColor="@color/black"/>
 
                 <TextView
@@ -69,8 +69,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="25"
-                    android:fontFamily="@font/noto_sans"
-                    android:textSize="20dp"
+                    android:fontFamily="@font/courier_prime"
+                    android:textSize="25dp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/black"/>
 
@@ -87,18 +87,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="A:"
-                    android:textSize="20dp"
+                    android:textSize="25dp"
                     android:layout_marginLeft="5dp"
-                    android:fontFamily="@font/noto_sans"
+                    android:fontFamily="@font/abel"
                     android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/attendNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="25"
-                    android:textSize="20dp"
-                    android:fontFamily="@font/noto_sans"
+                    android:text="40"
+                    android:textSize="25dp"
+                    android:fontFamily="@font/courier_prime"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/black"/>
 

@@ -16,7 +16,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp"/>
+        android:layout_marginTop="80dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="550dp"
         android:fontFamily="@font/courier_prime"
-        android:text="Long Press to Edit or Update"
+        android:text="Long Press to Edit/Update/Delete"
         android:textColor="@color/purple" />
     <TextView
         android:layout_width="wrap_content"

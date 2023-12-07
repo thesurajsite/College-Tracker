@@ -3,10 +3,10 @@ package com.example.collegetracker
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.os.Vibrator
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,10 +21,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        val databaseHelper = DatabaseHelper.getDB(this)
+//        val AttendanceDao: AttendanceDao = databaseHelper.AttendanceDao()
+//        val arrAttendances: java.util.ArrayList<Attendance> = databaseHelper.AttendanceDao().getAllAttendance()
+
         val arrAttendance=ArrayList<AttendenceModel>()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val floatingActionButton=findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val adapter = RecyclerAttendanceAdapter(this, arrAttendance)
+        recyclerView.adapter = adapter
 
 
         floatingActionButton.setOnClickListener {
@@ -42,6 +47,9 @@ class MainActivity : AppCompatActivity() {
             val plusConducted=dialog.findViewById<ImageView>(R.id.plusConducted)
             val minusAttended=dialog.findViewById<ImageView>(R.id.minusAttended)
             val plusAttended=dialog.findViewById<ImageView>(R.id.plusAttended)
+            val deleteButton=dialog.findViewById<ImageView>(R.id.deleteButton)
+            val vibrator = dialog.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            vibrator.vibrate(50)
 
             // subjectName AND SIMILAR STORES THE STRING VALUES THAT WE GET FROM THE add_update_layout
             var subjectName: String=""
@@ -56,20 +64,24 @@ class MainActivity : AppCompatActivity() {
 
             // PLUS MINUS BUTTON CONTROLS
             minusConducted.setOnClickListener {
+                vibrator.vibrate(50)
                 tempConducted--
                 addConducted.setText(tempConducted.toString())
             }
             plusConducted.setOnClickListener {
+                vibrator.vibrate(50)
                 tempConducted++
                 addConducted.setText(tempConducted.toString())
             }
 
             minusAttended.setOnClickListener {
+                vibrator.vibrate(50)
                 tempAttended--
                 addAttended.setText(tempAttended.toString())
             }
 
             plusAttended.setOnClickListener {
+                vibrator.vibrate(50)
                 tempAttended++
                 addAttended.setText(tempAttended.toString())
             }
@@ -80,6 +92,7 @@ class MainActivity : AppCompatActivity() {
             addButton.setOnClickListener {
 
 
+                vibrator.vibrate(50)
                 // subjectName AND SIMILAR STORES THE STRING VALUES THAT WE GET FROM THE add_update_layout
                 // AND FINALLY DISPLAYS IN THE RECYCLER VIEW
                 subjectName=addSubject.text.toString()
@@ -115,6 +128,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            deleteButton.setOnClickListener {
+                vibrator.vibrate(50)
+                Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+
             dialog.show()
 
 
@@ -126,10 +145,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        arrAttendance.add(AttendenceModel("99%","Physics","30","25"))
-        arrAttendance.add(AttendenceModel("78%","Chemistry","20","15"))
-        arrAttendance.add(AttendenceModel("36%","Biology","25","20"))
-        arrAttendance.add(AttendenceModel("48%","Math","16","12"))
+        arrAttendance.add(AttendenceModel("83%","Physics","30","25"))
+        arrAttendance.add(AttendenceModel("75%","Chemistry","20","15"))
+        arrAttendance.add(AttendenceModel("80%","Biology","25","20"))
+        arrAttendance.add(AttendenceModel("75%","Math","16","12"))
 
         recyclerView.layoutManager=LinearLayoutManager(this)
         val recyclerAdapter =RecyclerAttendanceAdapter(this, arrAttendance)

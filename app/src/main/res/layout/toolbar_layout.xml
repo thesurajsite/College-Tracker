@@ -9,7 +9,7 @@
     android:id="@+id/contactsTitle"
     app:title="College Tracker"
     android:gravity="center"
-    app:titleTextColor="@color/black"
+    app:titleTextColor="@color/white"
     style="@style/Toolbar_Text"
     app:titleTextAppearance="@style/Toolbar_Text">
 

@@ -10,7 +10,7 @@
     tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/btn"
+        android:id="@+id/addUpdateCardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="fill"
@@ -36,7 +36,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/abel"
                 android:text="Add Subject"
                 android:textColor="#FF404040"
                 android:textSize="40dp" />
@@ -51,7 +51,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="15dp"
                 android:background="@color/light_yellow"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/abel"
                 android:gravity="center_horizontal"
                 android:hint="Subject Name"
                 android:textColor="#FF404040"
@@ -65,8 +65,8 @@
 
                 <ImageView
                     android:id="@+id/minusConducted"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/minus"
                     android:layout_marginRight="40dp"
                     app:tint="@color/light_yellow" />
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="C:"
                     android:textSize="30dp"
-                    android:fontFamily="@font/noto_sans"
+                    android:fontFamily="@font/abel"
                     android:textColor="#FF404040"
                     android:paddingLeft="15dp"
                     android:background="@color/light_yellow"/>
@@ -88,18 +88,18 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginRight="40dp"
                     android:background="@color/light_yellow"
-                    android:fontFamily="@font/noto_sans"
+                    android:fontFamily="@font/courier_prime"
                     android:gravity="center_horizontal"
                     android:hint="0"
                     android:inputType="number"
                     android:textColor="#FF404040"
                     android:textColorHint="#404040"
-                    android:textSize="30dp" />
+                    android:textSize="31dp" />
 
                 <ImageView
                     android:id="@+id/plusConducted"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/plus"
                     app:tint="@color/light_yellow" />
 
@@ -112,8 +112,8 @@
 
                 <ImageView
                     android:id="@+id/minusAttended"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/minus"
                     app:tint="@color/light_yellow"
                     android:layout_marginRight="40dp"/>
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:text="A:"
                     android:textSize="30dp"
-                    android:fontFamily="@font/noto_sans"
+                    android:fontFamily="@font/abel"
                     android:textColor="#FF404040"
                     android:paddingLeft="15dp"
                     android:background="@color/light_yellow"/>
@@ -136,18 +136,18 @@
                     android:layout_marginRight="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@color/light_yellow"
-                    android:fontFamily="@font/noto_sans"
+                    android:fontFamily="@font/courier_prime"
                     android:gravity="center_horizontal"
                     android:hint="0"
                     android:inputType="number"
                     android:textColor="#FF404040"
                     android:textColorHint="#404040"
-                    android:textSize="30dp" />
+                    android:textSize="31dp" />
 
                 <ImageView
                     android:id="@+id/plusAttended"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/plus"
                     app:tint="@color/light_yellow"/>
 
@@ -169,19 +169,18 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/deleteButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="328dp"
+            android:src="@drawable/baseline_delete_24"
+            app:tint="@color/design_default_color_error" />
+
+
     </androidx.cardview.widget.CardView>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

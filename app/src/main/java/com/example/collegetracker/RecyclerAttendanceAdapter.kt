@@ -1,8 +1,11 @@
 package com.example.collegetracker
 
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.os.Vibrator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +16,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.collections.ArrayList
 
 class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayList<AttendenceModel>) : RecyclerView.Adapter<RecyclerAttendanceAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
+
 
 
         // subject, conductNumber, attendNumber (FROM THE attendance_row LAYOUT)
@@ -31,18 +35,16 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 //        val attendPlus=itemView.findViewById<ImageView>(R.id.attendPlus)
 
         val recyclerLayout=itemView.findViewById<LinearLayout>(R.id.recyclerLayout)
-
-
-
-
-
-
+        //VIBRATOR VIBRATOR VIBRATOR
+        val vibrator = itemView.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
 
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.attendance_row, parent, false))
 
     }
@@ -63,6 +65,8 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
         holder.recyclerLayout.setOnLongClickListener {
            // Toast.makeText(context, "hiii", Toast.LENGTH_SHORT).show()
+            holder.vibrator.vibrate(50)
+
 
             val dialog= Dialog(context)
             dialog.setContentView(R.layout.add_update_layout)
@@ -76,6 +80,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             val plusConducted=dialog.findViewById<ImageView>(R.id.plusConducted)
             val minusAttended=dialog.findViewById<ImageView>(R.id.minusAttended)
             val plusAttended=dialog.findViewById<ImageView>(R.id.plusAttended)
+            val deleteButton=dialog.findViewById<ImageView>(R.id.deleteButton)
 
 
             addSubject.setText(arrAttendance[position].subject)
@@ -88,21 +93,25 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             var tempAttended=arrAttendance[position].attended.toInt()
 
             minusConducted.setOnClickListener {
+                holder.vibrator.vibrate(50)
                 tempConducted--
                 addConducted.setText(tempConducted.toString())
             }
 
             plusConducted.setOnClickListener {
+                holder.vibrator.vibrate(50)
                 tempConducted++
                 addConducted.setText(tempConducted.toString())
             }
 
             minusAttended.setOnClickListener {
+                holder.vibrator.vibrate(50)
                 tempAttended--
                 addAttended.setText(tempAttended.toString())
             }
 
             plusAttended.setOnClickListener {
+                holder.vibrator.vibrate(50)
                 tempAttended++
                 addAttended.setText(tempAttended.toString())
             }
@@ -115,6 +124,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             var percentageString: String=""
 
             addButton.setOnClickListener {
+                holder.vibrator.vibrate(50)
 
                 subjectName=addSubject.text.toString()
                 conductedName=addConducted.text.toString()
@@ -144,6 +154,38 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             }
 
 
+
+            deleteButton.setOnClickListener(View.OnClickListener {
+                holder.vibrator.vibrate(50)
+                val builder = AlertDialog.Builder(context)
+                    .setTitle("Delete Contact")
+                    .setIcon(R.drawable.baseline_delete_24)
+                    .setMessage("Do you want to Delete this contact ?")
+                    .setPositiveButton(
+                        "Yes"
+                    ) { dialogInterface, i ->
+                        try {
+                            arrAttendance.removeAt(position)
+                            notifyItemRemoved(position)
+                            dialog.dismiss()
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
+                            Log.w("crash-contacts", e)
+                            dialog.dismiss()
+                        }
+
+                    }
+                    .setNegativeButton(
+                        "No"
+                    ) { dialogInterface, i ->
+                        Toast.makeText(context, "Not Deleted", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                builder.show()
+            })
+
+
+
             dialog.show()
             true
 
@@ -154,6 +196,8 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
 
     }
+
+
 
 
 
