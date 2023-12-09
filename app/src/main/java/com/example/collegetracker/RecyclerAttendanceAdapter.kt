@@ -16,10 +16,26 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Delete
+import androidx.room.Room
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayList<AttendenceModel>) : RecyclerView.Adapter<RecyclerAttendanceAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
+
+    //Initialization of Database
+    private lateinit var database: DatabaseHelper
+    init {
+        // Initialize the database using the context
+        database = Room.databaseBuilder(
+            context.applicationContext,
+            DatabaseHelper::class.java,
+            "AttendanceDB"
+        ).build()
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
 
 
@@ -71,6 +87,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             val dialog= Dialog(context)
             dialog.setContentView(R.layout.add_update_layout)
 
+            val idTextView=dialog.findViewById<TextView>(R.id.id)
             val addSubject=dialog.findViewById<EditText>(R.id.addSubject)
             val addConducted=dialog.findViewById<EditText>(R.id.addConducted)
             val addAttended=dialog.findViewById<EditText>(R.id.addAttended)
@@ -82,7 +99,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             val plusAttended=dialog.findViewById<ImageView>(R.id.plusAttended)
             val deleteButton=dialog.findViewById<ImageView>(R.id.deleteButton)
 
-
+            idTextView.setText("ID: "+arrAttendance[position].subjectId.toString())
             addSubject.setText(arrAttendance[position].subject)
             addConducted.setText(arrAttendance[position].conducted)
             addAttended.setText(arrAttendance[position].attended)
@@ -133,17 +150,32 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                 if(subjectName!="")
                 {
 
+                    val subjectId: Int =arrAttendance[position].subjectId
                     // PERCENATGE CALCULATION
                     percentageName=((attendedName.toDouble()/conductedName.toDouble())*100).toInt()
                     percentageString=percentageName.toString()+"%"
 
 
-                    //Passing data to Attendence Array
-                    arrAttendance.set(position, AttendenceModel(percentageString,subjectName,conductedName,attendedName))
+                    // Passing data to Attendence Array
+                    arrAttendance.set(position,AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName))
+
                     notifyItemChanged(position)
 
-                    dialog.dismiss()
 
+                    var dataToUpdate: Attendance = Attendance(
+                        id=arrAttendance[position].subjectId,
+                        percentage = arrAttendance[position].percentage,
+                        subjectName = arrAttendance[position].subject,
+                        classesConducted = arrAttendance[position].conducted,
+                        classesAttended = arrAttendance[position].attended
+                    )
+
+
+                    GlobalScope.launch {
+                        database.attendanceDao().updateAttendance(dataToUpdate)
+                    }
+
+                    dialog.dismiss()
                 }
                 else{
                     Toast.makeText(context, "Subject can't be Empty", Toast.LENGTH_SHORT).show()
@@ -156,6 +188,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
 
             deleteButton.setOnClickListener(View.OnClickListener {
+
                 holder.vibrator.vibrate(50)
                 val builder = AlertDialog.Builder(context)
                     .setTitle("Delete Contact")
@@ -165,12 +198,22 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                         "Yes"
                     ) { dialogInterface, i ->
                         try {
+
+                            val subjectId: Int =arrAttendance[position].subjectId
                             arrAttendance.removeAt(position)
                             notifyItemRemoved(position)
+
+                            //DELETING FROM DATABASE
+                            GlobalScope.launch {
+                                database.attendanceDao().deleteAttendance(subjectId)
+                            }
+
                             dialog.dismiss()
+
+
                         } catch (e: Exception) {
                             Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
-                            Log.w("crash-contacts", e)
+                            Log.w("crash-attendance", e)
                             dialog.dismiss()
                         }
 
@@ -178,7 +221,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                     .setNegativeButton(
                         "No"
                     ) { dialogInterface, i ->
-                        Toast.makeText(context, "Not Deleted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Deletion Cancelled", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
                 builder.show()

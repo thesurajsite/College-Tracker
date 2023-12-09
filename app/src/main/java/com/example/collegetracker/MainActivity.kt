@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Vibrator
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -11,26 +12,68 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var database: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Initialization of Database
+        database= Room.databaseBuilder(applicationContext,
+            DatabaseHelper::class.java,
+            "AttendanceDB").build()
 
-//        val databaseHelper = DatabaseHelper.getDB(this)
-//        val AttendanceDao: AttendanceDao = databaseHelper.AttendanceDao()
-//        val arrAttendances: java.util.ArrayList<Attendance> = databaseHelper.AttendanceDao().getAllAttendance()
+
+
 
         val arrAttendance=ArrayList<AttendenceModel>()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val floatingActionButton=findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val adapter = RecyclerAttendanceAdapter(this, arrAttendance)
         recyclerView.adapter = adapter
+        val nothingToShowImage: ImageView = findViewById(R.id.nothingToShow)
+
+
+
+
+
+        // Clearing the RecyclerView Array and Re-Poulating it with the DataBase
+        GlobalScope.launch {
+            arrAttendance.clear()
+            var attendanceList=database.attendanceDao().getAllAttendance()
+
+            // Data entered in arrAttendance must be of the type: AttendanceModel
+            for (attendance in attendanceList) {  // line 46
+                val subjectId=attendance.id
+                val percentageString = attendance.percentage
+                val subjectName = attendance.subjectName
+                val conductedName = attendance.classesConducted
+                val attendedName = attendance.classesAttended
+
+                arrAttendance.add(AttendenceModel(subjectId, percentageString, subjectName, conductedName, attendedName))
+            }
+
+
+            // VISIBILITY CONTROL FOR nothingToShow IMAGE
+            if (arrAttendance.isEmpty()) {
+                recyclerView.visibility = View.GONE
+                nothingToShowImage.visibility = View.VISIBLE
+            } else {
+                recyclerView.visibility = View.VISIBLE
+                nothingToShowImage.visibility = View.GONE
+            }
+
+        }
+
+
 
 
         floatingActionButton.setOnClickListener {
@@ -116,11 +159,25 @@ class MainActivity : AppCompatActivity() {
 
 
                     //Passing data to Attendence Array
-                    arrAttendance.add(AttendenceModel(percentageString,subjectName,conductedName,attendedName))
+                    arrAttendance.add(AttendenceModel(0,percentageString,subjectName,conductedName,attendedName))
                     adapter.notifyItemChanged(arrAttendance.size-1)
                     recyclerView.scrollToPosition(arrAttendance.size-1)
 
+                    GlobalScope.launch {
+                        database.attendanceDao().insertAttendance(Attendance(0,percentageString,subjectName,conductedName,attendedName))
+                    }
+
                     dialog.dismiss()
+
+
+                    // VISIBILITY CONTROL FOR nothingToShow IMAGE
+                    if (arrAttendance.isEmpty()) {
+                        recyclerView.visibility = View.GONE
+                        nothingToShowImage.visibility = View.VISIBLE
+                    } else {
+                        recyclerView.visibility = View.VISIBLE
+                        nothingToShowImage.visibility = View.GONE
+                    }
 
                 }
                 else{
@@ -146,10 +203,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        arrAttendance.add(AttendenceModel("83%","Physics","30","25"))
-        arrAttendance.add(AttendenceModel("75%","Chemistry","20","15"))
-        arrAttendance.add(AttendenceModel("80%","Biology","25","20"))
-        arrAttendance.add(AttendenceModel("75%","Math","16","12"))
+//        arrAttendance.add(AttendenceModel("83%","Physics","30","25"))
+//        arrAttendance.add(AttendenceModel("75%","Chemistry","20","15"))
+//        arrAttendance.add(AttendenceModel("80%","Biology","25","20"))
+//        arrAttendance.add(AttendenceModel("75%","Math","16","12"))
 
         recyclerView.layoutManager=LinearLayoutManager(this)
         val recyclerAdapter =RecyclerAttendanceAdapter(this, arrAttendance)
