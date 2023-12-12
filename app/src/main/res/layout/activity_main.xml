@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context="Activities.MainActivity"
     android:background="@color/light_yellow">
 
     <include
         layout="@layout/toolbar_layout"
-        android:id="@+id/toolbar"
-        />
+        android:id="@+id/toolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -23,37 +22,27 @@
         android:id="@+id/nothingToShow"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/nothing_to_show"
-        android:visibility="invisible" />
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="100dp"
+        android:visibility="invisible"
+        />
 
-    <TextView
+    <Button
+        android:id="@+id/howToUse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:text="How To Use"
+        android:layout_below="@id/nothingToShow"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="550dp"
-        android:fontFamily="@font/courier_prime"
-        android:text="Long Press to Edit/Update/Delete"
-        android:textColor="@color/purple" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="570dp"
-        android:fontFamily="@font/courier_prime"
-        android:text="C: Classes Conducted"
-        android:textColor="@color/purple" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="590dp"
-        android:fontFamily="@font/courier_prime"
-        android:text="A: Classes Attended"
-        android:textColor="@color/purple" />
+        android:layout_marginTop="50dp"
+        android:textSize="20dp"
+        android:visibility="invisible"
+        />
+
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -67,7 +56,8 @@
         app:srcCompat="@drawable/floatbutton"
         android:tint="@color/blue"
         android:backgroundTint="@color/purple"
-        android:layout_marginRight="45dp"/>
+        android:layout_marginRight="45dp"
+        />
 
 
 </RelativeLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_yellow">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:id="@+id/toolbar"/>
+
+    <RelativeLayout
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Instructions:"
+            android:textSize="40dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/courier_prime"
+            android:textColor="@color/black"
+            android:layout_marginLeft="15dp"/>
+
+
+        <View
+            android:visibility="visible"
+            android:id="@+id/horizontalLine"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/purple"
+            android:layout_below="@id/instructions"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:backgroundTint="@color/black"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/courier_prime"
+            android:textColor="@color/black"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_below="@id/instructions"
+            android:background="@color/light_white"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="* Click on the '+' button to Add Subject \n\n* Click on the subject to Edit/Update/Delete \n\n* C: Classes Conducted \n* A: Classes Attended \n\n This App will keep your Attendance stored, which You can update later on and keep a track of your Attendance\n\n Note: After Adding a new Subject, Please close the app once before you make any update to it"
+
+            />
+
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

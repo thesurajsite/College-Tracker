@@ -1,4 +1,4 @@
-package com.example.collegetracker
+package RoomDatabase
 
 import androidx.room.Entity
 import androidx.room.Ignore

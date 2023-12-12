@@ -1,6 +1,8 @@
 package com.example.collegetracker
 
 
+import RoomDatabase.Attendance
+import RoomDatabase.DatabaseHelper
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -16,7 +18,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Delete
 import androidx.room.Room
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -79,7 +80,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         holder.conductNumber.text=arrAttendance[position].conducted
 
 
-        holder.recyclerLayout.setOnLongClickListener {
+        holder.recyclerLayout.setOnClickListener{
            // Toast.makeText(context, "hiii", Toast.LENGTH_SHORT).show()
             holder.vibrator.vibrate(50)
 

@@ -13,4 +13,14 @@
     style="@style/Toolbar_Text"
     app:titleTextAppearance="@style/Toolbar_Text">
 
+    <ImageView
+        android:id="@+id/helpButton"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_help_24"
+        android:layout_marginLeft="130dp"
+        />
+
+
+
 </androidx.appcompat.widget.Toolbar>

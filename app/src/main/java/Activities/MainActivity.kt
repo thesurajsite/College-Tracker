@@ -1,7 +1,8 @@
-package com.example.collegetracker
+package Activities
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Vibrator
 import android.view.View
@@ -13,10 +14,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import RoomDatabase.Attendance
+import com.example.collegetracker.AttendenceModel
+import RoomDatabase.DatabaseHelper
+import com.example.collegetracker.R
+import com.example.collegetracker.RecyclerAttendanceAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         val adapter = RecyclerAttendanceAdapter(this, arrAttendance)
         recyclerView.adapter = adapter
         val nothingToShowImage: ImageView = findViewById(R.id.nothingToShow)
+        val helpButton=findViewById<ImageView>(R.id.helpButton)
+        val howToUse=findViewById<Button>(R.id.howToUse)
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
 
 
@@ -66,9 +74,11 @@ class MainActivity : AppCompatActivity() {
             if (arrAttendance.isEmpty()) {
                 recyclerView.visibility = View.GONE
                 nothingToShowImage.visibility = View.VISIBLE
+                howToUse.visibility=View.VISIBLE
             } else {
                 recyclerView.visibility = View.VISIBLE
                 nothingToShowImage.visibility = View.GONE
+                howToUse.visibility=View.GONE
             }
 
         }
@@ -158,14 +168,18 @@ class MainActivity : AppCompatActivity() {
                     percentageString=percentageName.toString()+"%"
 
 
-                    //Passing data to Attendence Array
-                    arrAttendance.add(AttendenceModel(0,percentageString,subjectName,conductedName,attendedName))
-                    adapter.notifyItemChanged(arrAttendance.size-1)
-                    recyclerView.scrollToPosition(arrAttendance.size-1)
+                    // Adding data to the Database
 
                     GlobalScope.launch {
                         database.attendanceDao().insertAttendance(Attendance(0,percentageString,subjectName,conductedName,attendedName))
                     }
+
+
+
+                    //Passing data to Attendence Array
+                    arrAttendance.add(AttendenceModel(0,percentageString,subjectName,conductedName,attendedName))
+                    adapter.notifyItemChanged(arrAttendance.size-1)
+                    recyclerView.scrollToPosition(arrAttendance.size-1)
 
                     dialog.dismiss()
 
@@ -174,9 +188,11 @@ class MainActivity : AppCompatActivity() {
                     if (arrAttendance.isEmpty()) {
                         recyclerView.visibility = View.GONE
                         nothingToShowImage.visibility = View.VISIBLE
+                        howToUse.visibility=View.VISIBLE
                     } else {
                         recyclerView.visibility = View.VISIBLE
                         nothingToShowImage.visibility = View.GONE
+                        howToUse.visibility=View.GONE
                     }
 
                 }
@@ -209,8 +225,21 @@ class MainActivity : AppCompatActivity() {
 //        arrAttendance.add(AttendenceModel("75%","Math","16","12"))
 
         recyclerView.layoutManager=LinearLayoutManager(this)
-        val recyclerAdapter =RecyclerAttendanceAdapter(this, arrAttendance)
+        val recyclerAdapter = RecyclerAttendanceAdapter(this, arrAttendance)
         recyclerView.adapter=recyclerAdapter
+
+
+        helpButton.setOnClickListener {
+            vibrator.vibrate(50)
+            val intent=Intent(this, instructionsPage::class.java)
+            startActivity(intent)
+        }
+
+        howToUse.setOnClickListener {
+            vibrator.vibrate(50)
+            val intent=Intent(this, instructionsPage::class.java)
+            startActivity(intent)
+        }
 
 
 
