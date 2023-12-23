@@ -18,8 +18,13 @@ import RoomDatabase.Attendance
 import RecyclerView.AttendenceModel
 import RoomDatabase.DatabaseHelper
 import RecyclerView.RecyclerAttendanceAdapter
+import ScheduleFragments.scheduleViewPagerAdapter
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -45,12 +50,10 @@ class MainActivity : AppCompatActivity() {
         val adapter = RecyclerAttendanceAdapter(this, arrAttendance)
         recyclerView.adapter = adapter
         val nothingToShowImage: ImageView = findViewById(R.id.nothingToShow)
+        val scheduleButton=findViewById<ImageView>(R.id.scheduleButton)
         val helpButton=findViewById<ImageView>(R.id.helpButton)
         val howToUse=findViewById<Button>(R.id.howToUse)
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-
-
 
 
         // Clearing the RecyclerView Array and Re-Poulating it with the DataBase
@@ -175,7 +178,6 @@ class MainActivity : AppCompatActivity() {
                     }
 
 
-
                     //Passing data to Attendence Array
                     arrAttendance.add(AttendenceModel(0,percentageString,subjectName,conductedName,attendedName))
                     adapter.notifyItemChanged(arrAttendance.size-1)
@@ -227,6 +229,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager=LinearLayoutManager(this)
         val recyclerAdapter = RecyclerAttendanceAdapter(this, arrAttendance)
         recyclerView.adapter=recyclerAdapter
+
+        scheduleButton.setOnClickListener {
+            vibrator.vibrate(50)
+            val intent=Intent(this, DailySchedule::class.java)
+            startActivity(intent)
+        }
 
 
         helpButton.setOnClickListener {

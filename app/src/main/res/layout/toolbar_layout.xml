@@ -13,13 +13,31 @@
     style="@style/Toolbar_Text"
     app:titleTextAppearance="@style/Toolbar_Text">
 
-    <ImageView
-        android:id="@+id/helpButton"
-        android:layout_width="25dp"
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_help_24"
-        android:layout_marginLeft="130dp"
-        />
+        android:layout_marginLeft="100dp">
+
+        <ImageView
+            android:id="@+id/scheduleButton"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_schedule_24"
+            android:layout_marginLeft="0dp"
+            />
+
+        <ImageView
+            android:id="@+id/helpButton"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_help_24"
+            android:layout_marginLeft="20dp"
+            />
+
+
+    </LinearLayout>
 
 
 
