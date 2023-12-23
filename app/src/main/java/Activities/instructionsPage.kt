@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import com.example.collegetracker.R
+import com.collegetracker.R
 
 class instructionsPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

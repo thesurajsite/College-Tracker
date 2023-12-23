@@ -1,4 +1,4 @@
-package com.example.collegetracker
+package RecyclerView
 
 class AttendenceModel (
     var subjectId: Int,

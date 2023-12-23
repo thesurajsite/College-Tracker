@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import RoomDatabase.Attendance
-import com.example.collegetracker.AttendenceModel
+import RecyclerView.AttendenceModel
 import RoomDatabase.DatabaseHelper
-import com.example.collegetracker.R
-import com.example.collegetracker.RecyclerAttendanceAdapter
+import RecyclerView.RecyclerAttendanceAdapter
+import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

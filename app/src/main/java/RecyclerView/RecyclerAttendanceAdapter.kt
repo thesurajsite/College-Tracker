@@ -1,4 +1,4 @@
-package com.example.collegetracker
+package RecyclerView
 
 
 import RoomDatabase.Attendance
@@ -19,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.collegetracker.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -158,7 +159,9 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
 
                     // Passing data to Attendence Array
-                    arrAttendance.set(position,AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName))
+                    arrAttendance.set(position,
+                        AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName)
+                    )
 
                     notifyItemChanged(position)
 

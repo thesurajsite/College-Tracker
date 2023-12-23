@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.collegetracker"
+    namespace = "com.collegetracker"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.collegetracker"
+        applicationId = "com.collegetracker"
         minSdk = 27
         targetSdk = 33
         versionCode = 1
