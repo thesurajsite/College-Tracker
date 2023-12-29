@@ -27,7 +27,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
 
     //Initialization of Database
-    private lateinit var database: DatabaseHelper
+    private var database: DatabaseHelper
     init {
         // Initialize the database using the context
         database = Room.databaseBuilder(

@@ -4,21 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_pink"
+    android:background="@color/light_green"
     tools:context="Activities.DailySchedule">
 
     <include
-        layout="@layout/toolbar_layout"
-        android:id="@+id/toolbar"/>
+        layout="@layout/schedule_toolbar_layout"
+        android:id="@+id/ScheduleToolbar"/>
 
    <com.google.android.material.tabs.TabLayout
-       android:layout_below="@id/toolbar"
+       android:layout_below="@id/ScheduleToolbar"
        android:id="@+id/scheduleTabLayout"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        app:tabTextColor="@color/black"
        app:tabIndicatorColor="@color/black"
-       android:background="@color/light_pink">
+       android:background="@color/light_green">
 
        <com.google.android.material.tabs.TabItem
            android:id="@+id/monday"
