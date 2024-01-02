@@ -100,6 +100,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             val minusAttended=dialog.findViewById<ImageView>(R.id.minusAttended)
             val plusAttended=dialog.findViewById<ImageView>(R.id.plusAttended)
             val deleteButton=dialog.findViewById<ImageView>(R.id.deleteButton)
+            val id=arrAttendance[position].subjectId
 
             idTextView.setText("ID: "+arrAttendance[position].subjectId.toString())
             addSubject.setText(arrAttendance[position].subject)
@@ -145,46 +146,55 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             addButton.setOnClickListener {
                 holder.vibrator.vibrate(50)
 
-                subjectName=addSubject.text.toString()
-                conductedName=addConducted.text.toString()
-                attendedName=addAttended.text.toString()
-
-                if(subjectName!="")
+                if(id!=0)
                 {
+                    subjectName=addSubject.text.toString()
+                    conductedName=addConducted.text.toString()
+                    attendedName=addAttended.text.toString()
 
-                    val subjectId: Int =arrAttendance[position].subjectId
-                    // PERCENATGE CALCULATION
-                    percentageName=((attendedName.toDouble()/conductedName.toDouble())*100).toInt()
-                    percentageString=percentageName.toString()+"%"
+                    if(subjectName!="")
+                    {
 
-
-                    // Passing data to Attendence Array
-                    arrAttendance.set(position,
-                        AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName)
-                    )
-
-                    notifyItemChanged(position)
+                        val subjectId: Int =arrAttendance[position].subjectId
+                        // PERCENATGE CALCULATION
+                        percentageName=((attendedName.toDouble()/conductedName.toDouble())*100).toInt()
+                        percentageString=percentageName.toString()+"%"
 
 
-                    var dataToUpdate: Attendance = Attendance(
-                        id=arrAttendance[position].subjectId,
-                        percentage = arrAttendance[position].percentage,
-                        subjectName = arrAttendance[position].subject,
-                        classesConducted = arrAttendance[position].conducted,
-                        classesAttended = arrAttendance[position].attended
-                    )
+                        // Passing data to Attendence Array
+                        arrAttendance.set(position,
+                            AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName)
+                        )
+
+                        notifyItemChanged(position)
 
 
-                    GlobalScope.launch {
-                        database.attendanceDao().updateAttendance(dataToUpdate)
+                        var dataToUpdate: Attendance = Attendance(
+                            id=arrAttendance[position].subjectId,
+                            percentage = arrAttendance[position].percentage,
+                            subjectName = arrAttendance[position].subject,
+                            classesConducted = arrAttendance[position].conducted,
+                            classesAttended = arrAttendance[position].attended
+                        )
+
+
+                        GlobalScope.launch {
+                            database.attendanceDao().updateAttendance(dataToUpdate)
+                        }
+
+                        dialog.dismiss()
                     }
+                    else{
+                        Toast.makeText(context, "Subject can't be Empty", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                    
 
-                    dialog.dismiss()
                 }
                 else{
-                    Toast.makeText(context, "Subject can't be Empty", Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
+                    Toast.makeText(context, "Please close the app once before making any update to this Subject", Toast.LENGTH_SHORT).show()
                 }
+                
 
 
             }

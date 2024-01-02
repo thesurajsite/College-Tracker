@@ -10,4 +10,17 @@
         android:layout_height="match_parent"
         android:visibility="visible"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:src="@drawable/floatbutton"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="45dp"
+        android:layout_marginRight="45dp"
+        android:backgroundTint="@color/purple"
+        />
+
 </RelativeLayout>
