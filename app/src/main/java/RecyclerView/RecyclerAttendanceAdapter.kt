@@ -241,22 +241,10 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                 builder.show()
             })
 
-
-
             dialog.show()
             true
 
         }
-
-
-
-
-
     }
-
-
-
-
-
 
 }

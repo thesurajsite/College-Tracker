@@ -42,7 +42,7 @@ class DailySchedule : AppCompatActivity() {
 
         // Get the current day of the week (e.g., MONDAY, TUESDAY)
         val currentDayOfWeek = LocalDate.now().dayOfWeek
-        Toast.makeText(this, currentDayOfWeek.toString(), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "It's $currentDayOfWeek Today", Toast.LENGTH_SHORT).show()
         var indexDay: Int = getTabIndexForDay(currentDayOfWeek)
         scheduleViewPager.currentItem = indexDay
 
