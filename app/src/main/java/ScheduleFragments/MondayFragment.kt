@@ -33,21 +33,21 @@ class MondayFragment : Fragment() {
         // Inflate the layout for this fragment
         val view=inflater.inflate(R.layout.fragment_monday, container, false)
 
-        val arrSchedule=ArrayList<ScheduleModel>()
+        val arrScheduleMonday=ArrayList<ScheduleModel>()
         val floatingActionButton=view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
 
 
-        arrSchedule.add(ScheduleModel(1,"Mathematics","09:00"))
-        arrSchedule.add(ScheduleModel(1,"English","10:00"))
-        arrSchedule.add(ScheduleModel(1,"VEEES","11:00"))
-        arrSchedule.add(ScheduleModel(1,"Thermodynamics","12:00"))
-        arrSchedule.add(ScheduleModel(1,"---Break---","01:00"))
-        arrSchedule.add(ScheduleModel(1,"Geology","02:00"))
+        arrScheduleMonday.add(ScheduleModel(1,"monday","Mathematics","09:00"))
+        arrScheduleMonday.add(ScheduleModel(1,"monday","English","10:00"))
+        arrScheduleMonday.add(ScheduleModel(1,"monday","VEEES","11:00"))
+        arrScheduleMonday.add(ScheduleModel(1,"monday","Thermodynamics","12:00"))
+        arrScheduleMonday.add(ScheduleModel(1,"monday","---Break---","01:00"))
+        arrScheduleMonday.add(ScheduleModel(1,"monday","Geology","02:00"))
 
 
         val mondayRecyclerView = view.findViewById<RecyclerView>(R.id.MondayRecyclerView)
-        val scheduleAdapter=RecyclerScheduleAdapter(requireContext(), arrSchedule)
+        val scheduleAdapter=RecyclerScheduleAdapter(requireContext(), arrScheduleMonday)
         mondayRecyclerView.adapter=scheduleAdapter
         mondayRecyclerView.layoutManager= LinearLayoutManager(requireContext())
 
@@ -71,10 +71,10 @@ class MondayFragment : Fragment() {
 
                 if(lectureName!="")
                 {
-                    arrSchedule.add(ScheduleModel(0,lectureName,timeName))
+                    arrScheduleMonday.add(ScheduleModel(0,"monday",lectureName,timeName))
 
-                    scheduleAdapter.notifyItemChanged(arrSchedule.size-1)
-                    mondayRecyclerView.scrollToPosition(arrSchedule.size-1)
+                    scheduleAdapter.notifyItemChanged(arrScheduleMonday.size-1)
+                    mondayRecyclerView.scrollToPosition(arrScheduleMonday.size-1)
                     dialog.dismiss()
 
                 }
