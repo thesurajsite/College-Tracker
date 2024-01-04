@@ -38,12 +38,12 @@ class MondayFragment : Fragment() {
         val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
 
 
-        arrScheduleMonday.add(ScheduleModel(1,"monday","Mathematics","09:00"))
-        arrScheduleMonday.add(ScheduleModel(1,"monday","English","10:00"))
-        arrScheduleMonday.add(ScheduleModel(1,"monday","VEEES","11:00"))
-        arrScheduleMonday.add(ScheduleModel(1,"monday","Thermodynamics","12:00"))
-        arrScheduleMonday.add(ScheduleModel(1,"monday","---Break---","01:00"))
-        arrScheduleMonday.add(ScheduleModel(1,"monday","Geology","02:00"))
+        arrScheduleMonday.add(ScheduleModel(0,"monday","Mathematics","09:00"))
+        arrScheduleMonday.add(ScheduleModel(0,"monday","English","10:00"))
+        arrScheduleMonday.add(ScheduleModel(0,"monday","VEEES","11:00"))
+        arrScheduleMonday.add(ScheduleModel(0,"monday","Thermodynamics","12:00"))
+        arrScheduleMonday.add(ScheduleModel(0,"monday","---Break---","01:00"))
+        arrScheduleMonday.add(ScheduleModel(0,"monday","Geology","02:00"))
 
 
         val mondayRecyclerView = view.findViewById<RecyclerView>(R.id.MondayRecyclerView)
