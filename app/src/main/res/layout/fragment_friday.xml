@@ -4,10 +4,21 @@
     android:layout_height="match_parent"
     tools:context="ScheduleFragments.MondayFragment">
 
+    <TextView
+        android:id="@+id/friday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FRIDAY"
+        android:textSize="25dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:fontFamily="@font/abel"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/FridayRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/friday"
         android:visibility="visible"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

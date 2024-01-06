@@ -1,9 +1,12 @@
 package ScheduleFragments
 
+import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import kotlin.coroutines.coroutineContext
 
 class scheduleViewPagerAdapter(
     fragmentManager: FragmentManager,
@@ -13,21 +16,20 @@ class scheduleViewPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        if(position==0)
-           return MondayFragment()
-        else if(position==1)
-            return TuesdayFragment()
-        else if(position==2)
-            return WednesdayFragment()
-        else if(position==3)
-            return ThursdayFragment()
-        else if(position==4)
-            return FridayFragment()
-        else if(position==5)
-            return SaturdayFragment()
-        else if(position==6)
-            return SundayFragment()
-        else return MondayFragment()
+
+        return when (position) {
+            0 -> MondayFragment()
+            1 -> TuesdayFragment()
+            2 -> WednesdayFragment()
+            3 -> ThursdayFragment()
+            4 -> FridayFragment()
+            5 -> SaturdayFragment()
+            6 -> SundayFragment()
+            else -> MondayFragment() // Default case, though it should never happen
+        }
+
+
+
 
     }
 

@@ -42,7 +42,7 @@ class MondayFragment : Fragment() {
         arrScheduleMonday.add(ScheduleModel(0,"monday","English","10:00"))
         arrScheduleMonday.add(ScheduleModel(0,"monday","VEEES","11:00"))
         arrScheduleMonday.add(ScheduleModel(0,"monday","Thermodynamics","12:00"))
-        arrScheduleMonday.add(ScheduleModel(0,"monday","---Break---","01:00"))
+        arrScheduleMonday.add(ScheduleModel(0,"monday","---Monday---","01:00"))
         arrScheduleMonday.add(ScheduleModel(0,"monday","Geology","02:00"))
 
 

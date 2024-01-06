@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Vibrator
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -42,12 +43,24 @@ class DailySchedule : AppCompatActivity() {
 
         // Get the current day of the week (e.g., MONDAY, TUESDAY)
         val currentDayOfWeek = LocalDate.now().dayOfWeek
-        Toast.makeText(this, "It's $currentDayOfWeek Today", Toast.LENGTH_SHORT).show()
         var indexDay: Int = getTabIndexForDay(currentDayOfWeek)
+
+        Log.d("DailySchedule", "Current day of the week: $currentDayOfWeek")
+        Log.d("DailySchedule", "Index for the day: $indexDay")
+
         scheduleViewPager.currentItem = indexDay
+
+        Toast.makeText(this, "It's $currentDayOfWeek $indexDay Today", Toast.LENGTH_SHORT).show()
 
         // Manually set the selected tab
         scheduleTabLayout.getTabAt(indexDay)?.select()
+
+        // Set a custom PageTransformer for smooth sliding animation
+        scheduleViewPager.setPageTransformer { page, position ->
+            val absPosition = Math.abs(position)
+            page.alpha = 1f - absPosition
+            page.scaleY = 0.85f + 0.15f * (1f - absPosition)
+        }
 
 
 

@@ -11,18 +11,6 @@
         layout="@layout/schedule_toolbar_layout"
         android:id="@+id/ScheduleToolbar"/>
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/floatingActionButton"-->
-<!--        android:layout_width="400dp"-->
-<!--        android:layout_height="400dp"-->
-<!--        android:src="@drawable/floatbutton"-->
-<!--        android:clickable="true"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:layout_marginBottom="45dp"-->
-<!--        android:layout_marginRight="45dp"-->
-<!--        android:backgroundTint="@color/purple"-->
-<!--        />-->
 
    <com.google.android.material.tabs.TabLayout
        android:layout_below="@id/ScheduleToolbar"
@@ -32,6 +20,7 @@
        app:tabTextColor="@color/black"
        app:tabIndicatorColor="@color/black"
        android:background="@color/light_yellow">
+
 
        <com.google.android.material.tabs.TabItem
            android:id="@+id/monday"
@@ -64,12 +53,14 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:text="S"/>
+
        <com.google.android.material.tabs.TabItem
            android:id="@+id/sunday"
            app:tabBackground="@color/black"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:text="S"/>
+
 
    </com.google.android.material.tabs.TabLayout>
 
