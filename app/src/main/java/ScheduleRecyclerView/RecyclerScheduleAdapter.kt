@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 // ScheduleItemClickListener interface
 interface ScheduleItemClickListener {
     fun onEditScheduleClicked(position: Int)
-    fun onDeleteScheduleClicked(position: Int)
+//    fun onDeleteScheduleClicked(position: Int)
 }
 
 class RecyclerScheduleAdapter(val context: Context,

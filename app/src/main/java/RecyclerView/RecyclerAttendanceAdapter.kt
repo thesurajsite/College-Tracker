@@ -205,14 +205,13 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
                 holder.vibrator.vibrate(50)
                 val builder = AlertDialog.Builder(context)
-                    .setTitle("Delete Contact")
+                    .setTitle("Delete Subject")
                     .setIcon(R.drawable.baseline_delete_24)
-                    .setMessage("Do you want to Delete this contact ?")
+                    .setMessage("Do you want to Delete this Subject ?")
                     .setPositiveButton(
                         "Yes"
                     ) { dialogInterface, i ->
                         try {
-
                             val subjectId: Int =arrAttendance[position].subjectId
                             arrAttendance.removeAt(position)
                             notifyItemRemoved(position)

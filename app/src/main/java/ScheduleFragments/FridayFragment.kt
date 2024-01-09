@@ -110,24 +110,24 @@ class FridayFragment : Fragment(), ScheduleItemClickListener {
         val abc: String = arrScheduleFriday[position].subject
         // Example: Open a dialog with the schedule details for editing
         Toast.makeText(context, xyz + abc, Toast.LENGTH_SHORT).show()
-        openEditScheduleDialog(editedSchedule)
+//        openEditScheduleDialog(editedSchedule)
     }
 
-    override fun onDeleteScheduleClicked(position: Int) {
-        // Handle delete schedule click in Friday fragment
-        // You can open a dialog or perform any specific action here
-        val deletedSchedule = arrScheduleFriday[position]
-        // Example: Open a dialog for confirmation before deleting
-        openDeleteScheduleDialog(deletedSchedule)
-    }
-
-    private fun openEditScheduleDialog(scheduleModel: ScheduleModel) {
-        // Implement the dialog for editing the schedule here
-    }
-
-    private fun openDeleteScheduleDialog(scheduleModel: ScheduleModel) {
-        // Implement the dialog for confirming deletion here
-    }
+//    override fun onDeleteScheduleClicked(position: Int) {
+//        // Handle delete schedule click in Friday fragment
+//        // You can open a dialog or perform any specific action here
+//        val deletedSchedule = arrScheduleFriday[position]
+//        // Example: Open a dialog for confirmation before deleting
+//        openDeleteScheduleDialog(deletedSchedule)
+//    }
+//
+//    private fun openEditScheduleDialog(scheduleModel: ScheduleModel) {
+//        // Implement the dialog for editing the schedule here
+//    }
+//
+//    private fun openDeleteScheduleDialog(scheduleModel: ScheduleModel) {
+//        // Implement the dialog for confirming deletion here
+//    }
 
 
 

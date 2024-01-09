@@ -4,6 +4,7 @@ import RecyclerView.AttendenceModel
 import ScheduleRecyclerView.RecyclerScheduleAdapter
 import ScheduleRecyclerView.ScheduleItemClickListener
 import ScheduleRecyclerView.ScheduleModel
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Context.VIBRATOR_SERVICE
@@ -23,10 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MondayFragment : Fragment(), ScheduleItemClickListener {
 
-    private val arrScheduleMonday = ArrayList<ScheduleModel>()
+    private var arrScheduleMonday = ArrayList<ScheduleModel>()
+    private lateinit var scheduleAdapter: RecyclerScheduleAdapter
+
 
 
     override fun onCreateView(
@@ -40,7 +45,6 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
         val floatingActionButton=view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
 
-
         arrScheduleMonday.add(ScheduleModel(0,"monday","Mathematics","09:00"))
         arrScheduleMonday.add(ScheduleModel(0,"monday","English","10:00"))
         arrScheduleMonday.add(ScheduleModel(0,"monday","VEEES","11:00"))
@@ -50,7 +54,7 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
 
 
         val mondayRecyclerView = view.findViewById<RecyclerView>(R.id.MondayRecyclerView)
-        val scheduleAdapter=RecyclerScheduleAdapter(requireContext(), this ,arrScheduleMonday)
+        scheduleAdapter=RecyclerScheduleAdapter(requireContext(), this ,arrScheduleMonday)
         mondayRecyclerView.adapter=scheduleAdapter
         mondayRecyclerView.layoutManager= LinearLayoutManager(requireContext())
 
@@ -105,31 +109,90 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
     }
 
     override fun onEditScheduleClicked(position: Int) {
-        // Handle edit schedule click in Monday fragment
-        // You can open a dialog or perform any specific action here
-        val editedSchedule = arrScheduleMonday[position]
-        val xyz: String =arrScheduleMonday[position].day
-        val abc: String=arrScheduleMonday[position].subject
-        // Example: Open a dialog with the schedule details for editing
-        Toast.makeText(context, xyz+abc, Toast.LENGTH_SHORT).show()
-        openEditScheduleDialog(editedSchedule)
+
+        val dialog=Dialog(requireContext())
+        dialog.setContentView(R.layout.add_update_schedule)
+
+
+        val addLecture=dialog.findViewById<EditText>(R.id.addLecture)
+        val addTime=dialog.findViewById<EditText>(R.id.addTime)
+        val addSchedule=dialog.findViewById<ImageView>(R.id.addSchedule)
+        val deleteSchedule=dialog.findViewById<ImageView>(R.id.deleteSchedule)
+        val id=arrScheduleMonday[position].subjectId
+        val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(50)
+
+        addLecture.setText(arrScheduleMonday[position].subject)
+        addTime.setText(arrScheduleMonday[position].time)
+
+        Toast.makeText(requireContext(), position.toString()+arrScheduleMonday[position].subject.toString(), Toast.LENGTH_SHORT).show()
+
+        addSchedule.setOnClickListener {
+            vibrator.vibrate(50)
+            var lectureName=""
+            var timeName=""
+
+            lectureName=addLecture.text.toString()
+            timeName=addTime.text.toString()
+
+            if(lectureName!="")
+            {
+                arrScheduleMonday.set(position, ScheduleModel(id,"monday",lectureName,timeName))
+                scheduleAdapter.notifyItemChanged(position)
+
+                dialog.dismiss()
+
+            }
+            else{
+                Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+
+        deleteSchedule.setOnClickListener(View.OnClickListener {
+            vibrator.vibrate(50)
+
+            val builder = AlertDialog.Builder(context)
+                .setTitle("Delete Lecture")
+                .setIcon(R.drawable.baseline_delete_24)
+                .setMessage("Do you want to Delete this Lecture ?")
+                .setPositiveButton(
+                    "Yes"
+                ) { dialogInterface, i ->
+                    try {
+
+                        vibrator.vibrate(50)
+                        arrScheduleMonday.removeAt(position)
+                        scheduleAdapter.notifyItemRemoved(position)
+                        scheduleAdapter.notifyItemRangeChanged(position, arrScheduleMonday.size - position)
+                        dialog.dismiss()
+
+
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
+                        Log.w("crash-attendance", e)
+                        dialog.dismiss()
+                    }
+
+                }
+                .setNegativeButton(
+                    "No"
+                ) { dialogInterface, i ->
+                    vibrator.vibrate(50)
+                    Toast.makeText(context, "Deletion Cancelled", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+            builder.show()
+        })
+
+        dialog.show()
+
+
+
     }
 
-    override fun onDeleteScheduleClicked(position: Int) {
-        // Handle delete schedule click in Monday fragment
-        // You can open a dialog or perform any specific action here
-        val deletedSchedule = arrScheduleMonday[position]
-        // Example: Open a dialog for confirmation before deleting
-        openDeleteScheduleDialog(deletedSchedule)
-    }
 
-    private fun openEditScheduleDialog(scheduleModel: ScheduleModel) {
-        // Implement the dialog for editing the schedule here
-    }
-
-    private fun openDeleteScheduleDialog(scheduleModel: ScheduleModel) {
-        // Implement the dialog for confirming deletion here
-    }
 
 
 
