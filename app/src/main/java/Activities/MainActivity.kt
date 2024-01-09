@@ -240,9 +240,15 @@ class MainActivity : AppCompatActivity() {
 
 
 
+//        scheduleButton.setOnClickListener {
+//            vibrator.vibrate(50)
+//            val intent=Intent(this, DailySchedule::class.java)
+//            startActivity(intent)
+//        }
+
         scheduleButton.setOnClickListener {
             vibrator.vibrate(50)
-            val intent=Intent(this, DailySchedule::class.java)
+            val intent=Intent(this,Daily_Schedule::class.java)
             startActivity(intent)
         }
 

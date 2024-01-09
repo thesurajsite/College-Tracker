@@ -1,5 +1,6 @@
 package Activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,5 +14,9 @@ class instructionsPage : AppCompatActivity() {
 
         val helpButton=findViewById<ImageView>(R.id.helpButton)
         helpButton.visibility=View.GONE
+
+        val scheduleButton=findViewById<ImageView>(R.id.scheduleButton)
+        scheduleButton.visibility=View.GONE
+
     }
 }
