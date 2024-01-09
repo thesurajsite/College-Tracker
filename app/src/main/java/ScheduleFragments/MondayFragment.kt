@@ -2,6 +2,7 @@ package ScheduleFragments
 
 import RecyclerView.AttendenceModel
 import ScheduleRecyclerView.RecyclerScheduleAdapter
+import ScheduleRecyclerView.ScheduleItemClickListener
 import ScheduleRecyclerView.ScheduleModel
 import android.app.Dialog
 import android.content.Context
@@ -23,7 +24,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MondayFragment : Fragment() {
+class MondayFragment : Fragment(), ScheduleItemClickListener {
+
+    private val arrScheduleMonday = ArrayList<ScheduleModel>()
 
 
     override fun onCreateView(
@@ -33,7 +36,7 @@ class MondayFragment : Fragment() {
         // Inflate the layout for this fragment
         val view=inflater.inflate(R.layout.fragment_monday, container, false)
 
-        val arrScheduleMonday=ArrayList<ScheduleModel>()
+        //val arrScheduleMonday=ArrayList<ScheduleModel>()
         val floatingActionButton=view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
 
@@ -47,7 +50,7 @@ class MondayFragment : Fragment() {
 
 
         val mondayRecyclerView = view.findViewById<RecyclerView>(R.id.MondayRecyclerView)
-        val scheduleAdapter=RecyclerScheduleAdapter(requireContext(), arrScheduleMonday)
+        val scheduleAdapter=RecyclerScheduleAdapter(requireContext(), this ,arrScheduleMonday)
         mondayRecyclerView.adapter=scheduleAdapter
         mondayRecyclerView.layoutManager= LinearLayoutManager(requireContext())
 
@@ -96,17 +99,38 @@ class MondayFragment : Fragment() {
 
         }
 
-
-
-
-
-
-
-
         return view
 
 
     }
+
+    override fun onEditScheduleClicked(position: Int) {
+        // Handle edit schedule click in Monday fragment
+        // You can open a dialog or perform any specific action here
+        val editedSchedule = arrScheduleMonday[position]
+        val xyz: String =arrScheduleMonday[position].day
+        val abc: String=arrScheduleMonday[position].subject
+        // Example: Open a dialog with the schedule details for editing
+        Toast.makeText(context, xyz+abc, Toast.LENGTH_SHORT).show()
+        openEditScheduleDialog(editedSchedule)
+    }
+
+    override fun onDeleteScheduleClicked(position: Int) {
+        // Handle delete schedule click in Monday fragment
+        // You can open a dialog or perform any specific action here
+        val deletedSchedule = arrScheduleMonday[position]
+        // Example: Open a dialog for confirmation before deleting
+        openDeleteScheduleDialog(deletedSchedule)
+    }
+
+    private fun openEditScheduleDialog(scheduleModel: ScheduleModel) {
+        // Implement the dialog for editing the schedule here
+    }
+
+    private fun openDeleteScheduleDialog(scheduleModel: ScheduleModel) {
+        // Implement the dialog for confirming deletion here
+    }
+
 
 
 }

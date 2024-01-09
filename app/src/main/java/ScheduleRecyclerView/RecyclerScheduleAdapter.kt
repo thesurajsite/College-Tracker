@@ -22,20 +22,27 @@ import com.collegetracker.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class RecyclerScheduleAdapter(val context: Context,val arrSchedule: ArrayList<ScheduleModel>) : RecyclerView.Adapter<RecyclerScheduleAdapter.ViewHolder>() {
+// ScheduleItemClickListener interface
+interface ScheduleItemClickListener {
+    fun onEditScheduleClicked(position: Int)
+    fun onDeleteScheduleClicked(position: Int)
+}
+
+class RecyclerScheduleAdapter(val context: Context,
+                              val scheduleItemClickListener: ScheduleItemClickListener,
+                              val arrSchedule: ArrayList<ScheduleModel>
+) : RecyclerView.Adapter<RecyclerScheduleAdapter.ViewHolder>() {
 
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
         // subject (FROM THE schedule_row LAYOUT)
         val subject = itemView.findViewById<TextView>(R.id.subject)
-        val time=itemView.findViewById<TextView>(R.id.time)
+        val time = itemView.findViewById<TextView>(R.id.time)
 
         //VIBRATOR VIBRATOR VIBRATOR
         val vibrator = itemView.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
 
 
     }
@@ -43,7 +50,9 @@ class RecyclerScheduleAdapter(val context: Context,val arrSchedule: ArrayList<Sc
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
 
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.schedule_row, parent, false))
+        return ViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.schedule_row, parent, false)
+        )
 
     }
 
@@ -56,14 +65,16 @@ class RecyclerScheduleAdapter(val context: Context,val arrSchedule: ArrayList<Sc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         // This Links the TextView of the Schedule Row with the arrSchedule Array
-        holder.subject.text=arrSchedule[position].subject
-        holder.time.text=arrSchedule[position].time
+        holder.subject.text = arrSchedule[position].subject
+        holder.time.text = arrSchedule[position].time
 
-
-
+        holder.itemView.setOnClickListener {
+            scheduleItemClickListener.onEditScheduleClicked(position)
         }
 
+
     }
+}
 
 
 
