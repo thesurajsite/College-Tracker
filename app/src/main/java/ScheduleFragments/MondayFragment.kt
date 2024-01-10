@@ -32,8 +32,6 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
     private var arrScheduleMonday = ArrayList<ScheduleModel>()
     private lateinit var scheduleAdapter: RecyclerScheduleAdapter
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

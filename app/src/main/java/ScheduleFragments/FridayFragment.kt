@@ -3,8 +3,10 @@ package ScheduleFragments
 import ScheduleRecyclerView.RecyclerScheduleAdapter
 import ScheduleRecyclerView.ScheduleItemClickListener
 import ScheduleRecyclerView.ScheduleModel
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.Context.VIBRATOR_SERVICE
 import android.os.Bundle
 import android.os.Vibrator
 import androidx.fragment.app.Fragment
@@ -22,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class FridayFragment : Fragment(), ScheduleItemClickListener {
     private val arrScheduleFriday = ArrayList<ScheduleModel>()
+    private lateinit var scheduleAdapter: RecyclerScheduleAdapter
 
 
     override fun onCreateView(
@@ -46,7 +49,7 @@ class FridayFragment : Fragment(), ScheduleItemClickListener {
 
 
         val fridayRecyclerView = view.findViewById<RecyclerView>(R.id.FridayRecyclerView)
-        val scheduleAdapter= RecyclerScheduleAdapter(requireContext(),  this, arrScheduleFriday)
+        scheduleAdapter= RecyclerScheduleAdapter(requireContext(),  this, arrScheduleFriday)
         fridayRecyclerView.adapter=scheduleAdapter
         fridayRecyclerView.layoutManager= LinearLayoutManager(requireContext())
 
@@ -103,31 +106,79 @@ class FridayFragment : Fragment(), ScheduleItemClickListener {
     }
 
     override fun onEditScheduleClicked(position: Int) {
-        // Handle edit schedule click in Friday fragment
-        // You can open a dialog or perform any specific action here
-        val editedSchedule = arrScheduleFriday[position]
-        val xyz: String = arrScheduleFriday[position].day
-        val abc: String = arrScheduleFriday[position].subject
-        // Example: Open a dialog with the schedule details for editing
-        Toast.makeText(context, xyz + abc, Toast.LENGTH_SHORT).show()
-//        openEditScheduleDialog(editedSchedule)
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.add_update_schedule)
+
+        val addLecture = dialog.findViewById<EditText>(R.id.addLecture)
+        val addTime = dialog.findViewById<EditText>(R.id.addTime)
+        val addSchedule = dialog.findViewById<ImageView>(R.id.addSchedule)
+        val deleteSchedule = dialog.findViewById<ImageView>(R.id.deleteSchedule)
+        val id = arrScheduleFriday[position].subjectId
+        val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(50)
+
+        addLecture.setText(arrScheduleFriday[position].subject)
+        addTime.setText(arrScheduleFriday[position].time)
+
+        Toast.makeText(requireContext(), position.toString() + arrScheduleFriday[position].subject.toString(), Toast.LENGTH_SHORT).show()
+
+        addSchedule.setOnClickListener {
+            vibrator.vibrate(50)
+            var lectureName = ""
+            var timeName = ""
+
+            lectureName = addLecture.text.toString()
+            timeName = addTime.text.toString()
+
+            if (lectureName != "") {
+                arrScheduleFriday.set(position, ScheduleModel(id, "friday", lectureName, timeName))
+                scheduleAdapter.notifyItemChanged(position)
+
+                dialog.dismiss()
+
+            } else {
+                Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        deleteSchedule.setOnClickListener(View.OnClickListener {
+            vibrator.vibrate(50)
+
+            val builder = AlertDialog.Builder(context)
+                .setTitle("Delete Lecture")
+                .setIcon(R.drawable.baseline_delete_24)
+                .setMessage("Do you want to Delete this Lecture ?")
+                .setPositiveButton(
+                    "Yes"
+                ) { dialogInterface, i ->
+                    try {
+
+                        vibrator.vibrate(50)
+                        arrScheduleFriday.removeAt(position)
+                        scheduleAdapter.notifyItemRemoved(position)
+                        scheduleAdapter.notifyItemRangeChanged(position, arrScheduleFriday.size - position)
+                        dialog.dismiss()
+
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                }
+                .setNegativeButton(
+                    "No"
+                ) { dialogInterface, i ->
+                    vibrator.vibrate(50)
+                    Toast.makeText(context, "Deletion Cancelled", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+            builder.show()
+        })
+
+        dialog.show()
+
     }
 
-//    override fun onDeleteScheduleClicked(position: Int) {
-//        // Handle delete schedule click in Friday fragment
-//        // You can open a dialog or perform any specific action here
-//        val deletedSchedule = arrScheduleFriday[position]
-//        // Example: Open a dialog for confirmation before deleting
-//        openDeleteScheduleDialog(deletedSchedule)
-//    }
-//
-//    private fun openEditScheduleDialog(scheduleModel: ScheduleModel) {
-//        // Implement the dialog for editing the schedule here
-//    }
-//
-//    private fun openDeleteScheduleDialog(scheduleModel: ScheduleModel) {
-//        // Implement the dialog for confirming deletion here
-//    }
+
 
 
 
