@@ -1,8 +1,13 @@
 package ScheduleFragments
 
+import AttendanceRoomDatabase.Attendance
+import AttendanceRoomDatabase.DatabaseHelper
+import RecyclerView.AttendenceModel
 import ScheduleRecyclerView.RecyclerScheduleAdapter
 import ScheduleRecyclerView.ScheduleItemClickListener
 import ScheduleRecyclerView.ScheduleModel
+import ScheduleRoomDatabase.ScheduleDatabaseHelper
+import ScheduleRoomDatabase.ScheduleDataclass
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -18,12 +23,16 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ThursdayFragment : Fragment(), ScheduleItemClickListener {
     private val arrScheduleThursday = ArrayList<ScheduleModel>()
     private lateinit var scheduleAdapter: RecyclerScheduleAdapter
+    private lateinit var database: ScheduleDatabaseHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,16 +41,42 @@ class ThursdayFragment : Fragment(), ScheduleItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_thursday, container, false)
 
+        //Initialization of Database
+        database= Room.databaseBuilder(requireContext(),
+            ScheduleDatabaseHelper::class.java,
+            "ScheduleDB").build()
+
         //val arrScheduleThursday = ArrayList<ScheduleModel>()
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
+        // Clearing the RecyclerView Array and Re-Poulating it with the DataBase
         arrScheduleThursday.add(ScheduleModel(0, "thursday", "Mathematics", "09:00"))
         arrScheduleThursday.add(ScheduleModel(0, "thursday", "English", "10:00"))
         arrScheduleThursday.add(ScheduleModel(0, "thursday", "VEEES", "11:00"))
         arrScheduleThursday.add(ScheduleModel(0, "thursday", "Thermodynamics", "12:00"))
         arrScheduleThursday.add(ScheduleModel(0, "thursday", "---Thursday---", "01:00"))
         arrScheduleThursday.add(ScheduleModel(0, "thursday", "Geology", "02:00"))
+
+
+        GlobalScope.launch {
+            //arrScheduleThursday.clear()
+            var scheduleList=database.scheduleDao().getAllSchedule()
+
+            // Data entered in arrAttendance must be of the type: AttendanceModel
+            for (schedule in scheduleList) {  // line 46
+                val subjectId=schedule.id
+                val day = schedule.day
+                val lecture = schedule.lecture
+                val time = schedule.time
+
+                arrScheduleThursday.add(ScheduleModel(subjectId, day, lecture, time))
+            }
+        }
+        Toast.makeText(context, "hii", Toast.LENGTH_SHORT).show()
+
+
+
 
         val thursdayRecyclerView = view.findViewById<RecyclerView>(R.id.ThursdayRecyclerView)
         scheduleAdapter = RecyclerScheduleAdapter(requireContext(), this, arrScheduleThursday)
@@ -68,9 +103,21 @@ class ThursdayFragment : Fragment(), ScheduleItemClickListener {
 
                 if (lectureName != "") {
                     arrScheduleThursday.add(ScheduleModel(0, "thursday", lectureName, timeName))
-
                     scheduleAdapter.notifyItemChanged(arrScheduleThursday.size - 1)
                     thursdayRecyclerView.scrollToPosition(arrScheduleThursday.size - 1)
+
+                    // INSERT DATA INTO THE DATABASE
+                    GlobalScope.launch {
+                        database.scheduleDao().insertSchedule(
+                            ScheduleDataclass(
+                                0,
+                                "thursday",
+                                lectureName,
+                                timeName
+                            )
+                        )
+                    }
+
                     dialog.dismiss()
                 } else {
                     Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
@@ -104,7 +151,7 @@ class ThursdayFragment : Fragment(), ScheduleItemClickListener {
         addLecture.setText(arrScheduleThursday[position].subject)
         addTime.setText(arrScheduleThursday[position].time)
 
-        Toast.makeText(requireContext(), position.toString() + arrScheduleThursday[position].subject.toString(), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), position.toString() + arrScheduleThursday[position].subject.toString(), Toast.LENGTH_SHORT).show()
 
         addSchedule.setOnClickListener {
             vibrator.vibrate(50)
@@ -164,3 +211,4 @@ class ThursdayFragment : Fragment(), ScheduleItemClickListener {
 
 
 }
+

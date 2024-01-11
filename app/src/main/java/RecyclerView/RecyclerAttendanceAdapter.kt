@@ -1,8 +1,8 @@
 package RecyclerView
 
 
-import RoomDatabase.Attendance
-import RoomDatabase.DatabaseHelper
+import AttendanceRoomDatabase.Attendance
+import AttendanceRoomDatabase.DatabaseHelper
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context

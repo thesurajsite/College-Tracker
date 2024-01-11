@@ -1,4 +1,4 @@
-package RoomDatabase
+package AttendanceRoomDatabase
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -13,7 +13,7 @@ interface AttendanceDAO {
     fun insertAttendance(attendance: Attendance)
 
     @Update
-    suspend fun updateAttendance(attendanceTable: Attendance)
+    suspend fun updateAttendance(attendance: Attendance)
 
     @Delete
     suspend fun deleteAttendance(attendance: Attendance)

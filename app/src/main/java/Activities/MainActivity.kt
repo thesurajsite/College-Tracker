@@ -14,17 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import RoomDatabase.Attendance
+import AttendanceRoomDatabase.Attendance
 import RecyclerView.AttendenceModel
-import RoomDatabase.DatabaseHelper
+import AttendanceRoomDatabase.DatabaseHelper
 import RecyclerView.RecyclerAttendanceAdapter
-import ScheduleFragments.scheduleViewPagerAdapter
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
