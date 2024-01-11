@@ -18,13 +18,16 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class SaturdayFragment : Fragment() , ScheduleItemClickListener {
@@ -50,25 +53,32 @@ class SaturdayFragment : Fragment() , ScheduleItemClickListener {
         val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
 
-        arrScheduleSaturday.add(ScheduleModel(0,"saturday","Mathematics","09:00"))
-        arrScheduleSaturday.add(ScheduleModel(0,"saturday","English","10:00"))
-        arrScheduleSaturday.add(ScheduleModel(0,"saturday","VEEES","11:00"))
-        arrScheduleSaturday.add(ScheduleModel(0,"saturday","Thermodynamics","12:00"))
-        arrScheduleSaturday.add(ScheduleModel(0,"saturday","---Saturday---","01:00"))
-        arrScheduleSaturday.add(ScheduleModel(0,"saturday","Geology","02:00"))
+//        arrScheduleSaturday.add(ScheduleModel(0,"saturday","Mathematics","09:00"))
+//        arrScheduleSaturday.add(ScheduleModel(0,"saturday","English","10:00"))
+//        arrScheduleSaturday.add(ScheduleModel(0,"saturday","VEEES","11:00"))
+//        arrScheduleSaturday.add(ScheduleModel(0,"saturday","Thermodynamics","12:00"))
+//        arrScheduleSaturday.add(ScheduleModel(0,"saturday","---Saturday---","01:00"))
+//        arrScheduleSaturday.add(ScheduleModel(0,"saturday","Geology","02:00"))
 
-        GlobalScope.launch {
-            //arrScheduleThursday.clear()
-            var scheduleList=database.scheduleDao().getAllSchedule()
+        lifecycleScope.launch {
+            try {
+                val scheduleList = withContext(Dispatchers.IO) {
+                    database.scheduleDao().getAllSchedule()
+                }
 
-            // Data entered in arrAttendance must be of the type: AttendanceModel
-            for (schedule in scheduleList) {  // line 46
-                val subjectId=schedule.id
-                val day = schedule.day
-                val lecture = schedule.lecture
-                val time = schedule.time
 
-                arrScheduleSaturday.add(ScheduleModel(subjectId, day, lecture, time))
+                for (schedule in scheduleList) {
+                    val subjectId = schedule.id
+                    val day = schedule.day
+                    val lecture = schedule.lecture
+                    val time = schedule.time
+
+                    arrScheduleSaturday.add(ScheduleModel(subjectId, day, lecture, time))
+                }
+
+                scheduleAdapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
         //Toast.makeText(context, "hii", Toast.LENGTH_SHORT).show()
