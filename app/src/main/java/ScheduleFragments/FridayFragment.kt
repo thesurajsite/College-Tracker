@@ -71,7 +71,9 @@ class FridayFragment : Fragment(), ScheduleItemClickListener {
                     val lecture = schedule.lecture
                     val time = schedule.time
 
-                    arrScheduleFriday.add(ScheduleModel(subjectId, day, lecture, time))
+                    if(day=="friday") {
+                        arrScheduleFriday.add(ScheduleModel(subjectId, day, lecture, time))
+                    }
                 }
 
                 scheduleAdapter.notifyDataSetChanged()
@@ -180,6 +182,12 @@ class FridayFragment : Fragment(), ScheduleItemClickListener {
             if (lectureName != "") {
                 arrScheduleFriday.set(position, ScheduleModel(id, "friday", lectureName, timeName))
                 scheduleAdapter.notifyItemChanged(position)
+
+                // UPDATING DATABASE
+                var dataToUpdate: ScheduleDataclass = ScheduleDataclass(id, "friday",lectureName,timeName)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    database.scheduleDao().updateSchedule(dataToUpdate)
+                }
 
                 dialog.dismiss()
 

@@ -1,5 +1,6 @@
 package ScheduleFragments
 
+import AttendanceRoomDatabase.Attendance
 import RecyclerView.AttendenceModel
 import ScheduleRecyclerView.RecyclerScheduleAdapter
 import ScheduleRecyclerView.ScheduleItemClickListener
@@ -62,12 +63,9 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
 //        arrScheduleMonday.add(ScheduleModel(0,"monday","---Monday---","01:00"))
 //        arrScheduleMonday.add(ScheduleModel(0,"monday","Geology","02:00"))
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val scheduleList = withContext(Dispatchers.IO) {
-                    database.scheduleDao().getAllSchedule()
-                }
-
+                val scheduleList = withContext(Dispatchers.IO) { database.scheduleDao().getAllSchedule() }
 
                 for (schedule in scheduleList) {
                     val subjectId = schedule.id
@@ -75,7 +73,9 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
                     val lecture = schedule.lecture
                     val time = schedule.time
 
-                    arrScheduleMonday.add(ScheduleModel(subjectId, day, lecture, time))
+                    if(day=="monday") {
+                        arrScheduleMonday.add(ScheduleModel(subjectId, day, lecture, time))
+                    }
                 }
 
                 scheduleAdapter.notifyDataSetChanged()
@@ -184,6 +184,13 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
             {
                 arrScheduleMonday.set(position, ScheduleModel(id,"monday",lectureName,timeName))
                 scheduleAdapter.notifyItemChanged(position)
+
+                // UPDATING DATABASE
+                var dataToUpdate: ScheduleDataclass = ScheduleDataclass(id, "monday",lectureName,timeName)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    database.scheduleDao().updateSchedule(dataToUpdate)
+                }
+
 
                 dialog.dismiss()
 
