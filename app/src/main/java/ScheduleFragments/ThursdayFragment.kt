@@ -116,7 +116,7 @@ class ThursdayFragment : Fragment(), ScheduleItemClickListener {
                     thursdayRecyclerView.scrollToPosition(arrScheduleThursday.size - 1)
 
                     // INSERT DATA INTO THE DATABASE
-                    lifecycleScope.launch {
+                    GlobalScope.launch {
                         database.scheduleDao().insertSchedule(
                             ScheduleDataclass(
                                 0,
@@ -194,6 +194,13 @@ class ThursdayFragment : Fragment(), ScheduleItemClickListener {
                     try {
 
                         vibrator.vibrate(50)
+
+                        val subjectId=arrScheduleThursday[position].subjectId
+                        //DELETING FROM DATABASE
+                        GlobalScope.launch {
+                            database.scheduleDao().deleteSchedule(subjectId)
+                        }
+
                         arrScheduleThursday.removeAt(position)
                         scheduleAdapter.notifyItemRemoved(position)
                         scheduleAdapter.notifyItemRangeChanged(position, arrScheduleThursday.size - position)

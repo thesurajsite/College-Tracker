@@ -187,6 +187,13 @@ class WednesdayFragment : Fragment(), ScheduleItemClickListener {
                     try {
 
                         vibrator.vibrate(50)
+
+                        val subjectId=arrScheduleWednesday[position].subjectId
+                        //DELETING FROM DATABASE
+                        GlobalScope.launch {
+                            database.scheduleDao().deleteSchedule(subjectId)
+                        }
+
                         arrScheduleWednesday.removeAt(position)
                         scheduleAdapter.notifyItemRemoved(position)
                         scheduleAdapter.notifyItemRangeChanged(position, arrScheduleWednesday.size - position)

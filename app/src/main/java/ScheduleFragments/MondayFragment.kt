@@ -207,12 +207,20 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
                 ) { dialogInterface, i ->
                     try {
 
+                       // Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show()
                         vibrator.vibrate(50)
+
+                        val subjectId=arrScheduleMonday[position].subjectId
+                        //DELETING FROM DATABASE
+                        GlobalScope.launch {
+                            database.scheduleDao().deleteSchedule(subjectId)
+                        }
+
                         arrScheduleMonday.removeAt(position)
                         scheduleAdapter.notifyItemRemoved(position)
                         scheduleAdapter.notifyItemRangeChanged(position, arrScheduleMonday.size - position)
-                        dialog.dismiss()
 
+                        dialog.dismiss()
 
                     } catch (e: Exception) {
                         Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
