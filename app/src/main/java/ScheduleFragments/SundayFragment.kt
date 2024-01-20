@@ -165,21 +165,29 @@ class SundayFragment : Fragment(), ScheduleItemClickListener {
             lectureName = addLecture.text.toString()
             timeName = addTime.text.toString()
 
-            if (lectureName != "") {
-                arrScheduleSunday.set(position, ScheduleModel(id, "sunday", lectureName, timeName))
-                scheduleAdapter.notifyItemChanged(position)
+            if(id!=0){
+                if (lectureName != "") {
+                    arrScheduleSunday.set(position, ScheduleModel(id, "sunday", lectureName, timeName))
+                    scheduleAdapter.notifyItemChanged(position)
 
-                // UPDATING DATABASE
-                var dataToUpdate: ScheduleDataclass = ScheduleDataclass(id, "sunday",lectureName,timeName)
-                lifecycleScope.launch(Dispatchers.IO) {
-                    database.scheduleDao().updateSchedule(dataToUpdate)
+                    // UPDATING DATABASE
+                    var dataToUpdate: ScheduleDataclass = ScheduleDataclass(id, "sunday",lectureName,timeName)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        database.scheduleDao().updateSchedule(dataToUpdate)
+                    }
+
+                    dialog.dismiss()
+
+                } else {
+                    Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
                 }
 
-                dialog.dismiss()
-
-            } else {
-                Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
             }
+            else{
+                Toast.makeText(context, "Please exit Schedule page once before updating this Lecture", Toast.LENGTH_SHORT).show()
+            }
+
+
         }
 
         deleteSchedule.setOnClickListener(View.OnClickListener {

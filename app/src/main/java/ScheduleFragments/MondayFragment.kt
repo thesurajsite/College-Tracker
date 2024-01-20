@@ -63,7 +63,7 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
 //        arrScheduleMonday.add(ScheduleModel(0,"monday","---Monday---","01:00"))
 //        arrScheduleMonday.add(ScheduleModel(0,"monday","Geology","02:00"))
 
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch{
             try {
                 val scheduleList = withContext(Dispatchers.IO) { database.scheduleDao().getAllSchedule() }
 
@@ -180,23 +180,29 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
             lectureName=addLecture.text.toString()
             timeName=addTime.text.toString()
 
-            if(lectureName!="")
-            {
-                arrScheduleMonday.set(position, ScheduleModel(id,"monday",lectureName,timeName))
-                scheduleAdapter.notifyItemChanged(position)
+            if(id!=0){
+                if(lectureName!="")
+                {
+                    arrScheduleMonday.set(position, ScheduleModel(id,"monday",lectureName,timeName))
+                    scheduleAdapter.notifyItemChanged(position)
 
-                // UPDATING DATABASE
-                var dataToUpdate: ScheduleDataclass = ScheduleDataclass(id, "monday",lectureName,timeName)
-                lifecycleScope.launch(Dispatchers.IO) {
-                    database.scheduleDao().updateSchedule(dataToUpdate)
+                    // UPDATING DATABASE
+                    var dataToUpdate: ScheduleDataclass = ScheduleDataclass(id, "monday",lectureName,timeName)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        database.scheduleDao().updateSchedule(dataToUpdate)
+                    }
+
+
+                    dialog.dismiss()
+
                 }
-
-
-                dialog.dismiss()
+                else{
+                    Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
+                }
 
             }
             else{
-                Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Please exit Schedule page once before updating this Lecture", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -247,13 +253,5 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
         })
 
         dialog.show()
-
-
-
     }
-
-
-
-
-
 }

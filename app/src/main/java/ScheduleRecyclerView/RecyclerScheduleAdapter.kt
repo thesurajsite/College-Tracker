@@ -27,6 +27,7 @@ class RecyclerScheduleAdapter(val context: Context,
         // subject (FROM THE schedule_row LAYOUT)
         val subject = itemView.findViewById<TextView>(R.id.subject)
         val time = itemView.findViewById<TextView>(R.id.time)
+       // val firstLetter=itemView.findViewById<TextView>(R.id.firstLetter)
 
         //VIBRATOR VIBRATOR VIBRATOR
         val vibrator = itemView.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -54,6 +55,7 @@ class RecyclerScheduleAdapter(val context: Context,
         // This Links the TextView of the Schedule Row with the arrSchedule Array
         holder.subject.text = arrSchedule[position].subject
         holder.time.text = arrSchedule[position].time
+        //holder.firstLetter.text=arrSchedule[position].subject.substring(0,1)
 
         holder.itemView.setOnClickListener {
             scheduleItemClickListener.onEditScheduleClicked(position)

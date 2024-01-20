@@ -58,7 +58,7 @@ class TuesdayFragment : Fragment(), ScheduleItemClickListener {
 //        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "---Tuesday---", "01:00"))
 //        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "Geology", "02:00"))
 
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             try {
                 val scheduleList = withContext(Dispatchers.IO) { database.scheduleDao().getAllSchedule() }
 
@@ -163,21 +163,29 @@ class TuesdayFragment : Fragment(), ScheduleItemClickListener {
             lectureName = addLecture.text.toString()
             timeName = addTime.text.toString()
 
-            if (lectureName != "") {
-                arrScheduleTuesday.set(position, ScheduleModel(id, "tuesday", lectureName, timeName))
-                scheduleAdapter.notifyItemChanged(position)
+            if(id!=0){
+                if (lectureName != "") {
+                    arrScheduleTuesday.set(position, ScheduleModel(id, "tuesday", lectureName, timeName))
+                    scheduleAdapter.notifyItemChanged(position)
 
-                // UPDATING DATABASE
-                var dataToUpdate: ScheduleDataclass = ScheduleDataclass(id, "tuesday",lectureName,timeName)
-                lifecycleScope.launch(Dispatchers.IO) {
-                    database.scheduleDao().updateSchedule(dataToUpdate)
+                    // UPDATING DATABASE
+                    var dataToUpdate: ScheduleDataclass = ScheduleDataclass(id, "tuesday",lectureName,timeName)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        database.scheduleDao().updateSchedule(dataToUpdate)
+                    }
+
+                    dialog.dismiss()
+
+                } else {
+                    Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
                 }
 
-                dialog.dismiss()
-
-            } else {
-                Toast.makeText(context, "Lecture Can't be Empty", Toast.LENGTH_SHORT).show()
             }
+            else{
+                Toast.makeText(context, "Please exit Schedule page once before updating this Lecture", Toast.LENGTH_SHORT).show()
+            }
+
+
         }
 
         deleteSchedule.setOnClickListener(View.OnClickListener {
