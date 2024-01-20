@@ -28,5 +28,10 @@ interface AttendanceDAO {
     @Query("SELECT * FROM attendance")
     fun getAllAttendance(): List<Attendance>
 
+    @Query("SELECT DISTINCT subjectName from attendance WHERE subjectName IS NOT NULL")
+    suspend fun getAllSubjectNames(): List<String>
+
+
+
 }
 
