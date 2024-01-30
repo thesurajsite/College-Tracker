@@ -83,8 +83,5 @@ class Daily_Schedule : AppCompatActivity() {
             page.scaleY = 0.85f + 0.15f * (1f - absPosition)
         }
 
-
-
-
     }
 }

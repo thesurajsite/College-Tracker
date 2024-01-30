@@ -282,4 +282,8 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
 
         dialog.show()
     }
+
+
+
+
 }

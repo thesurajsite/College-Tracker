@@ -26,11 +26,8 @@ class scheduleViewPagerAdapter(
             5 -> SaturdayFragment()
             6 -> SundayFragment()
             else -> MondayFragment() // Default case, though it should never happen
+
         }
-
-
-
-
     }
 
 }

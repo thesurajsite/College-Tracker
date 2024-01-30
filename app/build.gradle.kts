@@ -57,4 +57,7 @@ dependencies {
     //DEPENDENCIES FROM GITHUB FOR COUROURITINE
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0-RC")
+
+    //SDP DEPENDENCIES
+    implementation ("com.intuit.sdp:sdp-android:1.1.0")
 }

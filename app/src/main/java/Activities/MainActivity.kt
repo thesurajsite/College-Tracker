@@ -18,6 +18,7 @@ import AttendanceRoomDatabase.Attendance
 import RecyclerView.AttendenceModel
 import AttendanceRoomDatabase.DatabaseHelper
 import RecyclerView.RecyclerAttendanceAdapter
+import android.widget.TextView
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.GlobalScope
@@ -37,8 +38,6 @@ class MainActivity : AppCompatActivity() {
             "AttendanceDB").build()
 
 
-
-
         val arrAttendance=ArrayList<AttendenceModel>()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val adapter = RecyclerAttendanceAdapter(this, arrAttendance)
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 //        recyclerView.adapter=recyclerAdapter
 
 
-        // Clearing the RecyclerView Array and Re-Poulating it with the DataBase
+        // Clearing the RecyclerView Array and Re-Populating it with the DataBase
         GlobalScope.launch {
             arrAttendance.clear()
             var attendanceList=database.attendanceDao().getAllAttendance()
@@ -104,6 +103,7 @@ class MainActivity : AppCompatActivity() {
             val minusAttended = dialog.findViewById<ImageView>(R.id.minusAttended)
             val plusAttended = dialog.findViewById<ImageView>(R.id.plusAttended)
             val deleteButton = dialog.findViewById<ImageView>(R.id.deleteButton)
+            val idTextView=dialog.findViewById<TextView>(R.id.id)
             val vibrator = dialog.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             vibrator.vibrate(50)
 
@@ -113,6 +113,17 @@ class MainActivity : AppCompatActivity() {
             var attendedName: String = "0"
             var percentageName: Int = 0;
             var percentageString: String = ""
+
+            // SUBJECT ID ALLOCATION
+            var id =1;
+            if(arrAttendance.isEmpty()){
+                id=1
+            }
+            else{
+                id=arrAttendance[arrAttendance.size-1].subjectId+1
+            }
+
+            idTextView.setText("ID: "+id)
 
 
             var tempConducted = conductedName.toInt()
@@ -172,22 +183,14 @@ class MainActivity : AppCompatActivity() {
                     // Adding data to the Database
 
                     GlobalScope.launch {
-                        database.attendanceDao().insertAttendance(
-                            Attendance(
-                                0,
-                                percentageString,
-                                subjectName,
-                                conductedName,
-                                attendedName
-                            )
-                        )
+                        database.attendanceDao().insertAttendance(Attendance(id, percentageString, subjectName, conductedName, attendedName))
                     }
 
 
                     //Passing data to Attendence Array
                     arrAttendance.add(
                         AttendenceModel(
-                            0,
+                            id,
                             percentageString,
                             subjectName,
                             conductedName,

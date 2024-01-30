@@ -68,6 +68,7 @@ class TuesdayFragment : Fragment(), ScheduleItemClickListener {
 //        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "---Tuesday---", "01:00"))
 //        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "Geology", "02:00"))
 
+
         lifecycleScope.launch {
             try {
                 val scheduleList = withContext(Dispatchers.IO) { database.scheduleDao().getAllSchedule() }
@@ -77,6 +78,7 @@ class TuesdayFragment : Fragment(), ScheduleItemClickListener {
                     val day = schedule.day
                     val lecture = schedule.lecture
                     val time = schedule.time
+
 
                     if(day=="tuesday") {
                         arrScheduleTuesday.add(ScheduleModel(subjectId, day, lecture, time))
