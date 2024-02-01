@@ -114,7 +114,7 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
             val addLecture=dialog.findViewById<AutoCompleteTextView>(R.id.addLecture)
 
 
-            // Creating an array for AutoCompleteTextView
+            // Creating an array for AutoCompleteTextViewe
             lifecycleScope.launch {
                 val arrSubjectNames=attDatabase.attendanceDao().getAllSubjectNames()
                 val actvAdapter=ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, arrSubjectNames )

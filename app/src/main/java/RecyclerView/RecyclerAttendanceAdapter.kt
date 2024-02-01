@@ -82,7 +82,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
 
         holder.recyclerLayout.setOnClickListener{
-           // Toast.makeText(context, "hiii", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(context, "hiii", Toast.LENGTH_SHORT).show()
             holder.vibrator.vibrate(50)
 
 
@@ -188,13 +188,13 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                         Toast.makeText(context, "Subject can't be Empty", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
-                    
+
 
                 }
                 else{
                     Toast.makeText(context, "Please close the app once before making any update to this Subject", Toast.LENGTH_SHORT).show()
                 }
-                
+
 
 
             }
