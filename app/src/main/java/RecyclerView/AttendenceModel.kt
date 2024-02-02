@@ -5,5 +5,6 @@ class AttendenceModel (
     var percentage: String,
     var subject: String,
     var conducted: String,
-    var attended: String
+    var attended: String,
+    var lastUpdated: String
 )

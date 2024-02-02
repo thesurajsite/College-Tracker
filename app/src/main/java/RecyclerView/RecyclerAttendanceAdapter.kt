@@ -1,6 +1,7 @@
 package RecyclerView
 
 
+import Activities.MainActivity
 import AttendanceRoomDatabase.Attendance
 import AttendanceRoomDatabase.DatabaseHelper
 import android.app.AlertDialog
@@ -22,6 +23,9 @@ import androidx.room.Room
 import com.collegetracker.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayList<AttendenceModel>) : RecyclerView.Adapter<RecyclerAttendanceAdapter.ViewHolder>() {
 
@@ -36,6 +40,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             "AttendanceDB"
         ).build()
     }
+
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
@@ -100,8 +105,12 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             val minusAttended=dialog.findViewById<ImageView>(R.id.minusAttended)
             val plusAttended=dialog.findViewById<ImageView>(R.id.plusAttended)
             val deleteButton=dialog.findViewById<ImageView>(R.id.deleteButton)
+            val lastUpdated=dialog.findViewById<TextView>(R.id.lastUpdated)
             val id=arrAttendance[position].subjectId
+            val lastUpdated_String=arrAttendance[position].lastUpdated
 
+
+            lastUpdated.setText("Last Updated $lastUpdated_String")
             idTextView.setText("ID: "+arrAttendance[position].subjectId.toString())
             addSubject.setText(arrAttendance[position].subject)
             addConducted.setText(arrAttendance[position].conducted)
@@ -160,10 +169,11 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                         percentageName=((attendedName.toDouble()/conductedName.toDouble())*100).toInt()
                         percentageString=percentageName.toString()+"%"
 
+                        val currentTime=currentTime().toString()
 
                         // Passing data to Attendence Array
                         arrAttendance.set(position,
-                            AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName)
+                            AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName,currentTime)
                         )
 
                         notifyItemChanged(position)
@@ -174,7 +184,8 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                             percentage = arrAttendance[position].percentage,
                             subjectName = arrAttendance[position].subject,
                             classesConducted = arrAttendance[position].conducted,
-                            classesAttended = arrAttendance[position].attended
+                            classesAttended = arrAttendance[position].attended,
+                            lastUpdated = arrAttendance[position].lastUpdated
                         )
 
 
@@ -244,6 +255,16 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             true
 
         }
+    }
+
+    private fun currentTime(): String? {
+        val currentDateTime = LocalDateTime.now()
+
+        // Format the date and time with the desired pattern (dd-MM HH:mm)
+        val formatter = DateTimeFormatter.ofPattern("dd-MMM HH:mm")
+        val DateTime = currentDateTime.format(formatter).toString()
+
+        return DateTime
     }
 
 }

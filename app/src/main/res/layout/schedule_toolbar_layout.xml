@@ -10,9 +10,8 @@
     app:title="Lecture Schedule"
     android:gravity="center"
     app:titleTextColor="@color/white"
-    style="@style/Toolbar_Text"
-    app:titleTextAppearance="@style/Toolbar_Text">
-
+    style="@style/Schedule_Toolbar_Text"
+    app:titleTextAppearance="@style/Schedule_Toolbar_Text">
 
 
     <LinearLayout

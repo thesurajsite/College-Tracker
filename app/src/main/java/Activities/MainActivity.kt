@@ -23,6 +23,8 @@ import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,9 +35,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //Initialization of Database
-        database= Room.databaseBuilder(applicationContext,
-            DatabaseHelper::class.java,
-            "AttendanceDB").build()
+//        database= Room.databaseBuilder(applicationContext,
+//            DatabaseHelper::class.java,
+//            "AttendanceDB").build()
+
+//        //Initialization of Database
+        database = DatabaseHelper.getDB(applicationContext) ?: throw IllegalStateException("Unable to create database instance")
+
 
 
         val arrAttendance=ArrayList<AttendenceModel>()
@@ -66,8 +72,9 @@ class MainActivity : AppCompatActivity() {
                 val subjectName = attendance.subjectName
                 val conductedName = attendance.classesConducted
                 val attendedName = attendance.classesAttended
+                val lastUpdated=attendance.lastUpdated
 
-                arrAttendance.add(AttendenceModel(subjectId, percentageString, subjectName, conductedName, attendedName))
+                arrAttendance.add(AttendenceModel(subjectId, percentageString, subjectName, conductedName, attendedName, lastUpdated))
             }
 
 
@@ -179,11 +186,11 @@ class MainActivity : AppCompatActivity() {
                         ((attendedName.toDouble() / conductedName.toDouble()) * 100).toInt()
                     percentageString = percentageName.toString() + "%"
 
+                    val currentTime=currentTime().toString()
 
                     // Adding data to the Database
-
                     GlobalScope.launch {
-                        database.attendanceDao().insertAttendance(Attendance(id, percentageString, subjectName, conductedName, attendedName))
+                        database.attendanceDao().insertAttendance(Attendance(id, percentageString, subjectName, conductedName, attendedName, currentTime))
                     }
 
 
@@ -194,7 +201,8 @@ class MainActivity : AppCompatActivity() {
                             percentageString,
                             subjectName,
                             conductedName,
-                            attendedName
+                            attendedName,
+                            currentTime
                         )
                     )
                     adapter.notifyItemChanged(arrAttendance.size - 1)
@@ -267,4 +275,16 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    private fun currentTime(): String? {
+        val currentDateTime = LocalDateTime.now()
+
+        // Format the date and time with the desired pattern (dd-MM HH:mm)
+        val formatter = DateTimeFormatter.ofPattern("dd-MMM HH:mm")
+        val DateTime = currentDateTime.format(formatter).toString()
+
+        return DateTime
+    }
+
+
 }
