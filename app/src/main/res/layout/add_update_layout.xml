@@ -29,6 +29,7 @@
 
             <TextView
                 android:id="@+id/id"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ID:000"
@@ -113,7 +114,7 @@
                     <EditText
                         android:id="@+id/addConducted"
                         android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_35sdp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginRight="0dp"
                         android:paddingBottom="@dimen/_1sdp"

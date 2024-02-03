@@ -19,6 +19,7 @@ import RecyclerView.AttendenceModel
 import AttendanceRoomDatabase.DatabaseHelper
 import RecyclerView.RecyclerAttendanceAdapter
 import android.widget.TextView
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.GlobalScope
