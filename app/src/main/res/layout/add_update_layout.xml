@@ -70,7 +70,7 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
-                android:background="@color/light_yellow"
+                android:background="@drawable/custom_input"
                 android:fontFamily="@font/abel"
                 android:gravity="center_horizontal"
                 android:hint="Subject Name"
@@ -92,31 +92,42 @@
                     app:tint="@color/light_yellow" />
 
 
-                <TextView
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="C:"
-                    android:textSize="@dimen/_25sdp"
-                    android:fontFamily="@font/abel"
-                    android:textColor="#FF404040"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:background="@color/light_yellow"/>
-
-                <EditText
-                    android:id="@+id/addConducted"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginRight="@dimen/_30sdp"
-                    android:paddingBottom="@dimen/_1sdp"
-                    android:background="@color/light_yellow"
-                    android:fontFamily="@font/courier_prime"
-                    android:gravity="center_horizontal"
-                    android:hint="0"
-                    android:inputType="number"
-                    android:textColor="#FF404040"
-                    android:textColorHint="#404040"
-                    android:textSize="@dimen/_25sdp" />
+                    android:background="@drawable/custom_input">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="C:"
+                        android:textSize="@dimen/_25sdp"
+                        android:fontFamily="@font/abel"
+                        android:textColor="#FF404040"
+                        android:paddingLeft="@dimen/_10sdp"
+                        />
+
+                    <EditText
+                        android:id="@+id/addConducted"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="0dp"
+                        android:paddingBottom="@dimen/_1sdp"
+                        android:fontFamily="@font/courier_prime"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/custom_input"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:textColor="#FF404040"
+                        android:textColorHint="#404040"
+                        android:textSize="@dimen/_25sdp" />
+
+                </LinearLayout>
+
 
                 <ImageView
                     android:id="@+id/plusConducted"
@@ -140,31 +151,40 @@
                     app:tint="@color/light_yellow"
                     android:layout_marginRight="@dimen/_30sdp"/>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="A:"
-                    android:textSize="@dimen/_25sdp"
-                    android:fontFamily="@font/abel"
-                    android:textColor="#FF404040"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:background="@color/light_yellow"/>
-
-                <EditText
-                    android:id="@+id/addAttended"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginRight="@dimen/_30sdp"
-                    android:paddingBottom="@dimen/_1sdp"
-                    android:background="@color/light_yellow"
-                    android:fontFamily="@font/courier_prime"
-                    android:gravity="center_horizontal"
-                    android:hint="0"
-                    android:inputType="number"
-                    android:textColor="#FF404040"
-                    android:textColorHint="#404040"
-                    android:textSize="@dimen/_25sdp" />
+                    android:background="@drawable/custom_input">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="A:"
+                        android:textSize="@dimen/_25sdp"
+                        android:fontFamily="@font/abel"
+                        android:textColor="#FF404040"
+                        android:paddingLeft="@dimen/_10sdp" />
+
+                    <EditText
+                        android:id="@+id/addAttended"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="@dimen/_1sdp"
+                        android:background="@drawable/custom_input"
+                        android:fontFamily="@font/courier_prime"
+                        android:gravity="center_horizontal"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:textColor="#FF404040"
+                        android:textColorHint="#404040"
+                        android:textSize="@dimen/_25sdp" />
+
+
+                </LinearLayout>
+
+
 
                 <ImageView
                     android:id="@+id/plusAttended"
@@ -184,10 +204,11 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:backgroundTint="@color/light_yellow"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/abel"
                 android:text=" Add "
                 android:textColor="@color/black"
                 android:textSize="@dimen/_25sdp" />
+
 
 
         </LinearLayout>
