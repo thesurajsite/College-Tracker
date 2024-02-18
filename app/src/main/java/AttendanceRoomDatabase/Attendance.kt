@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "attendance")
 data class Attendance(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey (autoGenerate = true)
     var id: Int,
     var percentage: String,
     var subjectName: String,

@@ -1,5 +1,7 @@
 package ScheduleFragments
 
+import Activities.Daily_Schedule
+import Activities.sharedPreferenceManager
 import AttendanceRoomDatabase.Attendance
 import AttendanceRoomDatabase.DatabaseHelper
 import RecyclerView.AttendenceModel
@@ -62,6 +64,7 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
         attDatabase=Room.databaseBuilder(requireContext(),
             DatabaseHelper::class.java,
             "AttendanceDB").build()
+
 
         //val arrScheduleMonday=ArrayList<ScheduleModel>()
         val floatingActionButton=view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
@@ -130,9 +133,12 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
                 lectureName=addLecture.text.toString()
                 timeName=addTime.text.toString()
 
+                val sharedPreferenceManager=sharedPreferenceManager(requireContext())
+                var scheduleID=sharedPreferenceManager.getScheduleID()
+
                 if(lectureName!="")
                 {
-                    arrScheduleMonday.add(ScheduleModel(0,"monday",lectureName,timeName))
+                    arrScheduleMonday.add(ScheduleModel(scheduleID,"monday",lectureName,timeName))
                     scheduleAdapter.notifyItemChanged(arrScheduleMonday.size-1)
                     mondayRecyclerView.scrollToPosition(arrScheduleMonday.size-1)
 
@@ -140,13 +146,16 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
                     GlobalScope.launch {
                         database.scheduleDao().insertSchedule(
                             ScheduleDataclass(
-                                0,
+                                scheduleID,
                                 "monday",
                                 lectureName,
                                 timeName
                             )
                         )
                     }
+
+                    scheduleID++
+                    sharedPreferenceManager.updateScheduleID(scheduleID)
 
                     dialog.dismiss()
 

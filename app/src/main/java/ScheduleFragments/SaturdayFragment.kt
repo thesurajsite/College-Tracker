@@ -1,5 +1,6 @@
 package ScheduleFragments
 
+import Activities.sharedPreferenceManager
 import AttendanceRoomDatabase.DatabaseHelper
 import ScheduleRecyclerView.RecyclerScheduleAdapter
 import ScheduleRecyclerView.ScheduleItemClickListener
@@ -128,9 +129,12 @@ class SaturdayFragment : Fragment() , ScheduleItemClickListener {
                 lectureName=addLecture.text.toString()
                 timeName=addTime.text.toString()
 
+                val sharedPreferenceManager= sharedPreferenceManager(requireContext())
+                var scheduleID=sharedPreferenceManager.getScheduleID()
+
                 if(lectureName!="")
                 {
-                    arrScheduleSaturday.add(ScheduleModel(0,"saturday",lectureName,timeName))
+                    arrScheduleSaturday.add(ScheduleModel(scheduleID,"saturday",lectureName,timeName))
                     scheduleAdapter.notifyItemChanged(arrScheduleSaturday.size-1)
                     saturdayRecyclerView.scrollToPosition(arrScheduleSaturday.size-1)
 
@@ -138,13 +142,16 @@ class SaturdayFragment : Fragment() , ScheduleItemClickListener {
                     GlobalScope.launch {
                         database.scheduleDao().insertSchedule(
                             ScheduleDataclass(
-                                0,
+                                scheduleID,
                                 "saturday",
                                 lectureName,
                                 timeName
                             )
                         )
                     }
+
+                    scheduleID++
+                    sharedPreferenceManager.updateScheduleID(scheduleID)
 
                     dialog.dismiss()
 

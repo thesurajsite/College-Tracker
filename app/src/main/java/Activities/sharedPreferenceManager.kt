@@ -1,0 +1,39 @@
+package Activities
+
+import android.content.Context
+import android.content.SharedPreferences
+
+
+
+class sharedPreferenceManager(private val context : Context): SharedPreferenceHandler {
+
+    override fun getScheduleID(): Int {
+        val pref: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        return pref.getInt("scheduleID", 100)
+    }
+
+    override fun updateScheduleID(updatedID: Int) {
+        val pref: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putInt("scheduleID", updatedID)
+        editor.apply()
+    }
+
+    override fun getAttendanceID(): Int{
+        val pref2: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        return pref2.getInt("attendanceID",100)
+    }
+
+    override fun updateAttendanceID(updatedID: Int){
+        val pref2: SharedPreferences=getSharedPreferences("COLLEGE_TRACKER",Context.MODE_PRIVATE)
+        val editor=pref2.edit()
+        editor.putInt("attendanceID", updatedID)
+        editor.apply()
+    }
+
+    override fun getSharedPreferences(s: String, modePrivate: Int): SharedPreferences {
+        return context.getSharedPreferences(s, modePrivate)
+    }
+
+
+}

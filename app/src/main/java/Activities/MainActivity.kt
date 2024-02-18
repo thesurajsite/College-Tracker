@@ -18,7 +18,9 @@ import AttendanceRoomDatabase.Attendance
 import RecyclerView.AttendenceModel
 import AttendanceRoomDatabase.DatabaseHelper
 import RecyclerView.RecyclerAttendanceAdapter
+import android.content.SharedPreferences
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -113,6 +115,7 @@ class MainActivity : AppCompatActivity() {
             val deleteButton = dialog.findViewById<ImageView>(R.id.deleteButton)
             val idTextView=dialog.findViewById<TextView>(R.id.id)
             val vibrator = dialog.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            deleteButton.visibility=View.INVISIBLE
             vibrator.vibrate(50)
 
             // subjectName AND SIMILAR STORES THE STRING VALUES THAT WE GET FROM THE add_update_layout
@@ -121,17 +124,6 @@ class MainActivity : AppCompatActivity() {
             var attendedName: String = "0"
             var percentageName: Int = 0;
             var percentageString: String = ""
-
-            // SUBJECT ID ALLOCATION
-            var id =1;
-            if(arrAttendance.isEmpty()){
-                id=1
-            }
-            else{
-                id=arrAttendance[arrAttendance.size-1].subjectId+1
-            }
-
-            idTextView.setText("ID: "+id)
 
 
             var tempConducted = conductedName.toInt()
@@ -189,28 +181,27 @@ class MainActivity : AppCompatActivity() {
 
                     val currentTime=currentTime().toString()
 
+                    val sharedPreferenceManager=sharedPreferenceManager(this)
+                    var attendanceID=sharedPreferenceManager.getAttendanceID()
+
                     // Adding data to the Database
                     GlobalScope.launch {
-                        database.attendanceDao().insertAttendance(Attendance(id, percentageString, subjectName, conductedName, attendedName, currentTime))
+                        database.attendanceDao().insertAttendance(Attendance(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime))
                     }
 
 
                     //Passing data to Attendence Array
-                    arrAttendance.add(
-                        AttendenceModel(
-                            id,
-                            percentageString,
-                            subjectName,
-                            conductedName,
-                            attendedName,
-                            currentTime
-                        )
-                    )
+                    arrAttendance.add(AttendenceModel(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime))
+
                     adapter.notifyItemChanged(arrAttendance.size - 1)
                     recyclerView.scrollToPosition(arrAttendance.size - 1)
+//                    Toast.makeText(this, attendanceID.toString(), Toast.LENGTH_SHORT).show()
+
+                    idTextView.setText(attendanceID.toString())
+                    attendanceID++
+                    sharedPreferenceManager.updateAttendanceID(attendanceID)
 
                     dialog.dismiss()
-
 
                     // VISIBILITY CONTROL FOR nothingToShow IMAGE
                     if (arrAttendance.isEmpty()) {
@@ -271,11 +262,8 @@ class MainActivity : AppCompatActivity() {
             val intent=Intent(this, instructionsPage::class.java)
             startActivity(intent)
         }
-
-
-
-
     }
+
 
     private fun currentTime(): String? {
         val currentDateTime = LocalDateTime.now()
@@ -286,6 +274,4 @@ class MainActivity : AppCompatActivity() {
 
         return DateTime
     }
-
-
 }

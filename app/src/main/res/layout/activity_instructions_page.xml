@@ -55,7 +55,7 @@
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="* Click on the '+' button to Add Subject \n\n* Click on the subject to Edit/Update/Delete \n\n* C: Classes Conducted \n* A: Classes Attended \n\n This App will keep your Attendance stored, which You can update later on and keep a track of your Attendance\n\n Note: After Adding a new Subject, Please close the app once before you make any update to it"
+            android:text="* Click on the '+' button to Add Subject \n\n* Click on the subject to Edit/Update/Delete \n\n* C: Classes Conducted \n* A: Classes Attended \n\n This App will keep your Attendance stored, which You can update later on and keep a track of your Attendance"
 
             />
 

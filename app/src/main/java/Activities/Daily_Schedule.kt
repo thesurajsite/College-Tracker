@@ -1,15 +1,14 @@
 package Activities
 
 import ScheduleFragments.scheduleViewPagerAdapter
+import ScheduleRoomDatabase.ScheduleDatabaseHelper
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Vibrator
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.collegetracker.R
 import com.google.android.material.tabs.TabLayout
@@ -17,6 +16,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Calendar
 
 class Daily_Schedule : AppCompatActivity() {
+
+    var database: ScheduleDatabaseHelper?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_schedule2)
@@ -84,4 +86,7 @@ class Daily_Schedule : AppCompatActivity() {
         }
 
     }
+
+
+
 }
