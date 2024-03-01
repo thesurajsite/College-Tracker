@@ -214,6 +214,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
             deleteButton.setOnClickListener(View.OnClickListener {
 
+
                 holder.vibrator.vibrate(50)
                 val builder = AlertDialog.Builder(context)
                     .setTitle("Delete Subject")
