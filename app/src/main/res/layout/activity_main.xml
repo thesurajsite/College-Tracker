@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <ImageView
         android:id="@+id/nothingToShow"
@@ -26,7 +26,7 @@
         android:src="@drawable/nothing_to_show"
         android:layout_below="@id/toolbar"
         android:layout_marginTop="100dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         />
 
     <Button
@@ -52,9 +52,9 @@
         android:layout_weight="1"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="455dp"
+        android:layout_marginBottom="45dp"
         app:srcCompat="@drawable/floatbutton"
-        android:tint="@color/blue"
+        android:tint="@color/black"
         android:backgroundTint="@color/purple"
         android:layout_marginRight="45dp"
         />

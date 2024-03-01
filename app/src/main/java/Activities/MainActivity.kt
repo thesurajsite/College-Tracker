@@ -1,27 +1,24 @@
 package Activities
 
+import AttendanceRoomDatabase.Attendance
+import AttendanceRoomDatabase.DatabaseHelper
+import RecyclerView.AttendenceModel
+import RecyclerView.RecyclerAttendanceAdapter
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Vibrator
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import AttendanceRoomDatabase.Attendance
-import RecyclerView.AttendenceModel
-import AttendanceRoomDatabase.DatabaseHelper
-import RecyclerView.RecyclerAttendanceAdapter
-import android.content.SharedPreferences
-import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.recyclerview.widget.DefaultItemAnimator
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.GlobalScope
@@ -57,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         val helpButton=findViewById<ImageView>(R.id.helpButton)
         val howToUse=findViewById<Button>(R.id.howToUse)
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
 
         recyclerView.layoutManager=LinearLayoutManager(this)
 //        val recyclerAdapter = RecyclerAttendanceAdapter(this, arrAttendance)
