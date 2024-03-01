@@ -68,7 +68,7 @@
                     android:layout_height="@dimen/_30sdp"
                     android:src="@drawable/plus"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    app:tint="@color/light_yellow"/>
+                    app:tint="@color/white"/>
 
                 <ImageView
                     android:id="@+id/deleteSchedule"

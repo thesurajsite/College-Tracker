@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Activities.MainActivity"
-    android:background="@color/light_yellow">
+    android:background="@color/white">
 
     <include
         layout="@layout/toolbar_layout"
@@ -38,7 +38,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:textSize="20dp"
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
 
@@ -52,12 +52,53 @@
         android:layout_weight="1"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="455dp"
         app:srcCompat="@drawable/floatbutton"
         android:tint="@color/blue"
         android:backgroundTint="@color/purple"
         android:layout_marginRight="45dp"
         />
+
+    <androidx.cardview.widget.CardView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:cardCornerRadius="@dimen/_5sdp">
+
+        <LinearLayout
+            android:id="@+id/bottomNavigationBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/purple"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Attendance"
+                android:textSize="@dimen/_20sdp"
+                android:textColor="@color/white"
+                android:background="@color/purple"
+                android:fontFamily="@font/abel"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_20sdp"
+                android:textColor="@color/white"
+                android:layout_weight="2"
+                android:background="@color/purple"
+                android:fontFamily="@font/abel"
+                android:text="Schedule" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
 
 
 </RelativeLayout>

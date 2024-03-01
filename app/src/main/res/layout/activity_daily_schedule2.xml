@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_yellow"
-    tools:context="Activities.DailySchedule">
+    android:background="@color/white"
+    tools:context="Activities.Daily_Schedule">
 
     <include
         layout="@layout/schedule_toolbar_layout"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         app:tabTextColor="@color/black"
         app:tabIndicatorColor="@color/black"
-        android:background="@color/light_yellow">
+        android:background="@color/white">
 
 
         <com.google.android.material.tabs.TabItem
@@ -60,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="S"/>
+
 
 
     </com.google.android.material.tabs.TabLayout>

@@ -90,7 +90,7 @@
                     android:layout_height="@dimen/_35sdp"
                     android:src="@drawable/minus"
                     android:layout_marginRight="@dimen/_30sdp"
-                    app:tint="@color/light_yellow" />
+                    app:tint="@color/white" />
 
 
 
@@ -135,7 +135,7 @@
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:src="@drawable/plus"
-                    app:tint="@color/light_yellow" />
+                    app:tint="@color/white" />
 
             </LinearLayout>
 
@@ -149,7 +149,7 @@
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:src="@drawable/minus"
-                    app:tint="@color/light_yellow"
+                    app:tint="@color/white"
                     android:layout_marginRight="@dimen/_30sdp"/>
 
                 <LinearLayout
@@ -192,7 +192,7 @@
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:src="@drawable/plus"
-                    app:tint="@color/light_yellow"/>
+                    app:tint="@color/white"/>
 
             </LinearLayout>
 
@@ -204,7 +204,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
-                android:backgroundTint="@color/light_yellow"
+                android:backgroundTint="@color/white"
                 android:fontFamily="@font/abel"
                 android:text=" Add "
                 android:textColor="@color/black"
@@ -227,6 +227,12 @@
             android:src="@drawable/baseline_delete_24"
             app:tint="@color/design_default_color_error" />
 
+
+        <ImageView
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/astraunaut"
+            android:layout_gravity="bottom"/>
 
 
 
