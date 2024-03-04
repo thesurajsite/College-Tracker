@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.collegetracker.R
@@ -51,6 +52,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         val subject = itemView.findViewById<TextView>(R.id.subject)
         val conductNumber=itemView.findViewById<TextView>(R.id.conductNumber)
         val attendNumber=itemView.findViewById<TextView>(R.id.attendNumber)
+        val attendanceCardView=itemView.findViewById<CardView>(R.id.attendanceCardView)
 
 //        val conductMinus=itemView.findViewById<ImageView>(R.id.conductMinus)
 //        val conductPlus=itemView.findViewById<ImageView>(R.id.conductPlus)
@@ -60,6 +62,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         val recyclerLayout=itemView.findViewById<LinearLayout>(R.id.recyclerLayout)
         //VIBRATOR VIBRATOR VIBRATOR
         val vibrator = itemView.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
 
 
 
@@ -80,10 +83,20 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        // FROM THE ADD UPDATE LAYOUT
         holder.percentage.text=arrAttendance[position].percentage
         holder.subject.text=arrAttendance[position].subject
         holder.attendNumber.text=arrAttendance[position].attended
         holder.conductNumber.text=arrAttendance[position].conducted
+
+//        val percentage = arrAttendance[position].percentage.replace("%", "").toIntOrNull() ?: 0
+//        if (percentage >= 75) {
+//            holder.attendanceCardView.setCardBackgroundColor(context.resources.getColor(R.color.light_green))
+//        } else if(percentage >= 50 && percentage <75) {
+//            holder.attendanceCardView.setCardBackgroundColor(context.resources.getColor(R.color.light_yellow))
+//        } else if(percentage < 50) {
+//            holder.attendanceCardView.setCardBackgroundColor(context.resources.getColor(R.color.light_red))
+//        }
 
 
         holder.recyclerLayout.setOnClickListener{

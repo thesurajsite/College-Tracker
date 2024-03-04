@@ -31,6 +31,22 @@ class sharedPreferenceManager(private val context : Context): SharedPreferenceHa
         editor.apply()
     }
 
+    override fun getUserVersion(): Int {
+        val pref: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        return pref.getInt("userVersion", 0)
+    }
+
+    override fun updateUserVersion(updatedVersion: Int) {
+        val pref: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putInt("userVersion", updatedVersion)
+        editor.apply()
+    }
+
+
+
+
+
     override fun getSharedPreferences(s: String, modePrivate: Int): SharedPreferences {
         return context.getSharedPreferences(s, modePrivate)
     }
