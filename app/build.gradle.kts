@@ -12,7 +12,7 @@ android {
         applicationId = "com.collegetracker"
         minSdk = 27
         targetSdk = 33
-        versionCode = 15
+        versionCode = 18
         versionName = "1.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -60,4 +60,7 @@ dependencies {
 
     //SDP DEPENDENCIES
     implementation ("com.intuit.sdp:sdp-android:1.1.0")
+
+    //In-app Update
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
 }

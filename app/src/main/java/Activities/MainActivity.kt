@@ -17,19 +17,34 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.google.android.play.core.ktx.startUpdateFlowForResult
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.time.Duration.Companion.seconds
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var database: DatabaseHelper
+    val UPDATE_CODE=1233
 
+    private lateinit var database: DatabaseHelper
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateType= AppUpdateType.FLEXIBLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +53,13 @@ class MainActivity : AppCompatActivity() {
 //        database= Room.databaseBuilder(applicationContext,
 //            DatabaseHelper::class.java,
 //            "AttendanceDB").build()
+
+        appUpdateManager=AppUpdateManagerFactory.create(applicationContext)
+        if(updateType==AppUpdateType.FLEXIBLE){
+            appUpdateManager.registerListener(installStateUpdateListener)
+        }
+        checkForAppUpdate()
+
 
 //        //Initialization of Database
         database = DatabaseHelper.getDB(applicationContext) ?: throw IllegalStateException("Unable to create database instance")
@@ -262,6 +284,71 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val installStateUpdateListener=InstallStateUpdatedListener{ state->
+        if(state.installStatus()==InstallStatus.DOWNLOADED){
+            Toast.makeText(applicationContext, "Update Successful, Restarting in 5 Seconds", Toast.LENGTH_LONG).show()
+        }
+        lifecycleScope.launch {
+            delay(5.seconds)
+            appUpdateManager.completeUpdate()
+        }
+    }
+
+    private fun checkForAppUpdate(){
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info->
+            val isUpdateAvailable=info.updateAvailability()==UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed=when(updateType){
+                AppUpdateType.FLEXIBLE->info.isFlexibleUpdateAllowed
+                AppUpdateType.IMMEDIATE->info.isImmediateUpdateAllowed
+                else-> false
+            }
+
+            if(isUpdateAvailable && isUpdateAllowed){
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    updateType,
+                    this,
+                    UPDATE_CODE
+                )
+            }
+
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(updateType==AppUpdateType.IMMEDIATE){
+            appUpdateManager.appUpdateInfo.addOnSuccessListener { info->
+                if(info.updateAvailability()==UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS){
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        updateType,
+                        this,
+                        UPDATE_CODE
+                    )
+                }
+
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode==UPDATE_CODE){
+            if(resultCode!= RESULT_OK){
+                println("Somerthing went wrong while updating...")
+            }
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(updateType==AppUpdateType.FLEXIBLE){
+            appUpdateManager.unregisterListener(installStateUpdateListener)
+        }
+
+    }
 
 
 
