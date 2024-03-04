@@ -31,9 +31,11 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.android.play.core.ktx.startUpdateFlowForResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.time.Duration.Companion.seconds
@@ -45,30 +47,31 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: DatabaseHelper
     private lateinit var appUpdateManager: AppUpdateManager
     private val updateType= AppUpdateType.FLEXIBLE
+    private lateinit var arrAttendance:ArrayList<AttendenceModel>
+    private lateinit var sharedPreferenceManager:sharedPreferenceManager
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter:RecyclerAttendanceAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        //Initialization of Database
-//        database= Room.databaseBuilder(applicationContext,
-//            DatabaseHelper::class.java,
-//            "AttendanceDB").build()
 
         appUpdateManager=AppUpdateManagerFactory.create(applicationContext)
         if(updateType==AppUpdateType.FLEXIBLE){
             appUpdateManager.registerListener(installStateUpdateListener)
         }
-        checkForAppUpdate()
 
+        checkForAppUpdate()
 
 //        //Initialization of Database
         database = DatabaseHelper.getDB(applicationContext) ?: throw IllegalStateException("Unable to create database instance")
+        sharedPreferenceManager=sharedPreferenceManager(this)
 
 
 
-        val arrAttendance=ArrayList<AttendenceModel>()
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = RecyclerAttendanceAdapter(this, arrAttendance)
+        arrAttendance=ArrayList()
+        recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        adapter = RecyclerAttendanceAdapter(this, arrAttendance)
         recyclerView.adapter = adapter
         val floatingActionButton=findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val nothingToShowImage: ImageView = findViewById(R.id.nothingToShow)
@@ -79,8 +82,14 @@ class MainActivity : AppCompatActivity() {
 
 
         recyclerView.layoutManager=LinearLayoutManager(this)
-//        val recyclerAdapter = RecyclerAttendanceAdapter(this, arrAttendance)
-//        recyclerView.adapter=recyclerAdapter
+
+        //SHARED PREFERENCE FOR NEW USER, EXECUTES ONE TIME ONLY
+        sharedPreferenceForNewUser()
+        adapter.notifyItemChanged(arrAttendance.size-1)
+        adapter.notifyDataSetChanged()
+        refresh()
+
+
 
 
         // Clearing the RecyclerView Array and Re-Populating it with the DataBase
@@ -201,7 +210,6 @@ class MainActivity : AppCompatActivity() {
 
                     val currentTime=currentTime().toString()
 
-                    val sharedPreferenceManager=sharedPreferenceManager(this)
                     var attendanceID=sharedPreferenceManager.getAttendanceID()
 
                     // Adding data to the Database
@@ -350,8 +358,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
     private fun currentTime(): String? {
         val currentDateTime = LocalDateTime.now()
 
@@ -360,5 +366,37 @@ class MainActivity : AppCompatActivity() {
         val DateTime = currentDateTime.format(formatter).toString()
 
         return DateTime
+    }
+
+    private fun sharedPreferenceForNewUser(){
+
+        // SharedPreference for new User
+        if(sharedPreferenceManager.getUserVersion()==0){
+            // Adding data to the Database
+            val currentTime=currentTime().toString()
+
+            arrAttendance.add(AttendenceModel(1, "100%", "Subject 1", "10", "10", currentTime))
+            arrAttendance.add(AttendenceModel(2, "60%", "Subject 2", "10", "6", currentTime))
+            arrAttendance.add(AttendenceModel(3, "40%", "Subject 3", "10", "4", currentTime))
+
+            GlobalScope.launch {
+                database.attendanceDao().insertAttendance(Attendance(1, "100%", "Subject 1", "10", "10", currentTime))
+                database.attendanceDao().insertAttendance(Attendance(2, "60%", "Subject 2", "10", "6", currentTime))
+                database.attendanceDao().insertAttendance(Attendance(3, "40%", "Subject 3", "10", "4", currentTime))
+
+
+            }
+
+            adapter.notifyItemChanged(arrAttendance.size-1)
+            sharedPreferenceManager.updateUserVersion(1)
+
+
+        }
+
+
+    }
+
+    private fun refresh(){
+        adapter.notifyItemChanged(arrAttendance.size-1)
     }
 }

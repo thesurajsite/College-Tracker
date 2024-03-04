@@ -11,6 +11,7 @@
         app:layout_constraintBaseline_toBottomOf="parent">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/attendanceCardView"
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:cardCornerRadius="100dp"
