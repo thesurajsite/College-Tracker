@@ -7,6 +7,7 @@ import AttendanceRoomDatabase.DatabaseHelper
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Vibrator
 import android.util.Log
 import android.view.LayoutInflater
@@ -91,6 +92,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             val percentFloat=arrAttendance[position].percentage.replace("%","").toFloat()
             setProgressWithAnimation(percentFloat, 1000)
             roundBorder=true
+
         }
 
 
