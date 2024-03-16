@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.collegetracker.R
+import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
@@ -51,6 +52,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         val subject = itemView.findViewById<TextView>(R.id.subject)
         val conductNumber=itemView.findViewById<TextView>(R.id.conductNumber)
         val attendNumber=itemView.findViewById<TextView>(R.id.attendNumber)
+        val progressBar=itemView.findViewById<CircularProgressBar>(R.id.circularProgressBar)
 
 //        val conductMinus=itemView.findViewById<ImageView>(R.id.conductMinus)
 //        val conductPlus=itemView.findViewById<ImageView>(R.id.conductPlus)
@@ -84,6 +86,12 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         holder.subject.text=arrAttendance[position].subject
         holder.attendNumber.text=arrAttendance[position].attended
         holder.conductNumber.text=arrAttendance[position].conducted
+
+        holder.progressBar.apply {
+            val percentFloat=arrAttendance[position].percentage.replace("%","").toFloat()
+            setProgressWithAnimation(percentFloat, 1000)
+            roundBorder=true
+        }
 
 
         holder.recyclerLayout.setOnClickListener{
