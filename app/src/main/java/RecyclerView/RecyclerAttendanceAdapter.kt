@@ -7,6 +7,7 @@ import AttendanceRoomDatabase.DatabaseHelper
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Vibrator
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,12 +17,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.collegetracker.R
+import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
@@ -53,6 +56,8 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         val conductNumber=itemView.findViewById<TextView>(R.id.conductNumber)
         val attendNumber=itemView.findViewById<TextView>(R.id.attendNumber)
         val attendanceCardView=itemView.findViewById<CardView>(R.id.attendanceCardView)
+        val circularProgressBar=itemView.findViewById<CircularProgressBar>(R.id.circularProgressBar)
+
 
 //        val conductMinus=itemView.findViewById<ImageView>(R.id.conductMinus)
 //        val conductPlus=itemView.findViewById<ImageView>(R.id.conductPlus)
@@ -83,11 +88,17 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        // FROM THE ADD UPDATE LAYOUT
+        // FROM THE ATTENDANCE ROW
         holder.percentage.text=arrAttendance[position].percentage
         holder.subject.text=arrAttendance[position].subject
         holder.attendNumber.text=arrAttendance[position].attended
         holder.conductNumber.text=arrAttendance[position].conducted
+
+        holder.circularProgressBar.apply {
+            val percentFloat=arrAttendance[position].percentage.replace("%","").toFloat()
+            setProgressWithAnimation(percentFloat,1000)
+            roundBorder=true
+        }
 
 //        val percentage = arrAttendance[position].percentage.replace("%", "").toIntOrNull() ?: 0
 //        if (percentage >= 75) {
@@ -103,6 +114,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             // Toast.makeText(context, "hiii", Toast.LENGTH_SHORT).show()
             holder.vibrator.vibrate(50)
 
+            // FROM THE ADD UPDATE LAYOUT
 
             val dialog= Dialog(context)
             dialog.setContentView(R.layout.add_update_layout)

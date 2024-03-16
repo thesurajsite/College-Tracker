@@ -63,4 +63,7 @@ dependencies {
 
     //In-app Update
     implementation("com.google.android.play:app-update-ktx:2.1.0")
+
+    //Circular Progress Bar
+    implementation ("com.mikhaellopez:circularprogressbar:3.1.0")
 }
