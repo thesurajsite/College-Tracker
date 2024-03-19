@@ -190,7 +190,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/conducted_et"
+                        android:id="@+id/requirementEt"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
@@ -258,7 +258,7 @@
                         />
 
                     <EditText
-                        android:id="@+id/attended_et"
+                        android:id="@+id/conductedEt"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -328,7 +328,7 @@
                         />
 
                     <EditText
-                        android:id="@+id/addConducted"
+                        android:id="@+id/attendedEt"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

@@ -28,8 +28,18 @@ class add_update_activity : AppCompatActivity() {
         val conducted=intent.getStringExtra("conducted")
         val attended=intent.getStringExtra("attended")
 
+        var percentage="0"
+        if(conducted!=null && attended!=null){
+            percentage=(((attended.toDouble()/conducted.toDouble())*100).toInt()).toString()+"%"
+        }
+
 
         binding.subjectName.setText(subjectName)
+        binding.conductedEt.setText(conducted)
+        binding.attendedEt.setText(attended)
+        binding.percentage.setText(percentage)
+
+
 
 
     }
