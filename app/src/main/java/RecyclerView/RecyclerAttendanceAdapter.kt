@@ -2,11 +2,14 @@ package RecyclerView
 
 
 import Activities.MainActivity
+import Activities.add_update_activity
+import Activities.instructionsPage
 import AttendanceRoomDatabase.Attendance
 import AttendanceRoomDatabase.DatabaseHelper
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Vibrator
 import android.util.Log
@@ -19,6 +22,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.collegetracker.R
@@ -92,7 +96,16 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             val percentFloat=arrAttendance[position].percentage.replace("%","").toFloat()
             setProgressWithAnimation(percentFloat, 1000)
             roundBorder=true
+        }
 
+        holder.recyclerLayout.setOnLongClickListener {
+            val intent= Intent(context, add_update_activity::class.java)
+            intent.putExtra("subjectId",arrAttendance[position].subjectId)
+            intent.putExtra("subject",arrAttendance[position].subject)
+            intent.putExtra("conducted",arrAttendance[position].conducted)
+            intent.putExtra("attended",arrAttendance[position].attended)
+            context.startActivity(intent)
+            true
         }
 
 

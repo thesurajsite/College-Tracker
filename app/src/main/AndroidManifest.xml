@@ -15,6 +15,9 @@
         android:theme="@style/Theme.CollegeTracker"
         tools:targetApi="31">
         <activity
+            android:name="Activities.add_update_activity"
+            android:exported="false" />
+        <activity
             android:name="Activities.Daily_Schedule"
             android:exported="false" />
         <activity
