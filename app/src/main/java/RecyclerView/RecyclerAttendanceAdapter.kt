@@ -6,6 +6,7 @@ import Activities.add_update_activity
 import Activities.instructionsPage
 import AttendanceRoomDatabase.Attendance
 import AttendanceRoomDatabase.DatabaseHelper
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -98,18 +99,21 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             roundBorder=true
         }
 
-        holder.recyclerLayout.setOnLongClickListener {
+        holder.recyclerLayout.setOnClickListener {
+            holder.vibrator.vibrate(50)
             val intent= Intent(context, add_update_activity::class.java)
             intent.putExtra("subjectId",arrAttendance[position].subjectId)
             intent.putExtra("subject",arrAttendance[position].subject)
             intent.putExtra("conducted",arrAttendance[position].conducted)
             intent.putExtra("attended",arrAttendance[position].attended)
+            intent.putExtra("lastUpdated", arrAttendance[position].lastUpdated)
             context.startActivity(intent)
-            true
+            (context as Activity).finish()
+          //  true
         }
 
 
-        holder.recyclerLayout.setOnClickListener{
+        holder.recyclerLayout.setOnLongClickListener{
             // Toast.makeText(context, "hiii", Toast.LENGTH_SHORT).show()
             holder.vibrator.vibrate(50)
 
