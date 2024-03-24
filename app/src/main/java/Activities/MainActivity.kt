@@ -106,8 +106,9 @@ class MainActivity : AppCompatActivity() {
                 val conductedName = attendance.classesConducted
                 val attendedName = attendance.classesAttended
                 val lastUpdated=attendance.lastUpdated
+                val requirement=attendance.requirement
 
-                arrAttendance.add(AttendenceModel(subjectId, percentageString, subjectName, conductedName, attendedName, lastUpdated))
+                arrAttendance.add(AttendenceModel(subjectId, percentageString, subjectName, conductedName, attendedName, lastUpdated, requirement))
             }
 
 
@@ -215,12 +216,12 @@ class MainActivity : AppCompatActivity() {
 
                     // Adding data to the Database
                     GlobalScope.launch {
-                        database.attendanceDao().insertAttendance(Attendance(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime))
+                        database.attendanceDao().insertAttendance(Attendance(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime, "75%"))
                     }
 
 
                     //Passing data to Attendence Array
-                    arrAttendance.add(AttendenceModel(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime))
+                    arrAttendance.add(AttendenceModel(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime, "75%"))
 
                     adapter.notifyItemChanged(arrAttendance.size - 1)
                     recyclerView.scrollToPosition(arrAttendance.size - 1)
@@ -376,14 +377,14 @@ class MainActivity : AppCompatActivity() {
             // Adding data to the Database
             val currentTime=currentTime().toString()
 
-            arrAttendance.add(AttendenceModel(1, "100%", "Subject 1", "10", "10", currentTime))
-            arrAttendance.add(AttendenceModel(2, "60%", "Subject 2", "10", "6", currentTime))
-            arrAttendance.add(AttendenceModel(3, "40%", "Subject 3", "10", "4", currentTime))
+            arrAttendance.add(AttendenceModel(1, "100%", "Subject 1", "10", "10", currentTime, "75%"))
+            arrAttendance.add(AttendenceModel(2, "60%", "Subject 2", "10", "6", currentTime, "75%"))
+            arrAttendance.add(AttendenceModel(3, "40%", "Subject 3", "10", "4", currentTime, "75%"))
 
             GlobalScope.launch {
-                database.attendanceDao().insertAttendance(Attendance(1, "100%", "Subject 1", "10", "10", currentTime))
-                database.attendanceDao().insertAttendance(Attendance(2, "60%", "Subject 2", "10", "6", currentTime))
-                database.attendanceDao().insertAttendance(Attendance(3, "40%", "Subject 3", "10", "4", currentTime))
+                database.attendanceDao().insertAttendance(Attendance(1, "100%", "Subject 1", "10", "10", currentTime, "75%"))
+                database.attendanceDao().insertAttendance(Attendance(2, "60%", "Subject 2", "10", "6", currentTime,"75%" ))
+                database.attendanceDao().insertAttendance(Attendance(3, "40%", "Subject 3", "10", "4", currentTime, "75%"))
 
 
             }

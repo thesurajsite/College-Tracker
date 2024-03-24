@@ -107,9 +107,10 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             intent.putExtra("conducted",arrAttendance[position].conducted)
             intent.putExtra("attended",arrAttendance[position].attended)
             intent.putExtra("lastUpdated", arrAttendance[position].lastUpdated)
+            intent.putExtra("requirement", arrAttendance[position].requirement)
             context.startActivity(intent)
             (context as Activity).finish()
-          //  true
+
         }
 
 
@@ -147,6 +148,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
             var tempConducted=arrAttendance[position].conducted.toInt()
             var tempAttended=arrAttendance[position].attended.toInt()
+
 
             minusConducted.setOnClickListener {
                 holder.vibrator.vibrate(50)
@@ -200,7 +202,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
                         // Passing data to Attendence Array
                         arrAttendance.set(position,
-                            AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName,currentTime)
+                            AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName,currentTime, "75%")
                         )
 
                         notifyItemChanged(position)
@@ -212,7 +214,8 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                             subjectName = arrAttendance[position].subject,
                             classesConducted = arrAttendance[position].conducted,
                             classesAttended = arrAttendance[position].attended,
-                            lastUpdated = arrAttendance[position].lastUpdated
+                            lastUpdated = arrAttendance[position].lastUpdated,
+                            requirement = "75%"
                         )
 
 

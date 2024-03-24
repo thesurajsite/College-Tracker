@@ -2,6 +2,7 @@ package Activities
 
 import AttendanceRoomDatabase.Attendance
 import AttendanceRoomDatabase.DatabaseHelper
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ class add_update_activity : AppCompatActivity() {
 
     private lateinit var database: DatabaseHelper
     lateinit var binding:ActivityAddUpdateBinding
+    @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityAddUpdateBinding.inflate(layoutInflater)
@@ -41,13 +43,12 @@ class add_update_activity : AppCompatActivity() {
         val conducted=intent.getStringExtra("conducted")
         val attended=intent.getStringExtra("attended")
         var lastUpdated=intent.getStringExtra("lastUpdated")
+        val requirement=intent.getStringExtra("requirement")
 
         var percentage="0"
         if(conducted!=null && attended!=null){
             percentage=(((attended.toDouble()/conducted.toDouble())*100).toInt()).toString()+"%"
         }
-
-        //binding.horizontalProgressBar.progress=50
 
 
         binding.subjectName.setText(subjectName)
@@ -55,63 +56,79 @@ class add_update_activity : AppCompatActivity() {
         binding.attendedEt.setText(attended)
         binding.percentage.setText(percentage)
         binding.lastUpdated.setText("Last Updated: $lastUpdated")
+        binding.requirementEt.setText(requirement)
 
         if(conducted!=null && attended!=null){
 
             var tempConducted= conducted.toInt()
             var tempAttended= attended.toInt()
+            var tempRequirement= requirement?.replace("%","")?.toInt()
 
-            if(tempAttended<=tempConducted){
-                binding.minusConducted.setOnClickListener {
-                    vibrator?.vibrate(50)
-                    tempConducted--
-                    binding.conductedEt.setText(tempConducted.toString())
-                    percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
-                    binding.percentage.setText(percentage)
-                }
 
-                binding.plusConducted.setOnClickListener {
-                    vibrator?.vibrate(50)
-                    tempConducted++
-                    binding.conductedEt.setText(tempConducted.toString())
-                    percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
-                    binding.percentage.setText(percentage)
-                }
-
-                binding.minusAttended.setOnClickListener {
-                    vibrator?.vibrate(50)
-                    tempAttended--
-                    binding.attendedEt.setText(tempAttended.toString())
-                    percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
-                    binding.percentage.setText(percentage)
-                }
-
-                binding.plusAttended.setOnClickListener {
-                    vibrator?.vibrate(50)
-                    tempAttended++
-                    binding.attendedEt.setText(tempAttended.toString())
-                    percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
-                    binding.percentage.setText(percentage)
-                }
+            binding.minusConducted.setOnClickListener {
+                vibrator?.vibrate(50)
+                tempConducted--
+                binding.conductedEt.setText(tempConducted.toString())
+                percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
+                binding.percentage.setText(percentage)
             }
+
+            binding.plusConducted.setOnClickListener {
+                vibrator?.vibrate(50)
+                tempConducted++
+                binding.conductedEt.setText(tempConducted.toString())
+                percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
+                binding.percentage.setText(percentage)
+            }
+
+            binding.minusAttended.setOnClickListener {
+                vibrator?.vibrate(50)
+                tempAttended--
+                binding.attendedEt.setText(tempAttended.toString())
+                percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
+                binding.percentage.setText(percentage)
+            }
+
+            binding.plusAttended.setOnClickListener {
+                vibrator?.vibrate(50)
+                tempAttended++
+                binding.attendedEt.setText(tempAttended.toString())
+                percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
+                binding.percentage.setText(percentage)
+            }
+
+            binding.minusRequirement.setOnClickListener {
+                vibrator?.vibrate(50)
+                tempRequirement= tempRequirement?.minus(5)
+                binding.requirementEt.setText("$tempRequirement%")
+            }
+
+            binding.plusRequirement.setOnClickListener {
+                vibrator?.vibrate(50)
+                tempRequirement= tempRequirement?.plus(5)
+                binding.requirementEt.setText("$tempRequirement%")
+            }
+
 
             //UPDATE BUTTON
             binding.updateButton.setOnClickListener {
                 vibrator?.vibrate(50)
 
-                var conductedName=binding.conductedEt.text.toString()
-                var attendedName=binding.attendedEt.text.toString()
-                var percentageName=binding.percentage.text.toString()
-                var currentTime=currentTime().toString()
+                val conductedName=binding.conductedEt.text.toString()
+                val attendedName=binding.attendedEt.text.toString()
+                val percentageName=binding.percentage.text.toString()
+                val requirementName=binding.requirementEt.text.toString()
+                val currentTime=currentTime().toString()
 
 
-                var dataToUpdate: Attendance = Attendance(
+                val dataToUpdate: Attendance = Attendance(
                     id=subjectID,
                     percentage = percentageName,
                     subjectName = subjectName!!,
                     classesConducted = conductedName,
                     classesAttended = attendedName,
-                    lastUpdated = currentTime
+                    lastUpdated = currentTime,
+                    requirement = requirementName
                 )
 
 
@@ -143,7 +160,7 @@ class add_update_activity : AppCompatActivity() {
 
     }
 
-    private fun currentTime(): String? {
+    private fun currentTime(): String {
         val currentDateTime = LocalDateTime.now()
 
         // Format the date and time with the desired pattern (dd-MM HH:mm)

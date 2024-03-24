@@ -6,5 +6,6 @@ class AttendenceModel (
     var subject: String,
     var conducted: String,
     var attended: String,
-    var lastUpdated: String
+    var lastUpdated: String,
+    var requirement: String
 )
