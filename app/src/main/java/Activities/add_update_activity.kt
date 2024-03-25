@@ -141,10 +141,6 @@ class add_update_activity : AppCompatActivity() {
 
             }
 
-
-
-
-
         }
 
         //ON BACK-PRESSES
@@ -156,8 +152,6 @@ class add_update_activity : AppCompatActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-
-
     }
 
     private fun currentTime(): String {
