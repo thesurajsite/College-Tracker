@@ -8,10 +8,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Vibrator
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.persistableBundleOf
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityAddUpdateBinding
 import com.collegetracker.databinding.ActivityMainBinding
@@ -43,7 +45,7 @@ class add_update_activity : AppCompatActivity() {
         val conducted=intent.getStringExtra("conducted")
         val attended=intent.getStringExtra("attended")
         var lastUpdated=intent.getStringExtra("lastUpdated")
-        val requirement=intent.getStringExtra("requirement")
+        val requirement=intent.getStringExtra("requirement")!!
 
         var percentage="0"
         if(conducted!=null && attended!=null){
@@ -65,12 +67,26 @@ class add_update_activity : AppCompatActivity() {
             var tempRequirement= requirement?.replace("%","")?.toInt()
 
 
+            //CASSES REQUIRED CALCULATION
+            classesRequired(conducted, attended, percentage ,requirement)
+
+
+
+//            Log.d("doubleValue", "conducted: $conductedInt" )
+//            Log.d("doubleValue", "attended: $attendedInt" )
+//            Log.d("doubleValue", "percentage: $percentageInt" )
+//            Log.d("doubleValue", "requirement: $requirementInt" )
+
+
             binding.minusConducted.setOnClickListener {
                 vibrator?.vibrate(50)
                 tempConducted--
                 binding.conductedEt.setText(tempConducted.toString())
                 percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
                 binding.percentage.setText(percentage)
+
+                //CASSES REQUIRED CALCULATION
+                classesRequired(tempConducted.toString(), tempAttended.toString(), percentage ,tempRequirement.toString())
             }
 
             binding.plusConducted.setOnClickListener {
@@ -79,6 +95,9 @@ class add_update_activity : AppCompatActivity() {
                 binding.conductedEt.setText(tempConducted.toString())
                 percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
                 binding.percentage.setText(percentage)
+
+                //CASSES REQUIRED CALCULATION
+                classesRequired(tempConducted.toString(), tempAttended.toString(), percentage ,tempRequirement.toString())
             }
 
             binding.minusAttended.setOnClickListener {
@@ -87,6 +106,9 @@ class add_update_activity : AppCompatActivity() {
                 binding.attendedEt.setText(tempAttended.toString())
                 percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
                 binding.percentage.setText(percentage)
+
+                //CASSES REQUIRED CALCULATION
+                classesRequired(tempConducted.toString(), tempAttended.toString(), percentage ,tempRequirement.toString())
             }
 
             binding.plusAttended.setOnClickListener {
@@ -95,18 +117,27 @@ class add_update_activity : AppCompatActivity() {
                 binding.attendedEt.setText(tempAttended.toString())
                 percentage=(((tempAttended.toDouble()/tempConducted.toDouble())*100).toInt()).toString()+"%"
                 binding.percentage.setText(percentage)
+
+                //CASSES REQUIRED CALCULATION
+                classesRequired(tempConducted.toString(), tempAttended.toString(), percentage ,tempRequirement.toString())
             }
 
             binding.minusRequirement.setOnClickListener {
                 vibrator?.vibrate(50)
                 tempRequirement= tempRequirement?.minus(5)
                 binding.requirementEt.setText("$tempRequirement%")
+
+                //CASSES REQUIRED CALCULATION
+                classesRequired(tempConducted.toString(), tempAttended.toString(), percentage ,tempRequirement.toString())
             }
 
             binding.plusRequirement.setOnClickListener {
                 vibrator?.vibrate(50)
                 tempRequirement= tempRequirement?.plus(5)
                 binding.requirementEt.setText("$tempRequirement%")
+
+                //CASSES REQUIRED CALCULATION
+                classesRequired(tempConducted.toString(), tempAttended.toString(), percentage ,tempRequirement.toString())
             }
 
 
@@ -152,6 +183,31 @@ class add_update_activity : AppCompatActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    private fun classesRequired( conducted: String, attended: String, percentage:String, requirement: String ) {
+        val conductedInt=conducted.toDouble()
+        val attendedInt=attended.toDouble()
+        val requirementInt= requirement.replace("%","").toDouble()
+        val percentageInt= percentage.replace("%", "").toDouble()
+
+        var classesRequired=0;
+        if(percentageInt < requirementInt){
+            classesRequired= Math.ceil((( requirementInt * conductedInt) - (100.0 * attendedInt))/(100.0- requirementInt)).toInt()
+
+            binding.classesRequired.setText(classesRequired.toString())
+            binding.classesRequiredStatus.setText("Classes Must Attend")
+            Log.d("doubleValue", "classesRequired: $classesRequired" )
+        }
+        else if(percentageInt > requirementInt){
+
+
+        }
+
+        if(classesRequired>=1000){
+            binding.classesRequired.setText("♾")
+        }
+
     }
 
     private fun currentTime(): String {

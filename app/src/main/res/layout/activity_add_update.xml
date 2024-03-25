@@ -111,6 +111,7 @@
                 app:cardBackgroundColor="@color/white">
 
                 <TextView
+                    android:id="@+id/classesRequired"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -124,6 +125,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/classesRequiredStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Classes Must Attend"
