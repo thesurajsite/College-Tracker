@@ -213,7 +213,7 @@ class add_update_activity : AppCompatActivity() {
         }
         else if(percentageInt == requirementInt){
             binding.classesRequired.setText("0")
-            binding.classesRequiredStatus.setText("Classes be Missed")
+            binding.classesRequiredStatus.setText("Classes can be Missed")
         }
 
         if(classesRequired>=1000){
