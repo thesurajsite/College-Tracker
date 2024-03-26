@@ -197,12 +197,18 @@ class add_update_activity : AppCompatActivity() {
 
             binding.classesRequired.setText(classesRequired.toString())
             binding.classesRequiredStatus.setText("Classes Must Attend")
+
+            binding.classesRequiredCardview.setCardBackgroundColor(getResources().getColor(R.color.light_red));
+
         }
         else if(percentageInt > requirementInt){
 
             classesRequired=Math.floor(((100 * attendedInt)-(requirementInt * conductedInt))/requirementInt).toInt()
             binding.classesRequired.setText(classesRequired.toString())
-            binding.classesRequiredStatus.setText("Classes be Missed")
+            binding.classesRequiredStatus.setText("Classes can be Missed")
+
+            binding.classesRequiredCardview.setCardBackgroundColor(getResources().getColor(R.color.light_green));
+
 
         }
         else if(percentageInt == requirementInt){
