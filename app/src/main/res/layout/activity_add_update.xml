@@ -45,13 +45,28 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp"
             android:fontFamily="@font/abel"
+            android:text="Last Updated: "
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_2sdp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp"
+            android:fontFamily="@font/abel"
+            android:text="Long Press Subject to Delete "
+            android:background="@drawable/custom_input"
+            android:padding="@dimen/_2sdp"
+            android:paddingLeft="@dimen/_3sdp"
+            android:paddingRight="@dimen/_3sdp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/_2sdp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginLeft="@dimen/_15sdp"
             android:background="@color/purple">
 
@@ -72,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="100%"
-                    android:fontFamily="@font/abel"
+                    android:fontFamily="@font/courier_prime"
                     android:textColor="@color/black"
                     android:layout_margin="@dimen/_3sdp"
                     android:textSize="@dimen/_18sdp" />
@@ -116,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="3"
-                    android:fontFamily="@font/abel"
+                    android:fontFamily="@font/courier_prime"
                     android:textColor="@color/black"
                     android:layout_margin="@dimen/_3sdp"
                     android:textSize="@dimen/_25sdp" />

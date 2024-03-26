@@ -118,171 +118,33 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             // Toast.makeText(context, "hiii", Toast.LENGTH_SHORT).show()
             holder.vibrator.vibrate(50)
 
-
-            val dialog= Dialog(context)
-            dialog.setContentView(R.layout.add_update_layout)
-
-            val idTextView=dialog.findViewById<TextView>(R.id.id)
-            val addSubject=dialog.findViewById<EditText>(R.id.addSubject)
-            val addConducted=dialog.findViewById<EditText>(R.id.addConducted)
-            val addAttended=dialog.findViewById<EditText>(R.id.addAttended)
-            val addSubjectTitle=dialog.findViewById<TextView>(R.id.addSubjectTitle)
-            val addButton=dialog.findViewById<Button>(R.id.addButton)
-            val minusConducted=dialog.findViewById<ImageView>(R.id.minusConducted)
-            val plusConducted=dialog.findViewById<ImageView>(R.id.plusConducted)
-            val minusAttended=dialog.findViewById<ImageView>(R.id.minusAttended)
-            val plusAttended=dialog.findViewById<ImageView>(R.id.plusAttended)
-            val deleteButton=dialog.findViewById<ImageView>(R.id.deleteButton)
-            val lastUpdated=dialog.findViewById<TextView>(R.id.lastUpdated)
-            val id=arrAttendance[position].subjectId
-            val lastUpdated_String=arrAttendance[position].lastUpdated
-
-
-            lastUpdated.setText("Last Updated $lastUpdated_String")
-            idTextView.setText("ID: "+arrAttendance[position].subjectId.toString())
-            addSubject.setText(arrAttendance[position].subject)
-            addConducted.setText(arrAttendance[position].conducted)
-            addAttended.setText(arrAttendance[position].attended)
-            addSubjectTitle.setText("Update Subject")
-            addButton.setText("Update")
-
-            var tempConducted=arrAttendance[position].conducted.toInt()
-            var tempAttended=arrAttendance[position].attended.toInt()
-
-
-            minusConducted.setOnClickListener {
-                holder.vibrator.vibrate(50)
-                tempConducted--
-                addConducted.setText(tempConducted.toString())
-            }
-
-            plusConducted.setOnClickListener {
-                holder.vibrator.vibrate(50)
-                tempConducted++
-                addConducted.setText(tempConducted.toString())
-            }
-
-            minusAttended.setOnClickListener {
-                holder.vibrator.vibrate(50)
-                tempAttended--
-                addAttended.setText(tempAttended.toString())
-            }
-
-            plusAttended.setOnClickListener {
-                holder.vibrator.vibrate(50)
-                tempAttended++
-                addAttended.setText(tempAttended.toString())
-            }
-
-            // subjectName AND SIMILAR STORES THE STRING VALUES THAT WE GET FROM THE add_update_layout
-            var subjectName: String=""
-            var conductedName: String="0"
-            var attendedName: String="0"
-            var percentageName: Int=0;
-            var percentageString: String=""
-
-            addButton.setOnClickListener {
-                holder.vibrator.vibrate(50)
-
-                if(id!=0)
-                {
-                    subjectName=addSubject.text.toString()
-                    conductedName=addConducted.text.toString()
-                    attendedName=addAttended.text.toString()
-
-                    if(subjectName!="")
-                    {
-
+            val builder = AlertDialog.Builder(context)
+                .setTitle("Delete Subject")
+                .setIcon(R.drawable.baseline_delete_24)
+                .setMessage("Do you want to Delete this Subject ?")
+                .setPositiveButton(
+                    "Yes"
+                ) { dialogInterface, i ->
+                    try {
                         val subjectId: Int =arrAttendance[position].subjectId
-                        // PERCENATGE CALCULATION
-                        percentageName=((attendedName.toDouble()/conductedName.toDouble())*100).toInt()
-                        percentageString=percentageName.toString()+"%"
+                        arrAttendance.removeAt(position)
+                        notifyItemRemoved(position)
 
-                        val currentTime=currentTime().toString()
-
-                        // Passing data to Attendence Array
-                        arrAttendance.set(position,
-                            AttendenceModel(subjectId,percentageString,subjectName,conductedName,attendedName,currentTime, "75%")
-                        )
-
-                        notifyItemChanged(position)
-
-
-                        var dataToUpdate: Attendance = Attendance(
-                            id=arrAttendance[position].subjectId,
-                            percentage = arrAttendance[position].percentage,
-                            subjectName = arrAttendance[position].subject,
-                            classesConducted = arrAttendance[position].conducted,
-                            classesAttended = arrAttendance[position].attended,
-                            lastUpdated = arrAttendance[position].lastUpdated,
-                            requirement = "75%"
-                        )
-
-
+                        //DELETING FROM DATABASE
                         GlobalScope.launch {
-                            database.attendanceDao().updateAttendance(dataToUpdate)
+                            database.attendanceDao().deleteAttendance(subjectId)
                         }
 
-                        dialog.dismiss()
-                    }
-                    else{
-                        Toast.makeText(context, "Subject can't be Empty", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
+                        Log.w("crash-attendance", e)
                     }
 
-
+                }.setNegativeButton("No")
+                { dialogInterface, i ->
+                    Toast.makeText(context, "Deletion Cancelled", Toast.LENGTH_SHORT).show()
                 }
-                else{
-                    Toast.makeText(context, "Please close the app once before making any update to this Subject", Toast.LENGTH_SHORT).show()
-                }
-
-
-
-            }
-
-
-
-            deleteButton.setOnClickListener(View.OnClickListener {
-
-
-                holder.vibrator.vibrate(50)
-                val builder = AlertDialog.Builder(context)
-                    .setTitle("Delete Subject")
-                    .setIcon(R.drawable.baseline_delete_24)
-                    .setMessage("Do you want to Delete this Subject ?")
-                    .setPositiveButton(
-                        "Yes"
-                    ) { dialogInterface, i ->
-                        try {
-                            val subjectId: Int =arrAttendance[position].subjectId
-                            arrAttendance.removeAt(position)
-                            notifyItemRemoved(position)
-
-                            //DELETING FROM DATABASE
-                            GlobalScope.launch {
-                                database.attendanceDao().deleteAttendance(subjectId)
-                            }
-
-                            dialog.dismiss()
-
-
-                        } catch (e: Exception) {
-                            Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
-                            Log.w("crash-attendance", e)
-                            dialog.dismiss()
-                        }
-
-                    }
-                    .setNegativeButton(
-                        "No"
-                    ) { dialogInterface, i ->
-                        Toast.makeText(context, "Deletion Cancelled", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
-                    }
-                builder.show()
-            })
-
-            dialog.show()
+            builder.show()
             true
 
         }
