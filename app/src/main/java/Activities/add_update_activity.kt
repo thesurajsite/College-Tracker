@@ -197,11 +197,17 @@ class add_update_activity : AppCompatActivity() {
 
             binding.classesRequired.setText(classesRequired.toString())
             binding.classesRequiredStatus.setText("Classes Must Attend")
-            Log.d("doubleValue", "classesRequired: $classesRequired" )
         }
         else if(percentageInt > requirementInt){
 
+            classesRequired=Math.floor(((100 * attendedInt)-(requirementInt * conductedInt))/requirementInt).toInt()
+            binding.classesRequired.setText(classesRequired.toString())
+            binding.classesRequiredStatus.setText("Classes be Missed")
 
+        }
+        else if(percentageInt == requirementInt){
+            binding.classesRequired.setText("0")
+            binding.classesRequiredStatus.setText("Classes be Missed")
         }
 
         if(classesRequired>=1000){
