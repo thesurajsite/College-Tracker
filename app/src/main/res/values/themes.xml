@@ -8,7 +8,7 @@
 
     <style name="Theme.CollegeTracker" parent="Base.Theme.CollegeTracker">
         <item name="android:statusBarColor">@color/purple</item>
-        <item name="android:navigationBarColor">@color/purple</item>
+        <item name="android:navigationBarColor">@color/white</item>
     </style>
 
 

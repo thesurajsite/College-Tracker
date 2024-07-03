@@ -3,7 +3,6 @@ package RecyclerView
 
 import Activities.MainActivity
 import Activities.add_update_activity
-import Activities.instructionsPage
 import AttendanceRoomDatabase.Attendance
 import AttendanceRoomDatabase.DatabaseHelper
 import android.app.Activity

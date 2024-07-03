@@ -143,8 +143,9 @@ class add_update_activity : AppCompatActivity() {
 
             //UPDATE BUTTON
             binding.updateButton.setOnClickListener {
-                vibrator?.vibrate(50)
+                vibrator.vibrate(50)
 
+                val subjectName=binding.subjectName.text.toString()
                 val conductedName=binding.conductedEt.text.toString()
                 val attendedName=binding.attendedEt.text.toString()
                 val percentageName=binding.percentage.text.toString()
@@ -155,7 +156,7 @@ class add_update_activity : AppCompatActivity() {
                 val dataToUpdate: Attendance = Attendance(
                     id=subjectID,
                     percentage = percentageName,
-                    subjectName = subjectName!!,
+                    subjectName = subjectName,
                     classesConducted = conductedName,
                     classesAttended = attendedName,
                     lastUpdated = currentTime,

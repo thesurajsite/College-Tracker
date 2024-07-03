@@ -2,12 +2,23 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_item1"
-        android:title="Item 1"
-        android:icon="@drawable/baseline_help_24"
+        android:id="@+id/Attendance_btmNavigation"
+        android:title="Attendance"
+        android:icon="@drawable/attendance"
         />
+
     <item
-        android:id="@+id/navigation_item2"
-        android:icon="@drawable/baseline_schedule_24"
-        android:title="Item 2" />
+        android:id="@+id/Schedule_btmNavigation"
+        android:title="Schedule"
+        android:icon="@drawable/schedule"
+         />
+
+
+<!--    <item-->
+<!--        android:id="@+id/Tasks_btmNavigation"-->
+<!--        android:title="Tasks"-->
+<!--        android:icon="@drawable/to_do"-->
+<!--         />-->
+
+
 </menu>

@@ -2,23 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/purple"
     tools:context="ScheduleFragments.MondayFragment">
 
-    <TextView
-        android:id="@+id/sunday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SUNDAY"
-        android:textSize="25dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/black"
-        android:fontFamily="@font/abel"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/SundayRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/sunday"
+        android:layout_marginTop="@dimen/_10sdp"
         android:visibility="visible"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,9 +21,9 @@
         android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="75dp"
         android:layout_marginRight="45dp"
-        android:backgroundTint="@color/purple"
+        android:backgroundTint="@color/white"
         />
 
 </RelativeLayout>

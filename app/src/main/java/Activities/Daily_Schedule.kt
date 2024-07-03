@@ -1,5 +1,6 @@
 package Activities
 
+import AttendanceRoomDatabase.Attendance
 import ScheduleFragments.scheduleViewPagerAdapter
 import ScheduleRoomDatabase.ScheduleDatabaseHelper
 import android.content.Context
@@ -11,6 +12,8 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.collegetracker.R
+import com.collegetracker.databinding.ActivityDailyScheduleBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Calendar
@@ -23,10 +26,15 @@ class Daily_Schedule : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_schedule2)
 
+        val bottomNavigation2=findViewById<BottomNavigationView>(R.id.bottomNavigation2)
+
         //THE ONLY CODE FOR VIEWPAGER
         val scheduleViewPager: ViewPager2 = findViewById(R.id.scheduleViewPager)
         val adapter = scheduleViewPagerAdapter(supportFragmentManager, lifecycle)
         scheduleViewPager.adapter=adapter
+
+        //OTHER ELEMENTS
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         // Set the desired offscreen page limit
         val newOffscreenLimit = 7
@@ -63,26 +71,28 @@ class Daily_Schedule : AppCompatActivity() {
             tab.text=tabNames[position]
         }.attach()
 
-        //OTHER ELEMENTS
-        val helpButton = findViewById<ImageView>(R.id.helpButton)
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-
-        // COMMANDS FOR HELP BUTTON AND SCHEDULE BUTTON
-        helpButton.setOnClickListener {
-            vibrator.vibrate(50)
-            val intent = Intent(this, instructionsPage::class.java)
-            startActivity(intent)
-        }
-
-        val scheduleButton = findViewById<ImageView>(R.id.scheduleButton)
-        scheduleButton.visibility = View.GONE
 
         // Set a custom PageTransformer for smooth sliding animation
         scheduleViewPager.setPageTransformer { page, position ->
             val absPosition = Math.abs(position)
             page.alpha = 1f - absPosition
             page.scaleY = 0.85f + 0.15f * (1f - absPosition)
+        }
+
+
+        // Bottom Navigation
+        bottomNavigation2.setSelectedItemId(R.id.Schedule_btmNavigation)
+        bottomNavigation2.setOnItemSelectedListener {
+
+            when(it.itemId){
+                R.id.Attendance_btmNavigation ->{
+                    vibrator.vibrate(50)
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+            }
+
+            return@setOnItemSelectedListener true
         }
 
     }

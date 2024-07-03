@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.collegetracker.R
+import com.collegetracker.databinding.ActivityMainBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     val UPDATE_CODE=1233
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var database: DatabaseHelper
     private lateinit var appUpdateManager: AppUpdateManager
     private val updateType= AppUpdateType.FLEXIBLE
@@ -55,7 +57,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding= ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         appUpdateManager=AppUpdateManagerFactory.create(applicationContext)
         if(updateType==AppUpdateType.FLEXIBLE){
@@ -75,10 +78,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         val floatingActionButton=findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val nothingToShowImage: ImageView = findViewById(R.id.nothingToShow)
-        val scheduleButton=findViewById<ImageView>(R.id.scheduleButton)
-        val helpButton=findViewById<ImageView>(R.id.helpButton)
-        val howToUse=findViewById<Button>(R.id.howToUse)
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
 
 
         recyclerView.layoutManager=LinearLayoutManager(this)
@@ -115,11 +116,11 @@ class MainActivity : AppCompatActivity() {
             if (arrAttendance.isEmpty()) {
                 recyclerView.visibility = View.GONE
                 nothingToShowImage.visibility = View.VISIBLE
-                howToUse.visibility=View.VISIBLE
+//                howToUse.visibility=View.VISIBLE
             } else {
                 recyclerView.visibility = View.VISIBLE
                 nothingToShowImage.visibility = View.GONE
-                howToUse.visibility=View.GONE
+//                howToUse.visibility=View.GONE
             }
 
         }
@@ -128,7 +129,7 @@ class MainActivity : AppCompatActivity() {
 
 
         floatingActionButton.setOnClickListener {
-            // Toast.makeText(this, "hii", Toast.LENGTH_SHORT).show()
+            vibrator.vibrate(50)
 
             val dialog = Dialog(this)
             dialog.setContentView(R.layout.add_update_layout)
@@ -146,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             val idTextView=dialog.findViewById<TextView>(R.id.id)
             val vibrator = dialog.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             deleteButton.visibility=View.INVISIBLE
-            vibrator.vibrate(50)
+
 
             // subjectName AND SIMILAR STORES THE STRING VALUES THAT WE GET FROM THE add_update_layout
             var subjectName: String = ""
@@ -236,11 +237,11 @@ class MainActivity : AppCompatActivity() {
                     if (arrAttendance.isEmpty()) {
                         recyclerView.visibility = View.GONE
                         nothingToShowImage.visibility = View.VISIBLE
-                        howToUse.visibility = View.VISIBLE
+//                        howToUse.visibility = View.VISIBLE
                     } else {
                         recyclerView.visibility = View.VISIBLE
                         nothingToShowImage.visibility = View.GONE
-                        howToUse.visibility = View.GONE
+//                        howToUse.visibility = View.GONE
                     }
 
                 } else {
@@ -260,24 +261,28 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        scheduleButton.setOnClickListener {
-            vibrator.vibrate(50)
-            val intent=Intent(this,Daily_Schedule::class.java)
-            startActivity(intent)
+
+        // Bottom Navigation
+        binding.bottomNavigation.setSelectedItemId(R.id.Attendance_btmNavigation)
+        binding.bottomNavigation.setOnItemSelectedListener {
+
+            when(it.itemId){
+                R.id.Schedule_btmNavigation ->{
+                    vibrator.vibrate(50)
+                    startActivity(Intent(this, Daily_Schedule::class.java))
+                    finish()
+                }
+            }
+
+            return@setOnItemSelectedListener true
         }
 
 
-        helpButton.setOnClickListener {
-            vibrator.vibrate(50)
-            val intent=Intent(this, instructionsPage::class.java)
-            startActivity(intent)
-        }
-
-        howToUse.setOnClickListener {
-            vibrator.vibrate(50)
-            val intent=Intent(this, instructionsPage::class.java)
-            startActivity(intent)
-        }
+//        howToUse.setOnClickListener {
+//            vibrator.vibrate(50)
+//            val intent=Intent(this, instructionsPage::class.java)
+//            startActivity(intent)
+//        }
     }
 
     private val installStateUpdateListener=InstallStateUpdatedListener{ state->

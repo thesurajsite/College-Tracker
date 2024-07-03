@@ -1,44 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/purple"
-    android:elevation="20dp"
-    android:id="@+id/ScheduleTitle"
-    app:title="Lecture Schedule"
-    android:gravity="center"
-    app:titleTextColor="@color/white"
-    style="@style/Schedule_Toolbar_Text"
-    app:titleTextAppearance="@style/Schedule_Toolbar_Text">
+    android:background="@color/purple">
 
-
-    <LinearLayout
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp">
-
-        <ImageView
-            android:id="@+id/scheduleButton"
-            android:layout_width="25dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_schedule_24"
-            android:layout_marginLeft="0dp"
-            android:visibility="invisible"
-            />
-
-        <ImageView
-            android:id="@+id/helpButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/baseline_help_24"
-            android:layout_marginLeft="20dp"
-            />
-
-
-    </LinearLayout>
-
-
+        android:text="Daily Schedule"
+        android:textSize="@dimen/_20sdp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/allerta_stencil"
+        android:layout_gravity="center_horizontal"/>
 
 </androidx.appcompat.widget.Toolbar>
