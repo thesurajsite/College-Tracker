@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         sharedPreferenceManager=sharedPreferenceManager(this)
 
 
-
         arrAttendance=ArrayList()
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         adapter = RecyclerAttendanceAdapter(this, arrAttendance)
@@ -260,19 +259,6 @@ class MainActivity : AppCompatActivity() {
 
 
         }
-
-//        arrAttendance.add(AttendenceModel("83%","Physics","30","25"))
-//        arrAttendance.add(AttendenceModel("75%","Chemistry","20","15"))
-//        arrAttendance.add(AttendenceModel("80%","Biology","25","20"))
-//        arrAttendance.add(AttendenceModel("75%","Math","16","12"))
-
-
-
-//        scheduleButton.setOnClickListener {
-//            vibrator.vibrate(50)
-//            val intent=Intent(this, DailySchedule::class.java)
-//            startActivity(intent)
-//        }
 
         scheduleButton.setOnClickListener {
             vibrator.vibrate(50)

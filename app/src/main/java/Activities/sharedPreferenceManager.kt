@@ -43,10 +43,6 @@ class sharedPreferenceManager(private val context : Context): SharedPreferenceHa
         editor.apply()
     }
 
-
-
-
-
     override fun getSharedPreferences(s: String, modePrivate: Int): SharedPreferences {
         return context.getSharedPreferences(s, modePrivate)
     }
