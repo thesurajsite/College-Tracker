@@ -1,7 +1,12 @@
 package Activities
 
 import AttendanceRoomDatabase.Attendance
+import AttendanceRoomDatabase.AttendanceDAO
+import AttendanceRoomDatabase.DatabaseHelper
+import RecyclerView.AttendenceModel
 import ScheduleFragments.scheduleViewPagerAdapter
+import ScheduleRecyclerView.ScheduleModel
+import ScheduleRoomDatabase.ScheduleDAO
 import ScheduleRoomDatabase.ScheduleDatabaseHelper
 import android.content.Context
 import android.content.Intent
@@ -10,21 +15,44 @@ import android.os.Vibrator
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityDailyScheduleBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class Daily_Schedule : AppCompatActivity() {
 
-    var database: ScheduleDatabaseHelper?=null
+    //var database: ScheduleDatabaseHelper?=null
+    private lateinit var scheduleDatabase: ScheduleDatabaseHelper
+    private lateinit var scheduleDAO: ScheduleDAO
+    val scheduleArray=ArrayList<ScheduleModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_schedule2)
+
+        // Database Initialization
+        scheduleDatabase= ScheduleDatabaseHelper.getDB(this)!!
+        scheduleDAO=scheduleDatabase.scheduleDao()
+        val scheduleList=scheduleDAO.getAllSchedule()
+
+
+        for (schedule in scheduleList) {
+            val subjectId = schedule.id
+            val day = schedule.day
+            val lecture = schedule.lecture
+            val time = schedule.time
+
+            // this ArrayList is used in all fragments
+            scheduleArray.add(ScheduleModel(subjectId, day, lecture, time))
+
+        }
 
         val bottomNavigation2=findViewById<BottomNavigationView>(R.id.bottomNavigation2)
 
@@ -78,6 +106,11 @@ class Daily_Schedule : AppCompatActivity() {
             page.alpha = 1f - absPosition
             page.scaleY = 0.85f + 0.15f * (1f - absPosition)
         }
+
+
+
+
+
 
 
         // Bottom Navigation

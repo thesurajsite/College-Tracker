@@ -1,5 +1,6 @@
 package ScheduleFragments
 
+import Activities.Daily_Schedule
 import Activities.sharedPreferenceManager
 import AttendanceRoomDatabase.Attendance
 import AttendanceRoomDatabase.DatabaseHelper
@@ -49,39 +50,26 @@ class ThursdayFragment : Fragment(), ScheduleItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_thursday, container, false)
 
-        //Initialization of Database
-        database= Room.databaseBuilder(requireContext(),
-            ScheduleDatabaseHelper::class.java,
-            "ScheduleDB").build()
+        // Initialization of ScheduleDatabase
+        database= ScheduleDatabaseHelper.getDB(context)!!
 
         //Initialization of Attendance RoomDatabase for AutoCompleteTextView
-        attDatabase=Room.databaseBuilder(requireContext(),
-            DatabaseHelper::class.java,
-            "AttendanceDB").build()
+        attDatabase=DatabaseHelper.getDB(context)!!
 
         //val arrScheduleThursday = ArrayList<ScheduleModel>()
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-//        // Clearing the RecyclerView Array and Re-Poulating it with the DataBase
-//        arrScheduleThursday.add(ScheduleModel(0, "thursday", "Mathematics", "09:00"))
-//        arrScheduleThursday.add(ScheduleModel(0, "thursday", "English", "10:00"))
-//        arrScheduleThursday.add(ScheduleModel(0, "thursday", "VEEES", "11:00"))
-//        arrScheduleThursday.add(ScheduleModel(0, "thursday", "Thermodynamics", "12:00"))
-//        arrScheduleThursday.add(ScheduleModel(0, "thursday", "---Thursday---", "01:00"))
-//        arrScheduleThursday.add(ScheduleModel(0, "thursday", "Geology", "02:00"))
+        val scheduleActivity = activity as Daily_Schedule
+        val scheduleArray= scheduleActivity.scheduleArray
 
-
-        lifecycleScope.launch {
+        lifecycleScope.launch{
             try {
-                val scheduleList = withContext(Dispatchers.IO) {
-                    database.scheduleDao().getAllSchedule()
-                        }
 
-                for (schedule in scheduleList) {
-                    val subjectId = schedule.id
+                for (schedule in scheduleArray) {
+                    val subjectId = schedule.subjectId
                     val day = schedule.day
-                    val lecture = schedule.lecture
+                    val lecture = schedule.subject
                     val time = schedule.time
 
                     if(day=="thursday") {
@@ -94,8 +82,6 @@ class ThursdayFragment : Fragment(), ScheduleItemClickListener {
                 e.printStackTrace()
             }
         }
-        //Toast.makeText(context, "hii", Toast.LENGTH_SHORT).show()
-
 
 
 

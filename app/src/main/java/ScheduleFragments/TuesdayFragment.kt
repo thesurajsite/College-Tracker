@@ -1,5 +1,6 @@
 package ScheduleFragments
 
+import Activities.Daily_Schedule
 import Activities.sharedPreferenceManager
 import AttendanceRoomDatabase.DatabaseHelper
 import ScheduleRecyclerView.RecyclerScheduleAdapter
@@ -48,38 +49,26 @@ class TuesdayFragment : Fragment(), ScheduleItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_tuesday, container, false)
 
-        //Initialization of Database
-        database= Room.databaseBuilder(requireContext(),
-            ScheduleDatabaseHelper::class.java,
-            "ScheduleDB").build()
+        // Initialization of ScheduleDatabase
+        database= ScheduleDatabaseHelper.getDB(context)!!
 
         //Initialization of Attendance RoomDatabase for AutoCompleteTextView
-        attDatabase=Room.databaseBuilder(requireContext(),
-            DatabaseHelper::class.java,
-            "AttendanceDB").build()
+        attDatabase=DatabaseHelper.getDB(context)!!
 
-      //  val arrScheduleTuesday = ArrayList<ScheduleModel>()
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-//        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "Mathematics", "09:00"))
-//        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "English", "10:00"))
-//        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "VEEES", "11:00"))
-//        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "Thermodynamics", "12:00"))
-//        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "---Tuesday---", "01:00"))
-//        arrScheduleTuesday.add(ScheduleModel(0, "tuesday", "Geology", "02:00"))
+        val scheduleActivity = activity as Daily_Schedule
+        val scheduleArray= scheduleActivity.scheduleArray
 
-
-        lifecycleScope.launch {
+        lifecycleScope.launch{
             try {
-                val scheduleList = withContext(Dispatchers.IO) { database.scheduleDao().getAllSchedule() }
 
-                for (schedule in scheduleList) {
-                    val subjectId = schedule.id
+                for (schedule in scheduleArray) {
+                    val subjectId = schedule.subjectId
                     val day = schedule.day
-                    val lecture = schedule.lecture
+                    val lecture = schedule.subject
                     val time = schedule.time
-
 
                     if(day=="tuesday") {
                         arrScheduleTuesday.add(ScheduleModel(subjectId, day, lecture, time))

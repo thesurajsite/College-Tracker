@@ -46,7 +46,8 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
     private var arrScheduleMonday = ArrayList<ScheduleModel>()
     private lateinit var scheduleAdapter: RecyclerScheduleAdapter
     private lateinit var database: ScheduleDatabaseHelper
-    private lateinit var attDatabase: DatabaseHelper //Attendance Database for AutoCompleteTextView
+    //Attendance Database for AutoCompleteTextView
+    private lateinit var attDatabase: DatabaseHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,36 +56,26 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
         // Inflate the layout for this fragment
         val view=inflater.inflate(R.layout.fragment_monday, container, false)
 
-        //Initialization of Database
-        database= Room.databaseBuilder(requireContext(),
-            ScheduleDatabaseHelper::class.java,
-            "ScheduleDB").build()
+        // Initialization of ScheduleDatabase
+        database= ScheduleDatabaseHelper.getDB(context)!!
 
         //Initialization of Attendance RoomDatabase for AutoCompleteTextView
-        attDatabase=Room.databaseBuilder(requireContext(),
-            DatabaseHelper::class.java,
-            "AttendanceDB").build()
+        attDatabase=DatabaseHelper.getDB(context)!!
 
 
-        //val arrScheduleMonday=ArrayList<ScheduleModel>()
         val floatingActionButton=view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
 
-//        arrScheduleMonday.add(ScheduleModel(0,"monday","Mathematics","09:00"))
-//        arrScheduleMonday.add(ScheduleModel(0,"monday","English","10:00"))
-//        arrScheduleMonday.add(ScheduleModel(0,"monday","VEEES","11:00"))
-//        arrScheduleMonday.add(ScheduleModel(0,"monday","Thermodynamics","12:00"))
-//        arrScheduleMonday.add(ScheduleModel(0,"monday","---Monday---","01:00"))
-//        arrScheduleMonday.add(ScheduleModel(0,"monday","Geology","02:00"))
+        val scheduleActivity = activity as Daily_Schedule
+        val scheduleArray= scheduleActivity.scheduleArray
 
         lifecycleScope.launch{
             try {
-                val scheduleList = withContext(Dispatchers.IO) { database.scheduleDao().getAllSchedule() }
 
-                for (schedule in scheduleList) {
-                    val subjectId = schedule.id
+                for (schedule in scheduleArray) {
+                    val subjectId = schedule.subjectId
                     val day = schedule.day
-                    val lecture = schedule.lecture
+                    val lecture = schedule.subject
                     val time = schedule.time
 
                     if(day=="monday") {
