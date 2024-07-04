@@ -48,6 +48,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
+    //Key Alias is alias123 for Keystore
 
     //ROOM DATABSE DEPENDENCIES
     val room_version = "2.6.1"
