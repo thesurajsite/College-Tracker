@@ -123,6 +123,12 @@ class Daily_Schedule : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
+
+                R.id.Tasks_btmNavigation ->{
+                    vibrator.vibrate(50)
+                    startActivity(Intent(this, TaskActivity::class.java))
+                    finish()
+                }
             }
 
             return@setOnItemSelectedListener true

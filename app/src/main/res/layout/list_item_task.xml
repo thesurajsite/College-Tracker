@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/taskRow"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="@dimen/_5sdp"
+    android:layout_marginRight="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    android:backgroundTint="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        android:layout_margin="@dimen/_12sdp">
+
+        <TextView
+            android:id="@+id/taskName"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:fontFamily="@font/abel"
+            android:text="Subject Name"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+
+
+    </LinearLayout>
+
+
+
+
+    <View
+        android:visibility="visible"
+        android:id="@+id/horizontalLine"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/purple"
+        app:layout_constraintBottom_toBottomOf="@+id/scheduleRow"
+        />
+
+
+
+
+
+</androidx.cardview.widget.CardView>

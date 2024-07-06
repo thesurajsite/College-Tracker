@@ -40,7 +40,7 @@ class RecyclerScheduleAdapter(val context: Context,
 
 
         return ViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.schedule_row, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.list_item_schedule, parent, false)
         )
 
     }

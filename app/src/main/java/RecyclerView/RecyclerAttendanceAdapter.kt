@@ -1,35 +1,26 @@
 package RecyclerView
 
 
-import Activities.MainActivity
 import Activities.add_update_activity
-import AttendanceRoomDatabase.Attendance
 import AttendanceRoomDatabase.DatabaseHelper
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Vibrator
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.collegetracker.R
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -75,7 +66,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
 
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.attendance_row, parent, false))
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item_attendance, parent, false))
 
     }
 

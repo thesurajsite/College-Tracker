@@ -13,12 +13,12 @@
         android:icon="@drawable/schedule"
          />
 
-
-<!--    <item-->
-<!--        android:id="@+id/Tasks_btmNavigation"-->
-<!--        android:title="Tasks"-->
-<!--        android:icon="@drawable/to_do"-->
-<!--         />-->
+    <item
+        android:id="@+id/Tasks_btmNavigation"
+        android:title="Tasks"
+        android:icon="@drawable/to_do"
+        android:iconTint="@color/black"
+         />
 
 
 </menu>
