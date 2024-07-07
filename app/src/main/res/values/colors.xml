@@ -7,15 +7,14 @@
     <color name="dark_grey">#FF2B2B2B</color>
     <color name="peace">#FFB366</color>
     <color name="light_white"> #60ffffff</color>
-    <color name="light_yellow">#Feff92</color>
     <color name="purple">#9C82F7</color>
     <color name="dark_purple">#573FA8</color>
     <color name="light_purple">#C9B9FF</color>
     <color name="green_color">#00FF00</color>
     <color name="red_color">#FF0000</color>
-    <color name="light_red">#FB7A8D</color>
-    <color name="light_pink">#FFB6C1</color>
-    <color name="light_green">#92ff96</color>
+    <color name="light_red">#FB9CAA</color>
+    <color name="light_yellow">#FFF7AA</color>
+    <color name="light_green">#B3FFB5</color>
 
 
 

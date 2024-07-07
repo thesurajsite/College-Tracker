@@ -42,32 +42,26 @@
             android:fontFamily="@font/abel"
             android:gravity="start"
             android:hint="Enter Task"
-            android:textColor="#FF404040"
-            android:textColorHint="#404040"
-            android:textSize="@dimen/_20sdp"
+            android:inputType="text"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_3sdp"/>
+            android:paddingBottom="@dimen/_3sdp"
+            android:textColor="#FF404040"
+            android:textColorHint="#404040"
+            android:textSize="@dimen/_20sdp" />
 
-
-        <EditText
+        <Spinner
             android:id="@+id/priority"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_20sdp"
             android:background="@drawable/custom_input"
-            android:fontFamily="@font/abel"
-            android:gravity="start"
-            android:hint="Set Priority"
-            android:textColor="#FF404040"
-            android:textColorHint="#404040"
-            android:textSize="@dimen/_20sdp"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_3sdp"/>
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="20dp"
+            />
+
 
         <EditText
             android:id="@+id/taskDetails"
@@ -80,8 +74,9 @@
             android:background="@drawable/custom_input"
             android:fontFamily="@font/abel"
             android:gravity="start"
-            android:padding="@dimen/_10sdp"
             android:hint="Task Details..."
+            android:inputType="text|textMultiLine"
+            android:padding="@dimen/_10sdp"
             android:textColor="#FF404040"
             android:textColorHint="#404040"
             android:textSize="@dimen/_20sdp" />
@@ -99,6 +94,27 @@
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
             android:textSize="@dimen/_20sdp"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/deleteButton"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            android:backgroundTint="@color/white"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/baseline_delete_24"
+                app:tint="@color/red_color"
+                android:padding="@dimen/_5sdp"/>
+
+
+        </androidx.cardview.widget.CardView>
 
 
     </LinearLayout>

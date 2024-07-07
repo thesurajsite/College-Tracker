@@ -13,6 +13,7 @@ import android.os.Vibrator
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -130,6 +131,7 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
     }
 
     override fun onItemClicked(task: TaskDataClass) {
+        vibrator.vibrate(50)
         val intent= Intent(this, AddUpdateTasks::class.java)
         intent.putExtra("current_task", task)
         updateTask.launch(intent)

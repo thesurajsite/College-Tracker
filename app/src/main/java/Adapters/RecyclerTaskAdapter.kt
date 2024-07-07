@@ -3,6 +3,7 @@ package Adapters
 import Models.TaskDataClass
 import Models.TaskViewModel
 import android.content.Context
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.collegetracker.R
 import com.google.android.gms.tasks.Task
@@ -50,23 +52,28 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
         holder.taskName.isSelected= true
 
 
-        if(currentTask.isComplete == true){
+        if(currentTask.isComplete == true)
             holder.checkbox.isChecked=true
-        }
-        else{
+        else
             holder.checkbox.isChecked=false
-        }
+
+
+        if(currentTask.priority=="Low")
+            holder.task_layout.backgroundTintList = ContextCompat.getColorStateList(context, R.color.light_green)
+        else if(currentTask.priority=="Medium")
+            holder.task_layout.backgroundTintList = ContextCompat.getColorStateList(context, R.color.light_yellow)
+        else if(currentTask.priority=="High")
+            holder.task_layout.backgroundTintList = ContextCompat.getColorStateList(context, R.color.light_red)
+        else holder.task_layout.backgroundTintList = ContextCompat.getColorStateList(context, R.color.white)
+
 
         holder.task_layout.setOnClickListener {
             listener.onItemClicked(TaskList[holder.adapterPosition])
         }
 
-        holder.task_layout.setOnLongClickListener {
-            listener.onLongItemClicked(TaskList[holder.adapterPosition], holder.task_layout)
-            true
-        }
         
         holder.checkbox.setOnClickListener {
+            holder.vibrator.vibrate(50)
             if(holder.checkbox.isChecked){
                 viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName, currentTask.priority, currentTask.taskDetails, true))
 
@@ -83,7 +90,7 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
         val task_layout=itemView.findViewById<CardView>(R.id.taskRow)
         val taskName=itemView.findViewById<TextView>(R.id.taskName)
         val checkbox= itemView.findViewById<CheckBox>(R.id.checkbox)
-
+        val vibrator = itemView.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     }
 
