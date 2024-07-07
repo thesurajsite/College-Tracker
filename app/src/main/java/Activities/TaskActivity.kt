@@ -13,6 +13,7 @@ import android.os.Vibrator
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,7 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
     lateinit var viewModel: TaskViewModel
     lateinit var adapter: RecyclerTaskAdapter
     lateinit var selectedTask: TaskDataClass
+    lateinit var vibrator: Vibrator
 
     private val updateTask= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
 
@@ -52,14 +54,15 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
         binding= ActivityTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-        // Initializing the UI
-        initUI()
+
 
         viewModel= ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application)).get(TaskViewModel::class.java)
 
+        // Initializing the UI
+        initUI()
 
         viewModel.allTasks.observe(this) { list->
 
@@ -99,9 +102,10 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
 
     private fun initUI() {
         binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
-        adapter= RecyclerTaskAdapter(this, this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter= RecyclerTaskAdapter(this, this, viewModel)
         binding.recyclerView.adapter= adapter
+
 
         val getContent= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
 
@@ -117,6 +121,7 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
         }
 
         binding.floatingActionButton.setOnClickListener {
+            vibrator.vibrate(50)
             val intent= Intent(this, AddUpdateTasks::class.java)
             getContent.launch(intent)
         }
@@ -134,6 +139,7 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
         selectedTask = task
         popUpDisplay(taskRow)
     }
+
 
     private fun popUpDisplay(taskRow: CardView) {
         val popup= PopupMenu(this, taskRow)

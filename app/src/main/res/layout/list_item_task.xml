@@ -18,12 +18,21 @@
         app:layout_constraintBaseline_toBottomOf="parent"
         android:layout_margin="@dimen/_12sdp">
 
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:backgroundTint="@color/purple"
+            android:button="@drawable/custom_checkbox"
+            android:checked="false"
+            android:background="@android:color/transparent" />
+
         <TextView
             android:id="@+id/taskName"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="3dp"
             android:fontFamily="@font/abel"
             android:text="Subject Name"
             android:textColor="@color/black"
