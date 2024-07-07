@@ -1,6 +1,6 @@
-package AttendanceRoomDatabase
+package Database
 
-import Database.TaskDAO
+import Models.Attendance
 import Models.TaskDataClass
 import android.content.Context
 import androidx.room.Database

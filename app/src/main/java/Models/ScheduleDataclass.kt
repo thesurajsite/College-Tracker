@@ -1,4 +1,4 @@
-package ScheduleRoomDatabase
+package Models
 
 
 import androidx.room.Entity

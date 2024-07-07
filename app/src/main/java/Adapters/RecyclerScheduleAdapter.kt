@@ -1,5 +1,6 @@
-package ScheduleRecyclerView
+package Adapters
 
+import Models.ScheduleModel
 import android.content.Context
 import android.os.Vibrator
 import android.view.LayoutInflater

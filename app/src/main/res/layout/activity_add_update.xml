@@ -45,16 +45,7 @@
                android:textColorHint="#404040"
                android:textSize="@dimen/_30sdp" />
 
-           <TextView
-               android:id="@+id/lastUpdated"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textColor="@color/white"
-               android:textSize="@dimen/_15sdp"
-               android:fontFamily="@font/abel"
-               android:text="Last Updated: "
-               android:layout_gravity="center_horizontal"
-               android:layout_marginTop="@dimen/_2sdp"/>
+
 
            <TextView
                android:layout_width="wrap_content"
@@ -68,7 +59,7 @@
                android:paddingLeft="@dimen/_3sdp"
                android:paddingRight="@dimen/_3sdp"
                android:layout_gravity="center_horizontal"
-               android:layout_marginTop="@dimen/_2sdp"/>
+               android:layout_marginTop="@dimen/_10sdp"/>
 
            <LinearLayout
                android:layout_width="wrap_content"
@@ -426,6 +417,18 @@
                    android:text="Update"
                    android:textColor="@color/white"
                    android:textSize="@dimen/_20sdp" />
+
+               <TextView
+                   android:id="@+id/lastUpdated"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:textColor="@color/black"
+                   android:textSize="@dimen/_15sdp"
+                   android:fontFamily="@font/abel"
+                   android:text="Last Updated: "
+                   android:layout_gravity="center_horizontal"
+                   android:layout_marginTop="@dimen/_3sdp"
+                   android:layout_marginBottom="@dimen/_3sdp"/>
 
 
            </LinearLayout>

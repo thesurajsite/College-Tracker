@@ -1,24 +1,16 @@
 package Activities
 
-import AttendanceRoomDatabase.Attendance
-import AttendanceRoomDatabase.DatabaseHelper
+import Models.Attendance
+import Database.DatabaseHelper
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Vibrator
-import android.util.Log
-import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
-import androidx.core.os.persistableBundleOf
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityAddUpdateBinding
-import com.collegetracker.databinding.ActivityMainBinding
-import com.collegetracker.databinding.ActivityMainBinding.bind
-import com.collegetracker.databinding.ActivityMainBinding.inflate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime

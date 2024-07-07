@@ -1,8 +1,9 @@
-package RecyclerView
+package Adapters
 
 
 import Activities.add_update_activity
-import AttendanceRoomDatabase.DatabaseHelper
+import Database.DatabaseHelper
+import Models.AttendenceModel
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context

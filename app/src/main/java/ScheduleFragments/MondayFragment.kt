@@ -2,17 +2,14 @@ package ScheduleFragments
 
 import Activities.Daily_Schedule
 import Activities.sharedPreferenceManager
-import AttendanceRoomDatabase.Attendance
-import AttendanceRoomDatabase.DatabaseHelper
-import RecyclerView.AttendenceModel
-import ScheduleRecyclerView.RecyclerScheduleAdapter
-import ScheduleRecyclerView.ScheduleItemClickListener
-import ScheduleRecyclerView.ScheduleModel
-import ScheduleRoomDatabase.ScheduleDatabaseHelper
-import ScheduleRoomDatabase.ScheduleDataclass
+import Database.DatabaseHelper
+import Adapters.RecyclerScheduleAdapter
+import Adapters.ScheduleItemClickListener
+import Models.ScheduleModel
+import Database.ScheduleDatabaseHelper
+import Models.ScheduleDataclass
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.Context.VIBRATOR_SERVICE
 import android.os.Bundle
 import android.os.Vibrator
@@ -21,25 +18,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import javax.security.auth.Subject
 
 class MondayFragment : Fragment(), ScheduleItemClickListener {
 
@@ -60,7 +51,7 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
         database= ScheduleDatabaseHelper.getDB(context)!!
 
         //Initialization of Attendance RoomDatabase for AutoCompleteTextView
-        attDatabase=DatabaseHelper.getDB(context)!!
+        attDatabase= DatabaseHelper.getDB(context)!!
 
 
         val floatingActionButton=view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
@@ -92,7 +83,7 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
 
 
         val mondayRecyclerView = view.findViewById<RecyclerView>(R.id.MondayRecyclerView)
-        scheduleAdapter=RecyclerScheduleAdapter(requireContext(), this ,arrScheduleMonday)
+        scheduleAdapter= RecyclerScheduleAdapter(requireContext(), this ,arrScheduleMonday)
         mondayRecyclerView.adapter=scheduleAdapter
         mondayRecyclerView.layoutManager= LinearLayoutManager(requireContext())
 

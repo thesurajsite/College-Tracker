@@ -1,12 +1,16 @@
-package ScheduleFragments
+package Adapters
 
-import android.util.Log
-import android.widget.Toast
+import ScheduleFragments.FridayFragment
+import ScheduleFragments.MondayFragment
+import ScheduleFragments.SaturdayFragment
+import ScheduleFragments.SundayFragment
+import ScheduleFragments.ThursdayFragment
+import ScheduleFragments.TuesdayFragment
+import ScheduleFragments.WednesdayFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import kotlin.coroutines.coroutineContext
 
 class scheduleViewPagerAdapter(
     fragmentManager: FragmentManager,

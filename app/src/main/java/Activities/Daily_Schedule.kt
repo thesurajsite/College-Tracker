@@ -1,28 +1,19 @@
 package Activities
 
-import AttendanceRoomDatabase.Attendance
-import AttendanceRoomDatabase.AttendanceDAO
-import AttendanceRoomDatabase.DatabaseHelper
-import RecyclerView.AttendenceModel
-import ScheduleFragments.scheduleViewPagerAdapter
-import ScheduleRecyclerView.ScheduleModel
-import ScheduleRoomDatabase.ScheduleDAO
-import ScheduleRoomDatabase.ScheduleDatabaseHelper
+import Adapters.scheduleViewPagerAdapter
+import Models.ScheduleModel
+import Database.ScheduleDAO
+import Database.ScheduleDatabaseHelper
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Vibrator
-import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.collegetracker.R
-import com.collegetracker.databinding.ActivityDailyScheduleBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class Daily_Schedule : AppCompatActivity() {

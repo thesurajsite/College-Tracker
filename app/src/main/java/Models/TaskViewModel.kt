@@ -1,6 +1,6 @@
 package Models
 
-import AttendanceRoomDatabase.DatabaseHelper
+import Database.DatabaseHelper
 import Database.Repository
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

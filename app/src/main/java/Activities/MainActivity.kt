@@ -1,16 +1,15 @@
 package Activities
 
-import AttendanceRoomDatabase.Attendance
-import AttendanceRoomDatabase.DatabaseHelper
-import RecyclerView.AttendenceModel
-import RecyclerView.RecyclerAttendanceAdapter
+import Models.Attendance
+import Database.DatabaseHelper
+import Models.AttendenceModel
+import Adapters.RecyclerAttendanceAdapter
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Vibrator
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -31,12 +30,9 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
-import com.google.android.play.core.ktx.startUpdateFlowForResult
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.time.Duration.Companion.seconds
@@ -52,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var arrAttendance:ArrayList<AttendenceModel>
     private lateinit var sharedPreferenceManager:sharedPreferenceManager
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter:RecyclerAttendanceAdapter
+    private lateinit var adapter: RecyclerAttendanceAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package ScheduleRecyclerView
+package Models
 
 class ScheduleModel(
     var subjectId: Int,

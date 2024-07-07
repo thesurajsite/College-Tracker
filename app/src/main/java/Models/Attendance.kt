@@ -1,4 +1,4 @@
-package AttendanceRoomDatabase
+package Models
 
 import androidx.room.Entity
 import androidx.room.Ignore

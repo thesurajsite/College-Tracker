@@ -1,10 +1,10 @@
-package ScheduleRoomDatabase
+package Database
+import Models.ScheduleDataclass
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import org.jetbrains.annotations.Async
 
 @Dao
 interface ScheduleDAO {

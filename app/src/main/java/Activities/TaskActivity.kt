@@ -1,7 +1,7 @@
 package Activities
 
 import Adapters.RecyclerTaskAdapter
-import AttendanceRoomDatabase.DatabaseHelper
+import Database.DatabaseHelper
 import Models.TaskDataClass
 import Models.TaskViewModel
 import android.app.Activity
@@ -11,19 +11,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Vibrator
 import android.view.MenuItem
-import android.widget.LinearLayout
 import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityTaskBinding
 

@@ -2,12 +2,12 @@ package ScheduleFragments
 
 import Activities.Daily_Schedule
 import Activities.sharedPreferenceManager
-import AttendanceRoomDatabase.DatabaseHelper
-import ScheduleRecyclerView.RecyclerScheduleAdapter
-import ScheduleRecyclerView.ScheduleItemClickListener
-import ScheduleRecyclerView.ScheduleModel
-import ScheduleRoomDatabase.ScheduleDatabaseHelper
-import ScheduleRoomDatabase.ScheduleDataclass
+import Database.DatabaseHelper
+import Adapters.RecyclerScheduleAdapter
+import Adapters.ScheduleItemClickListener
+import Models.ScheduleModel
+import Database.ScheduleDatabaseHelper
+import Models.ScheduleDataclass
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -26,13 +26,11 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.collegetracker.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class TuesdayFragment : Fragment(), ScheduleItemClickListener {
 
@@ -53,7 +51,7 @@ class TuesdayFragment : Fragment(), ScheduleItemClickListener {
         database= ScheduleDatabaseHelper.getDB(context)!!
 
         //Initialization of Attendance RoomDatabase for AutoCompleteTextView
-        attDatabase=DatabaseHelper.getDB(context)!!
+        attDatabase= DatabaseHelper.getDB(context)!!
 
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator

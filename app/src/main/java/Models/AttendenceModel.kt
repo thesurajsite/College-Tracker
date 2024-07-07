@@ -1,4 +1,4 @@
-package RecyclerView
+package Models
 
 class AttendenceModel (
     var subjectId: Int,

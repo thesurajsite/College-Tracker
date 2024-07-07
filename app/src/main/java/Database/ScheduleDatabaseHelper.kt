@@ -1,8 +1,6 @@
-package ScheduleRoomDatabase
+package Database
 
-import AttendanceRoomDatabase.DatabaseHelper
-import AttendanceRoomDatabase.DatabaseHelper.Companion.migration_5_6
-import AttendanceRoomDatabase.DatabaseHelper.Companion.migration_6_7
+import Models.ScheduleDataclass
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
