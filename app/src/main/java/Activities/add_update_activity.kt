@@ -189,7 +189,7 @@ class add_update_activity : AppCompatActivity() {
             classesRequired= Math.ceil((( requirementInt * conductedInt) - (100.0 * attendedInt))/(100.0- requirementInt)).toInt()
 
             binding.classesRequired.setText(classesRequired.toString())
-            binding.classesRequiredStatus.setText("Classes Must Attend")
+            binding.classesRequiredStatus.setText("Classes Needed")
 
             binding.classesRequiredCardview.setCardBackgroundColor(getResources().getColor(R.color.light_red));
 
