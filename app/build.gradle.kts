@@ -10,10 +10,10 @@ android {
 
     defaultConfig {
         applicationId = "com.collegetracker"
-        minSdk = 34
+        minSdk = 30
         //noinspection EditedTargetSdkVersion
-        targetSdk = 34
-        versionCode = 38
+        targetSdk = 35
+        versionCode = 40
         versionName = "3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -54,23 +54,20 @@ dependencies {
     //Key Alias is alias123 for Keystore
 
     //ROOM DATABSE DEPENDENCIES
-    val room_version = "2.6.1"
-
-    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-runtime:2.6.1")
     // To use Kotlin annotation processing tool (kapt)
-    kapt("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:2.6.1")
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-ktx:2.6.1")
 
     //DEPENDENCIES FROM GITHUB FOR COUROURITINE
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0-RC")
 
-    val lifecycle_version = "2.8.3"
-
+    
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
 
     //SDP DEPENDENCIES
     implementation ("com.intuit.sdp:sdp-android:1.1.0")

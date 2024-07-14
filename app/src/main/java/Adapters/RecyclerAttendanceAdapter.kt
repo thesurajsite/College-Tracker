@@ -35,7 +35,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         database = Room.databaseBuilder(
             context.applicationContext,
             DatabaseHelper::class.java,
-            "AttendanceDB"
+            "CollegeTracker_DB"
         ).build()
     }
 
