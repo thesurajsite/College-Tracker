@@ -4,6 +4,7 @@ import Models.Attendance
 import Database.DatabaseHelper
 import Models.AttendenceModel
 import Adapters.RecyclerAttendanceAdapter
+import Models.AttendanceViewModel
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -16,6 +17,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferenceManager:sharedPreferenceManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecyclerAttendanceAdapter
+    lateinit var viewModel: AttendanceViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

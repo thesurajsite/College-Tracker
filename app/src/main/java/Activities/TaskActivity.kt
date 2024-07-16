@@ -51,8 +51,6 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
 
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-
-
         viewModel= ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application)).get(TaskViewModel::class.java)
 
