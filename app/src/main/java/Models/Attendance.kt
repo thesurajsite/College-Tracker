@@ -1,24 +1,20 @@
 package Models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "attendance")
 data class Attendance(
-    @PrimaryKey (autoGenerate = true)
-    var id: Int,
-    var percentage: String,
-    var subjectName: String,
-    var classesConducted: String,
-    var classesAttended: String,
-    var lastUpdated: String,
-    var requirement: String) {
 
+    @PrimaryKey (autoGenerate = true) var id: Int,
+    @ColumnInfo(name = "percentage") var percentage: String,
+    @ColumnInfo(name = "subjectName") var subjectName: String,
+    @ColumnInfo(name = "classesConducted") var classesConducted: String,
+    @ColumnInfo(name = "classesAttended") var classesAttended: String,
+    @ColumnInfo(name = "lastUpdated") var lastUpdated: String,
+    @ColumnInfo(name = "requirement") var requirement: String
 
-    // Secondary constructor 2
-    @Ignore
-    constructor(percentage: String, subjectName: String, classesConducted: String, classesAttended: String, lastUpdated: String, requirement: String)
-            : this(0,percentage = percentage, subjectName = subjectName, classesConducted = classesConducted, classesAttended = classesAttended, lastUpdated=lastUpdated, requirement=requirement)
-
-}
+): Serializable
