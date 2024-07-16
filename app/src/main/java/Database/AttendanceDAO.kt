@@ -30,8 +30,8 @@ interface AttendanceDAO {
 //    @Query("DELETE FROM attendance WHERE id=:id")
 //    suspend fun deleteAttendance(id: Int)
 //
-//    @Query("SELECT DISTINCT subjectName from attendance WHERE subjectName IS NOT NULL")
-//    suspend fun getAllSubjectNames(): List<String>
+    @Query("SELECT DISTINCT subjectName from attendance WHERE subjectName IS NOT NULL")
+    suspend fun getAllSubjectNames(): List<String>
 
 
 

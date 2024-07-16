@@ -5,6 +5,7 @@ import Database.DatabaseHelper
 import Models.AttendenceModel
 import Adapters.RecyclerAttendanceAdapter
 import Models.AttendanceViewModel
+import android.app.Application
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: DatabaseHelper
     private lateinit var appUpdateManager: AppUpdateManager
     private val updateType= AppUpdateType.FLEXIBLE
-    private lateinit var arrAttendance:ArrayList<AttendenceModel>
+    private lateinit var arrAttendance:ArrayList<Attendance>
     private lateinit var sharedPreferenceManager:sharedPreferenceManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecyclerAttendanceAdapter
@@ -70,18 +71,20 @@ class MainActivity : AppCompatActivity() {
         database = DatabaseHelper.getDB(applicationContext) ?: throw IllegalStateException("Unable to create database instance")
         sharedPreferenceManager=sharedPreferenceManager(this)
 
+        viewModel=ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application))
+            .get(AttendanceViewModel::class.java)
 
         arrAttendance=ArrayList()
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        adapter = RecyclerAttendanceAdapter(this, arrAttendance)
+        adapter = RecyclerAttendanceAdapter(this, arrAttendance, viewModel)
         recyclerView.adapter = adapter
+        recyclerView.layoutManager=LinearLayoutManager(this)
         val floatingActionButton=findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val nothingToShowImage: ImageView = findViewById(R.id.nothingToShow)
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
 
 
-        recyclerView.layoutManager=LinearLayoutManager(this)
 
         //SHARED PREFERENCE FOR NEW USER, EXECUTES ONE TIME ONLY
         sharedPreferenceForNewUser()
@@ -89,42 +92,24 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
         refresh()
 
+        // POPULATE THE RECYCLERVIEW ON ACTIVITY STARTUP
+        viewModel.allAttendance.observe(this){ list->
+            list?.let {
+                arrAttendance.clear()
+                arrAttendance.addAll(list)
+                adapter.notifyDataSetChanged()
 
-
-
-        // Clearing the RecyclerView Array and Re-Populating it with the DataBase
-        GlobalScope.launch {
-            arrAttendance.clear()
-            var attendanceList=database.attendanceDao().getAllAttendance()
-
-            // Data entered in arrAttendance must be of the type: AttendanceModel
-            for (attendance in attendanceList) {  // line 46
-                val subjectId=attendance.id
-                val percentageString = attendance.percentage
-                val subjectName = attendance.subjectName
-                val conductedName = attendance.classesConducted
-                val attendedName = attendance.classesAttended
-                val lastUpdated=attendance.lastUpdated
-                val requirement=attendance.requirement
-
-                arrAttendance.add(AttendenceModel(subjectId, percentageString, subjectName, conductedName, attendedName, lastUpdated, requirement))
-            }
-
-
-            // VISIBILITY CONTROL FOR nothingToShow IMAGE
-            if (arrAttendance.isEmpty()) {
-                recyclerView.visibility = View.GONE
-                nothingToShowImage.visibility = View.VISIBLE
-//                howToUse.visibility=View.VISIBLE
-            } else {
-                recyclerView.visibility = View.VISIBLE
-                nothingToShowImage.visibility = View.GONE
-//                howToUse.visibility=View.GONE
+                //  VISIBILITY CONTROL FOR nothingToShow IMAGE
+                if (arrAttendance.isEmpty()) {
+                    recyclerView.visibility = View.GONE
+                    nothingToShowImage.visibility = View.VISIBLE
+                } else {
+                    recyclerView.visibility = View.VISIBLE
+                    nothingToShowImage.visibility = View.GONE
+                }
             }
 
         }
-
-
 
 
         floatingActionButton.setOnClickListener {
@@ -220,7 +205,7 @@ class MainActivity : AppCompatActivity() {
 
 
                     //Passing data to Attendence Array
-                    arrAttendance.add(AttendenceModel(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime, "75%"))
+                    arrAttendance.add(Attendance(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime, "75%"))
 
                     adapter.notifyItemChanged(arrAttendance.size - 1)
                     recyclerView.scrollToPosition(arrAttendance.size - 1)
@@ -373,9 +358,9 @@ class MainActivity : AppCompatActivity() {
             // Adding data to the Database
             val currentTime=currentTime().toString()
 
-            arrAttendance.add(AttendenceModel(1, "100%", "Subject 1", "10", "10", currentTime, "75%"))
-            arrAttendance.add(AttendenceModel(2, "60%", "Subject 2", "10", "6", currentTime, "75%"))
-            arrAttendance.add(AttendenceModel(3, "40%", "Subject 3", "10", "4", currentTime, "75%"))
+            arrAttendance.add(Attendance(1, "100%", "Subject 1", "10", "10", currentTime, "75%"))
+            arrAttendance.add(Attendance(2, "60%", "Subject 2", "10", "6", currentTime, "75%"))
+            arrAttendance.add(Attendance(3, "40%", "Subject 3", "10", "4", currentTime, "75%"))
 
             GlobalScope.launch {
                 database.attendanceDao().insertAttendance(Attendance(1, "100%", "Subject 1", "10", "10", currentTime, "75%"))

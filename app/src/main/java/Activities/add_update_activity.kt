@@ -156,9 +156,9 @@ class add_update_activity : AppCompatActivity() {
                 )
 
 
-                GlobalScope.launch {
-                    database.attendanceDao().updateAttendance(dataToUpdate)
-                }
+//                GlobalScope.launch {
+//                    database.attendanceDao().updateAttendance(dataToUpdate)
+//                }
 
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()

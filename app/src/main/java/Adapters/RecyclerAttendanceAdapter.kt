@@ -3,6 +3,8 @@ package Adapters
 
 import Activities.add_update_activity
 import Database.DatabaseHelper
+import Models.Attendance
+import Models.AttendanceViewModel
 import Models.AttendenceModel
 import android.app.Activity
 import android.app.AlertDialog
@@ -25,7 +27,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayList<AttendenceModel>) : RecyclerView.Adapter<RecyclerAttendanceAdapter.ViewHolder>() {
+class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayList<Attendance>, private val viewModel: AttendanceViewModel)
+    : RecyclerView.Adapter<RecyclerAttendanceAdapter.ViewHolder>() {
 
 
     //Initialization of Database
@@ -43,7 +46,6 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
 
-
         // subject, conductNumber, attendNumber (FROM THE attendance_row LAYOUT)
         val percentage=itemView.findViewById<TextView>(R.id.percentage)
         val subject = itemView.findViewById<TextView>(R.id.subject)
@@ -55,7 +57,6 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         val recyclerLayout=itemView.findViewById<LinearLayout>(R.id.recyclerLayout)
         //VIBRATOR VIBRATOR VIBRATOR
         val vibrator = itemView.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
 
 
     }
@@ -75,10 +76,12 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        val currentSubject= arrAttendance[position]
+
         holder.percentage.text=arrAttendance[position].percentage
-        holder.subject.text=arrAttendance[position].subject
-        holder.attendNumber.text=arrAttendance[position].attended
-        holder.conductNumber.text=arrAttendance[position].conducted
+        holder.subject.text=arrAttendance[position].subjectName
+        holder.attendNumber.text=arrAttendance[position].classesAttended
+        holder.conductNumber.text=arrAttendance[position].classesConducted
 
         holder.progressBar.apply {
             val percentFloat=arrAttendance[position].percentage.replace("%","").toFloat()
@@ -89,10 +92,10 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         holder.recyclerLayout.setOnClickListener {
             holder.vibrator.vibrate(50)
             val intent= Intent(context, add_update_activity::class.java)
-            intent.putExtra("subjectId",arrAttendance[position].subjectId)
-            intent.putExtra("subject",arrAttendance[position].subject)
-            intent.putExtra("conducted",arrAttendance[position].conducted)
-            intent.putExtra("attended",arrAttendance[position].attended)
+            intent.putExtra("subjectId",arrAttendance[position].id)
+            intent.putExtra("subject",arrAttendance[position].subjectName)
+            intent.putExtra("conducted",arrAttendance[position].classesConducted)
+            intent.putExtra("attended",arrAttendance[position].classesAttended)
             intent.putExtra("lastUpdated", arrAttendance[position].lastUpdated)
             intent.putExtra("requirement", arrAttendance[position].requirement)
             context.startActivity(intent)
@@ -113,14 +116,10 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                     "Yes"
                 ) { dialogInterface, i ->
                     try {
-                        val subjectId: Int =arrAttendance[position].subjectId
-                        arrAttendance.removeAt(position)
+
+                        viewModel.deleteAttendance(currentSubject)
                         notifyItemRemoved(position)
 
-                        //DELETING FROM DATABASE
-                        GlobalScope.launch {
-                            database.attendanceDao().deleteAttendance(subjectId)
-                        }
 
                     } catch (e: Exception) {
                         Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
