@@ -12,14 +12,28 @@
         android:id="@+id/toolbar"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:visibility="visible"
-        android:layout_marginTop="@dimen/_10sdp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:listitem="@layout/list_item_task"/>
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/list_item_task"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

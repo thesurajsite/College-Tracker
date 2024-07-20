@@ -70,7 +70,8 @@
         android:id="@+id/scheduleViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/scheduleTabLayout"/>
+        android:layout_below="@id/scheduleTabLayout"
+        android:layout_above="@id/bottomNavigation2"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation2"

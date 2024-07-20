@@ -117,6 +117,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                 ) { dialogInterface, i ->
                     try {
 
+                        Toast.makeText(context, "Subject Deleted", Toast.LENGTH_SHORT).show()
                         viewModel.deleteAttendance(currentSubject)
                         notifyItemRemoved(position)
 

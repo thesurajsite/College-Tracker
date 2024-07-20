@@ -196,24 +196,12 @@ class MainActivity : AppCompatActivity() {
 
                     val currentTime=currentTime().toString()
 
-                    var attendanceID=sharedPreferenceManager.getAttendanceID()
+                    // Adding Attendance
+                    viewModel.insertAttendance(Attendance(0, percentageString, subjectName, conductedName, attendedName, currentTime, "75%"))
 
-                    // Adding data to the Database
-                    GlobalScope.launch {
-                        database.attendanceDao().insertAttendance(Attendance(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime, "75%"))
-                    }
-
-
-                    //Passing data to Attendence Array
-                    arrAttendance.add(Attendance(attendanceID, percentageString, subjectName, conductedName, attendedName, currentTime, "75%"))
 
                     adapter.notifyItemChanged(arrAttendance.size - 1)
                     recyclerView.scrollToPosition(arrAttendance.size - 1)
-//                    Toast.makeText(this, attendanceID.toString(), Toast.LENGTH_SHORT).show()
-
-                    idTextView.setText(attendanceID.toString())
-                    attendanceID++
-                    sharedPreferenceManager.updateAttendanceID(attendanceID)
 
                     dialog.dismiss()
 
@@ -221,11 +209,9 @@ class MainActivity : AppCompatActivity() {
                     if (arrAttendance.isEmpty()) {
                         recyclerView.visibility = View.GONE
                         nothingToShowImage.visibility = View.VISIBLE
-//                        howToUse.visibility = View.VISIBLE
                     } else {
                         recyclerView.visibility = View.VISIBLE
                         nothingToShowImage.visibility = View.GONE
-//                        howToUse.visibility = View.GONE
                     }
 
                 } else {
@@ -267,12 +253,6 @@ class MainActivity : AppCompatActivity() {
             return@setOnItemSelectedListener true
         }
 
-
-//        howToUse.setOnClickListener {
-//            vibrator.vibrate(50)
-//            val intent=Intent(this, instructionsPage::class.java)
-//            startActivity(intent)
-//        }
     }
 
     private val installStateUpdateListener=InstallStateUpdatedListener{ state->

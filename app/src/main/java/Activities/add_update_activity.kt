@@ -2,13 +2,16 @@ package Activities
 
 import Models.Attendance
 import Database.DatabaseHelper
+import Models.AttendanceViewModel
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Vibrator
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.ViewModelProvider
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityAddUpdateBinding
 import kotlinx.coroutines.GlobalScope
@@ -20,6 +23,8 @@ class add_update_activity : AppCompatActivity() {
 
     private lateinit var database: DatabaseHelper
     lateinit var binding:ActivityAddUpdateBinding
+    lateinit var viewModel: AttendanceViewModel
+
     @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,10 @@ class add_update_activity : AppCompatActivity() {
 
         //Initialization of Database
         database = DatabaseHelper.getDB(applicationContext) ?: throw IllegalStateException("Unable to create database instance")
+
+        // Attendance ViewModel
+        viewModel= ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application))
+            .get(AttendanceViewModel::class.java)
 
         //Receiving subject data through intent
         val subjectID=intent.getIntExtra("subjectId",1)
@@ -61,13 +70,6 @@ class add_update_activity : AppCompatActivity() {
 
             //CASSES REQUIRED CALCULATION
             classesRequired(conducted, attended, percentage ,requirement)
-
-
-
-//            Log.d("doubleValue", "conducted: $conductedInt" )
-//            Log.d("doubleValue", "attended: $attendedInt" )
-//            Log.d("doubleValue", "percentage: $percentageInt" )
-//            Log.d("doubleValue", "requirement: $requirementInt" )
 
 
             binding.minusConducted.setOnClickListener {
@@ -144,21 +146,7 @@ class add_update_activity : AppCompatActivity() {
                 val requirementName=binding.requirementEt.text.toString()
                 val currentTime=currentTime().toString()
 
-
-                val dataToUpdate: Attendance = Attendance(
-                    id=subjectID,
-                    percentage = percentageName,
-                    subjectName = subjectName,
-                    classesConducted = conductedName,
-                    classesAttended = attendedName,
-                    lastUpdated = currentTime,
-                    requirement = requirementName
-                )
-
-
-//                GlobalScope.launch {
-//                    database.attendanceDao().updateAttendance(dataToUpdate)
-//                }
+                viewModel.updateAttendance(Attendance(subjectID, percentageName, subjectName, conductedName, attendedName, currentTime, requirementName))
 
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
