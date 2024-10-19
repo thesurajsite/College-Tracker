@@ -26,6 +26,4 @@ interface AttendanceDAO {
     @Query("SELECT DISTINCT subjectName from attendance WHERE subjectName IS NOT NULL")
     suspend fun getAllSubjectNames(): List<String>
 
-
-
 }
