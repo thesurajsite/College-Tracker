@@ -22,6 +22,7 @@ class Daily_Schedule : AppCompatActivity() {
     private lateinit var scheduleDatabase: ScheduleDatabaseHelper
     private lateinit var scheduleDAO: ScheduleDAO
     val scheduleArray=ArrayList<ScheduleModel>()
+    private lateinit var sharedPreferenceManager:sharedPreferenceManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,8 @@ class Daily_Schedule : AppCompatActivity() {
         scheduleDatabase= ScheduleDatabaseHelper.getDB(this)!!
         scheduleDAO=scheduleDatabase.scheduleDao()
         val scheduleList=scheduleDAO.getAllSchedule()
+
+        sharedPreferenceManager=sharedPreferenceManager(this)
 
 
         for (schedule in scheduleList) {
@@ -111,12 +114,14 @@ class Daily_Schedule : AppCompatActivity() {
             when(it.itemId){
                 R.id.Attendance_btmNavigation ->{
                     vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(1)
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
 
                 R.id.Tasks_btmNavigation ->{
                     vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(3)
                     startActivity(Intent(this, TaskActivity::class.java))
                     finish()
                 }

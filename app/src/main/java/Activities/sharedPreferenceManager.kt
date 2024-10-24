@@ -43,6 +43,19 @@ class sharedPreferenceManager(private val context : Context): SharedPreferenceHa
         editor.apply()
     }
 
+    // which Activity to open when the app starts
+    override fun getNavigationCode(): Int {
+        val pref: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        return pref.getInt("navigationCode", 1)
+    }
+
+    override fun updateNavigationCode(activityInt: Int) {
+        val pref: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putInt("navigationCode", activityInt)
+        editor.apply()
+    }
+
     override fun getSharedPreferences(s: String, modePrivate: Int): SharedPreferences {
         return context.getSharedPreferences(s, modePrivate)
     }

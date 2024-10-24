@@ -14,6 +14,8 @@ interface SharedPreferenceHandler {
     fun getUserVersion(): Int
     fun updateUserVersion(updatedVersion: Int)
 
+    fun getNavigationCode(): Int
+    fun updateNavigationCode(activityInt: Int)
 
     fun getSharedPreferences(s: String, modePrivate: Int): SharedPreferences
 

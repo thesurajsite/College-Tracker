@@ -85,6 +85,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        // SHARED PREFERENCES FOR WHICH ACTIVITY TO OPEN ON STARTUP
+        openStartupActivity()
+
 
         //SHARED PREFERENCE FOR NEW USER, EXECUTES ONE TIME ONLY
         sharedPreferenceForNewUser()
@@ -252,6 +255,24 @@ class MainActivity : AppCompatActivity() {
 
             return@setOnItemSelectedListener true
         }
+
+    }
+
+    fun openStartupActivity() {
+
+        val activityCode =  sharedPreferenceManager.getNavigationCode()
+        if(activityCode==1){
+            // MainAcvity Remains Open
+        }
+        else if(activityCode==2){
+            val intent = Intent(this, Daily_Schedule::class.java)
+            startActivity(intent)
+        }
+        else if(activityCode==3){
+            val intent = Intent(this, TaskActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 

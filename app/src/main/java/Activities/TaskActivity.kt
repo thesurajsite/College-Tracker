@@ -29,6 +29,7 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
     lateinit var adapter: RecyclerTaskAdapter
     lateinit var selectedTask: TaskDataClass
     lateinit var vibrator: Vibrator
+    private lateinit var sharedPreferenceManager:sharedPreferenceManager
 
     private val updateTask= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
 
@@ -50,6 +51,7 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
         setContentView(binding.root)
 
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        sharedPreferenceManager=sharedPreferenceManager(this)
 
         viewModel= ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application))
             .get(TaskViewModel::class.java)
@@ -74,12 +76,14 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
 
                 R.id.Attendance_btmNavigation ->{
                     vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(1)
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
 
                 R.id.Schedule_btmNavigation ->{
                     vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(2)
                     startActivity(Intent(this, Daily_Schedule::class.java))
                     finish()
                 }
