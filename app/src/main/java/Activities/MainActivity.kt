@@ -242,12 +242,14 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.Schedule_btmNavigation ->{
                     vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(2)
                     startActivity(Intent(this, Daily_Schedule::class.java))
                     finish()
                 }
 
                 R.id.Tasks_btmNavigation ->{
                     vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(3)
                     startActivity(Intent(this, TaskActivity::class.java))
                     finish()
                 }
