@@ -40,9 +40,9 @@ class NotificationReceiver : BroadcastReceiver() {
         )
 
         val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.book_icon) // Replace with your app's icon
+            .setSmallIcon(R.drawable.logo) // Replace with your app's icon
             .setContentTitle("Attendance Reminder")
-            .setContentText("Hey, Update your Attendance to track Efficiently")
+            .setContentText("Hey, Did you update today's Attendance? Update now to get some extra grades :)")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true) // Automatically remove the notification when clicked

@@ -12,8 +12,8 @@ import java.util.Calendar
 fun createNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val channelId = "daily_notification_channel"
-        val channelName = "Daily Notifications"
-        val description = "Channel for daily 5 PM notifications"
+        val channelName = "Attendance Reminder Notifications"
+        val description = "Channel to Remind to update Attendance"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(channelId, channelName, importance).apply {
             this.description = description
@@ -28,13 +28,9 @@ fun createNotificationChannel(context: Context) {
 fun scheduleDailyNotification(context: Context) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    scheduleNotification(context, alarmManager, 18, 10, 1)
-    scheduleNotification(context, alarmManager, 18, 20, 2)
-    scheduleNotification(context, alarmManager, 18, 30, 3)
-    scheduleNotification(context, alarmManager, 19, 0, 4)
-    scheduleNotification(context, alarmManager, 19, 30, 5)
-    scheduleNotification(context, alarmManager, 20, 0, 6)
-    scheduleNotification(context, alarmManager, 20, 30, 7)
+    scheduleNotification(context, alarmManager, 13, 0, 1)
+    scheduleNotification(context, alarmManager, 17, 0, 2)
+    scheduleNotification(context, alarmManager, 20, 0, 3)
 
 }
 
@@ -65,7 +61,6 @@ fun scheduleNotification(context: Context, alarmManager: AlarmManager, hours:Int
         AlarmManager.INTERVAL_DAY,
         pendingIntent
     )
-
 
 
 }
