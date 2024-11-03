@@ -39,7 +39,6 @@ class NotificationReceiver : BroadcastReceiver() {
             context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.book_icon) // Replace with your app's icon
             .setContentTitle("Attendance Reminder")
