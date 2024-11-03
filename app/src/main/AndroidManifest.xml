@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CollegeTracker"
         tools:targetApi="31">
+
+<!--    NOTIFICATION BROADCAST RECEIVER-->
+        <receiver android:name="Notifications.NotificationReceiver" />
+
         <activity
             android:name="Activities.AddUpdateTasks"
             android:exported="false" />

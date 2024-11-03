@@ -5,10 +5,14 @@ import Database.DatabaseHelper
 import Models.AttendenceModel
 import Adapters.RecyclerAttendanceAdapter
 import Models.AttendanceViewModel
+import Notifications.PermissionManager
+import Notifications.createNotificationChannel
+import Notifications.scheduleDailyNotification
 import android.app.Application
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Vibrator
 import android.view.View
@@ -53,12 +57,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecyclerAttendanceAdapter
     lateinit var viewModel: AttendanceViewModel
+    private lateinit var permissionManager: PermissionManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        permissionManager = PermissionManager(this)
 
         appUpdateManager=AppUpdateManagerFactory.create(applicationContext)
         if(updateType==AppUpdateType.FLEXIBLE){
@@ -67,13 +74,15 @@ class MainActivity : AppCompatActivity() {
 
         checkForAppUpdate()
 
-//        //Initialization of Database
+        //Initialization of Database
         database = DatabaseHelper.getDB(applicationContext) ?: throw IllegalStateException("Unable to create database instance")
         sharedPreferenceManager=sharedPreferenceManager(this)
 
+        // ViewModel
         viewModel=ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application))
             .get(AttendanceViewModel::class.java)
 
+        // RecyclerView and ArrayList
         arrAttendance=ArrayList()
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         adapter = RecyclerAttendanceAdapter(this, arrAttendance, viewModel)
@@ -87,10 +96,20 @@ class MainActivity : AppCompatActivity() {
 
         // SHARED PREFERENCES FOR WHICH ACTIVITY TO OPEN ON STARTUP
         openStartupActivity()
-
-
         //SHARED PREFERENCE FOR NEW USER, EXECUTES ONE TIME ONLY
         sharedPreferenceForNewUser()
+
+        // Notifications
+        if (permissionManager.hasNotificationPermission()) {
+            // Create Notifications Channel
+            createNotificationChannel(this)
+            // Schedule Daily Notifications
+            scheduleDailyNotification(this)
+        } else {
+            permissionManager.requestNotificationPermission(this)
+        }
+
+
         adapter.notifyItemChanged(arrAttendance.size-1)
         adapter.notifyDataSetChanged()
         refresh()
@@ -385,4 +404,20 @@ class MainActivity : AppCompatActivity() {
     private fun refresh(){
         adapter.notifyItemChanged(arrAttendance.size-1)
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PermissionManager.REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, show notification
+                // Create Notifications Channel
+                createNotificationChannel(this)
+                // Schedule Daily Notifications
+                scheduleDailyNotification(this)
+            } else {
+                // Permission Denied
+            }
+        }
+    }
+
 }
