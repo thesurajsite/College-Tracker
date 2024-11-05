@@ -1,5 +1,6 @@
 package Notifications
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -31,11 +32,10 @@ fun scheduleDailyNotification(context: Context) {
     scheduleNotification(context, alarmManager, 13, 0, 1)
     scheduleNotification(context, alarmManager, 17, 0, 2)
     scheduleNotification(context, alarmManager, 20, 0, 3)
-
 }
 
-fun scheduleNotification(context: Context, alarmManager: AlarmManager, hours:Int, minutes:Int, requestCode:Int){
-
+@SuppressLint("ScheduleExactAlarm")
+fun scheduleNotification(context: Context, alarmManager: AlarmManager, hours: Int, minutes: Int, requestCode: Int) {
     val intent = Intent(context, NotificationReceiver::class.java)
     val pendingIntent = PendingIntent.getBroadcast(
         context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
@@ -53,14 +53,10 @@ fun scheduleNotification(context: Context, alarmManager: AlarmManager, hours:Int
         }
     }
 
-
-    // Schedule repeating alarm for 6 pm
-    alarmManager.setRepeating(
+    // Set exact alarm to fire at the specified time
+    alarmManager.setExactAndAllowWhileIdle(
         AlarmManager.RTC_WAKEUP,
         calendar.timeInMillis,
-        AlarmManager.INTERVAL_DAY,
         pendingIntent
     )
-
-
 }

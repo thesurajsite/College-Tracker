@@ -101,13 +101,18 @@ class MainActivity : AppCompatActivity() {
 
         // Notifications
         if (permissionManager.hasNotificationPermission()) {
-            // Create Notifications Channel
-            createNotificationChannel(this)
-            // Schedule Daily Notifications
-            scheduleDailyNotification(this)
+            if (permissionManager.hasExactAlarmPermission()) {
+                // Create Notifications Channel
+                createNotificationChannel(this)
+                // Schedule Daily Notifications
+                scheduleDailyNotification(this)
+            } else {
+                permissionManager.requestExactAlarmPermission(this)
+            }
         } else {
             permissionManager.requestNotificationPermission(this)
         }
+
 
 
         adapter.notifyItemChanged(arrAttendance.size-1)
@@ -409,15 +414,23 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionManager.REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, show notification
-                // Create Notifications Channel
-                createNotificationChannel(this)
-                // Schedule Daily Notifications
-                scheduleDailyNotification(this)
+                // Notification permission granted
+                // Check for exact alarm permission before scheduling notifications
+                if (permissionManager.hasExactAlarmPermission()) {
+                    // Create Notifications Channel
+                    createNotificationChannel(this)
+                    // Schedule Daily Notifications
+                    scheduleDailyNotification(this)
+                } else {
+                    // Request exact alarm permission if it's not granted
+                    permissionManager.requestExactAlarmPermission(this)
+                }
             } else {
-                // Permission Denied
+                // Notification permission denied
+                // Handle the case where the user denied the notification permission
             }
         }
     }
+
 
 }
