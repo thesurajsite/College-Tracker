@@ -4,6 +4,9 @@ import Models.Attendance
 import Database.DatabaseHelper
 import Models.AttendenceModel
 import Adapters.RecyclerAttendanceAdapter
+import Functions.ForNewUser
+import Functions.GoogleAuthentication
+import Functions.StartupActivity
 import Models.AttendanceViewModel
 import Notifications.PermissionManager
 import Notifications.createNotificationChannel
@@ -62,8 +65,6 @@ import kotlin.time.Duration.Companion.seconds
 
 class MainActivity : AppCompatActivity() {
 
-    val UPDATE_CODE=1233
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: DatabaseHelper
     private lateinit var appUpdateManager: AppUpdateManager
@@ -73,17 +74,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecyclerAttendanceAdapter
     lateinit var viewModel: AttendanceViewModel
-    private lateinit var permissionManager: PermissionManager
-    lateinit var auth: FirebaseAuth
+
+    val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val permissionManager: PermissionManager by lazy { PermissionManager(this) }
     private val db: FirebaseFirestore by lazy { Firebase.firestore}
+    private val googleAuthentication: GoogleAuthentication by lazy { GoogleAuthentication(this) }
+    private val startupActivity: StartupActivity by lazy { StartupActivity(this) }
+    private val forNewUser: ForNewUser by lazy { ForNewUser(this) }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        permissionManager = PermissionManager(this)
 
         appUpdateManager=AppUpdateManagerFactory.create(applicationContext)
         if(updateType==AppUpdateType.FLEXIBLE){
@@ -109,25 +113,14 @@ class MainActivity : AppCompatActivity() {
         val floatingActionButton=findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val nothingToShowImage: ImageView = findViewById(R.id.nothingToShow)
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        auth=FirebaseAuth.getInstance()
         val googleCardView = findViewById<CardView>(R.id.GoogleCardView)
         val profileImage = findViewById<ImageView>(R.id.profileImage)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val USER_ID= auth.currentUser?.uid.toString()
 
-        //Google Authentication
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.web_client_id))
-            .requestEmail()
-            .build()
 
-        val googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-
-        // SHARED PREFERENCES FOR WHICH ACTIVITY TO OPEN ON STARTUP
-        openStartupActivity()
-        //SHARED PREFERENCE FOR NEW USER, EXECUTES ONE TIME ONLY
-        sharedPreferenceForNewUser()
+        startupActivity.openStartupActivity(this)  //SHARED PREFERENCES FOR WHICH ACTIVITY TO OPEN ON STARTUP
+        forNewUser.sharedPreferenceForNewUser(this, arrAttendance, database, adapter) //SHARED PREFERENCE FOR NEW USER, EXECUTES ONE TIME ONLY
 
         // Notifications
         if (permissionManager.hasNotificationPermission()) {
@@ -217,40 +210,7 @@ class MainActivity : AppCompatActivity() {
 
         googleCardView.setOnClickListener {
             vibrator.vibrate(50)
-
-            val user = auth.currentUser
-            if(user==null){
-                googleSignInClient.signOut()
-                startActivityForResult(googleSignInClient.signInIntent, 123)
-            }
-            else{
-                val builder = AlertDialog.Builder(this)
-                    .setTitle("Logout")
-                    .setIcon(R.drawable.baseline_logout_24)
-                    .setMessage("Do you want to Logout ?")
-                    .setPositiveButton(
-                        "Yes"
-                    ) { dialogInterface, i ->
-                        try {
-
-                            Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show()
-                            auth.signOut()
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-
-
-                        } catch (e: Exception) {
-                            Toast.makeText(this, "Something Went Wrong", Toast.LENGTH_SHORT).show()
-                            Log.w("crash-attendance", e)
-                        }
-
-                    }.setNegativeButton("No")
-                    { dialogInterface, i ->
-                        TODO()
-                    }
-                builder.show()
-            }
+            googleAuthentication.googleAuth(this)
         }
 
 
@@ -418,24 +378,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun openStartupActivity() {
-
-        val activityCode =  sharedPreferenceManager.getNavigationCode()
-        if(activityCode==1){
-            // MainAcvity Remains Open
-        }
-        else if(activityCode==2){
-            val intent = Intent(this, Daily_Schedule::class.java)
-            startActivity(intent)
-        }
-        else if(activityCode==3){
-            val intent = Intent(this, TaskActivity::class.java)
-            startActivity(intent)
-        }
-
-
-    }
-
     private val installStateUpdateListener=InstallStateUpdatedListener{ state->
         if(state.installStatus()==InstallStatus.DOWNLOADED){
             Toast.makeText(applicationContext, "Update Successful, Restarting in 5 Seconds", Toast.LENGTH_LONG).show()
@@ -460,7 +402,7 @@ class MainActivity : AppCompatActivity() {
                     info,
                     updateType,
                     this,
-                    UPDATE_CODE
+                    1233
                 )
             }
 
@@ -476,7 +418,7 @@ class MainActivity : AppCompatActivity() {
                         info,
                         updateType,
                         this,
-                        UPDATE_CODE
+                        1233
                     )
                 }
 
@@ -486,18 +428,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode==UPDATE_CODE){
+
+        if(resultCode==1233){
             if(resultCode!= RESULT_OK){
                 println("Somerthing went wrong while updating...")
             }
         }
 
-        if (requestCode == 123 && resultCode ==  RESULT_OK) {
-            Log.d("College Tracker", "onActivityResult")
+        if (requestCode == 888 && resultCode ==  RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
-            firebaseAuthWithGoogle(account.idToken!!)
-
+            googleAuthentication.firebaseAuthWithGoogle(account.idToken!!, this)
         }
 
     }
@@ -518,34 +459,6 @@ class MainActivity : AppCompatActivity() {
         val DateTime = currentDateTime.format(formatter).toString()
 
         return DateTime
-    }
-
-    private fun sharedPreferenceForNewUser(){
-
-        // SharedPreference for new User
-        if(sharedPreferenceManager.getUserVersion()==0){
-            // Adding data to the Database
-            val currentTime=currentTime().toString()
-
-            arrAttendance.add(Attendance(1, "","100%", "Subject 1", "10", "10", currentTime, "75%"))
-            arrAttendance.add(Attendance(2,"", "60%", "Subject 2", "10", "6", currentTime, "75%"))
-            arrAttendance.add(Attendance(3, "","40%", "Subject 3", "10", "4", currentTime, "75%"))
-
-            GlobalScope.launch {
-                database.attendanceDao().insertAttendance(Attendance(1, "","100%", "Subject 1", "10", "10", currentTime, "75%"))
-                database.attendanceDao().insertAttendance(Attendance(2, "","60%", "Subject 2", "10", "6", currentTime,"75%" ))
-                database.attendanceDao().insertAttendance(Attendance(3, "","40%", "Subject 3", "10", "4", currentTime, "75%"))
-
-
-            }
-
-            adapter.notifyItemChanged(arrAttendance.size-1)
-            sharedPreferenceManager.updateUserVersion(1)
-
-
-        }
-
-
     }
 
     private fun refresh(){
@@ -572,24 +485,6 @@ class MainActivity : AppCompatActivity() {
                 // Handle the case where the user denied the notification permission
             }
         }
-    }
-
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Signed in Successfully", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Some Error Occured", Toast.LENGTH_LONG).show()
-                Log.d("CollegeTracker", it.localizedMessage!!)
-            }
     }
 
 }
