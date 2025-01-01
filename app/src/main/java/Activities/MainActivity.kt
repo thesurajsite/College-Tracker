@@ -21,6 +21,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -46,6 +47,10 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -70,6 +75,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: AttendanceViewModel
     private lateinit var permissionManager: PermissionManager
     lateinit var auth: FirebaseAuth
+    private val db: FirebaseFirestore by lazy { Firebase.firestore}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,6 +112,8 @@ class MainActivity : AppCompatActivity() {
         auth=FirebaseAuth.getInstance()
         val googleCardView = findViewById<CardView>(R.id.GoogleCardView)
         val profileImage = findViewById<ImageView>(R.id.profileImage)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val USER_ID= auth.currentUser?.uid.toString()
 
         //Google Authentication
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -142,21 +150,56 @@ class MainActivity : AppCompatActivity() {
         refresh()
 
         // POPULATE THE RECYCLERVIEW ON ACTIVITY STARTUP
-        viewModel.allAttendance.observe(this){ list->
-            list?.let {
-                arrAttendance.clear()
-                arrAttendance.addAll(list)
-                adapter.notifyDataSetChanged()
+        progressBar.visibility = View.VISIBLE
+        if(auth.currentUser==null){
+            viewModel.allAttendance.observe(this){ list->
+                list?.let {
+                    arrAttendance.clear()
+                    arrAttendance.addAll(list)
+                    adapter.notifyDataSetChanged()
+                    progressBar.visibility = View.GONE
 
-                //  VISIBILITY CONTROL FOR nothingToShow IMAGE
-                if (arrAttendance.isEmpty()) {
-                    recyclerView.visibility = View.GONE
-                    nothingToShowImage.visibility = View.VISIBLE
-                } else {
-                    recyclerView.visibility = View.VISIBLE
-                    nothingToShowImage.visibility = View.GONE
+                    //  VISIBILITY CONTROL FOR nothingToShow IMAGE
+                    if (arrAttendance.isEmpty()) {
+                        recyclerView.visibility = View.GONE
+                        nothingToShowImage.visibility = View.VISIBLE
+                    } else {
+                        recyclerView.visibility = View.VISIBLE
+                        nothingToShowImage.visibility = View.GONE
+                    }
                 }
+
             }
+        }
+        else{
+            val reference = db.collection("ATTENDANCE").document(USER_ID).collection("USER_ATTENDANCE")
+            reference.orderBy("subjectName", Query.Direction.DESCENDING).get()
+                .addOnSuccessListener {
+                    //Toast.makeText(activity, "Contacts Fetched", Toast.LENGTH_SHORT).show()
+
+                    val attendanceList = mutableListOf<Attendance>()
+
+                    for (document in it.documents) {
+                        val firebaseId = document.getString("firebaseId") ?: ""
+                        val classesAttended = document.getString("classesAttended") ?: ""
+                        val classesConducted = document.getString("classesConducted") ?: ""
+                        val lastUpdated = document.getString("lastUpdated") ?: ""
+                        val percentage = document.getString("percentage") ?: ""
+                        val requirement = document.getString("requirement") ?: ""
+                        val subjectName = document.getString("subjectName") ?: ""
+
+                        attendanceList.add(Attendance(0, firebaseId, percentage, subjectName, classesConducted, classesAttended, lastUpdated, requirement))
+                    }
+                    arrAttendance.clear()
+                    arrAttendance.addAll(attendanceList)
+                    adapter.notifyDataSetChanged()
+                    progressBar.visibility = View.GONE
+
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Some error occured fetching contact", Toast.LENGTH_SHORT).show()
+                    progressBar.visibility = View.GONE
+                }
 
         }
 
@@ -296,13 +339,32 @@ class MainActivity : AppCompatActivity() {
                     val currentTime=currentTime().toString()
 
                     // Adding Attendance
-                    viewModel.insertAttendance(Attendance(0, percentageString, subjectName, conductedName, attendedName, currentTime, "75%"))
 
+                    if(auth.currentUser==null){
+                        val attendance = Attendance(0,"", percentageString, subjectName, conductedName, attendedName, currentTime, "75%")
+                        viewModel.insertAttendance(attendance)
+                        adapter.notifyItemChanged(arrAttendance.size - 1)
+                        recyclerView.scrollToPosition(arrAttendance.size - 1)
+                        dialog.dismiss()
+//                        startActivity(Intent(this, MainActivity::class.java))
+//                        finish()
+                    }
+                    else{
+                        val ATTENDANCE_ID = db.collection("ATTENDANCE").document(USER_ID).collection("USER_ATTENDANCE").document().id
+                        val attendance = Attendance(0, ATTENDANCE_ID, percentageString, subjectName, conductedName, attendedName, currentTime, "75%")
+                        db.collection("ATTENDANCE").document(USER_ID).collection("USER_ATTENDANCE").document(ATTENDANCE_ID).set(attendance)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
+                                val intent =  Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
 
-                    adapter.notifyItemChanged(arrAttendance.size - 1)
-                    recyclerView.scrollToPosition(arrAttendance.size - 1)
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Some error occured while Saving", Toast.LENGTH_SHORT).show()
+                            }
+                    }
 
-                    dialog.dismiss()
 
                     // VISIBILITY CONTROL FOR nothingToShow IMAGE
                     if (arrAttendance.isEmpty()) {
@@ -465,14 +527,14 @@ class MainActivity : AppCompatActivity() {
             // Adding data to the Database
             val currentTime=currentTime().toString()
 
-            arrAttendance.add(Attendance(1, "100%", "Subject 1", "10", "10", currentTime, "75%"))
-            arrAttendance.add(Attendance(2, "60%", "Subject 2", "10", "6", currentTime, "75%"))
-            arrAttendance.add(Attendance(3, "40%", "Subject 3", "10", "4", currentTime, "75%"))
+            arrAttendance.add(Attendance(1, "","100%", "Subject 1", "10", "10", currentTime, "75%"))
+            arrAttendance.add(Attendance(2,"", "60%", "Subject 2", "10", "6", currentTime, "75%"))
+            arrAttendance.add(Attendance(3, "","40%", "Subject 3", "10", "4", currentTime, "75%"))
 
             GlobalScope.launch {
-                database.attendanceDao().insertAttendance(Attendance(1, "100%", "Subject 1", "10", "10", currentTime, "75%"))
-                database.attendanceDao().insertAttendance(Attendance(2, "60%", "Subject 2", "10", "6", currentTime,"75%" ))
-                database.attendanceDao().insertAttendance(Attendance(3, "40%", "Subject 3", "10", "4", currentTime, "75%"))
+                database.attendanceDao().insertAttendance(Attendance(1, "","100%", "Subject 1", "10", "10", currentTime, "75%"))
+                database.attendanceDao().insertAttendance(Attendance(2, "","60%", "Subject 2", "10", "6", currentTime,"75%" ))
+                database.attendanceDao().insertAttendance(Attendance(3, "","40%", "Subject 3", "10", "4", currentTime, "75%"))
 
 
             }

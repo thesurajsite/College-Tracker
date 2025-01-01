@@ -1,6 +1,7 @@
 package Adapters
 
 
+import Activities.MainActivity
 import Activities.add_update_activity
 import Database.DatabaseHelper
 import Models.Attendance
@@ -21,6 +22,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.collegetracker.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,6 +47,8 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
         ).build()
     }
 
+    lateinit var auth: FirebaseAuth
+    private val db: FirebaseFirestore by lazy { Firebase.firestore}
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
@@ -78,6 +85,7 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
 
         val currentSubject= arrAttendance[position]
 
+        auth=FirebaseAuth.getInstance()
         holder.percentage.text=arrAttendance[position].percentage
         holder.subject.text=arrAttendance[position].subjectName
         holder.attendNumber.text=arrAttendance[position].classesAttended
@@ -93,11 +101,14 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
             holder.vibrator.vibrate(50)
             val intent= Intent(context, add_update_activity::class.java)
             intent.putExtra("subjectId",arrAttendance[position].id)
+            intent.putExtra("firebaseId", arrAttendance[position].firebaseId)
             intent.putExtra("subject",arrAttendance[position].subjectName)
             intent.putExtra("conducted",arrAttendance[position].classesConducted)
             intent.putExtra("attended",arrAttendance[position].classesAttended)
             intent.putExtra("lastUpdated", arrAttendance[position].lastUpdated)
             intent.putExtra("requirement", arrAttendance[position].requirement)
+            Log.d("FirestoreDebug", "ATTENDANCE_ID in adapter: ${arrAttendance[position].firebaseId}")
+
             context.startActivity(intent)
             (context as Activity).finish()
 
@@ -117,9 +128,27 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
                 ) { dialogInterface, i ->
                     try {
 
-                        Toast.makeText(context, "Subject Deleted", Toast.LENGTH_SHORT).show()
-                        viewModel.deleteAttendance(currentSubject)
-                        notifyItemRemoved(position)
+                        val USER_ID= auth.currentUser?.uid.toString()
+                        val firebaseId = arrAttendance[position].firebaseId
+                        if(auth.currentUser==null){
+                            Toast.makeText(context, "Subject Deleted", Toast.LENGTH_SHORT).show()
+                            viewModel.deleteAttendance(currentSubject)
+                            notifyItemRemoved(position)
+                        }
+                        else{
+                            db.collection("ATTENDANCE").document(USER_ID).collection("USER_ATTENDANCE").document(firebaseId).delete()
+                                .addOnSuccessListener {
+                                    val intent = Intent(context, MainActivity::class.java)
+                                    context.startActivity(intent)
+                                    if (context is Activity) {
+                                        context.finish()
+                                    }
+
+                                }
+                                .addOnFailureListener {
+                                    Toast.makeText(context, "Error Deleting Subject", Toast.LENGTH_SHORT).show()
+                                }
+                        }
 
 
                     } catch (e: Exception) {

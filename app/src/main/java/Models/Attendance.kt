@@ -8,13 +8,44 @@ import java.io.Serializable
 
 @Entity(tableName = "attendance")
 data class Attendance(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0, // Used for Room
 
-    @PrimaryKey (autoGenerate = true) var id: Int,
-    @ColumnInfo(name = "percentage") var percentage: String,
-    @ColumnInfo(name = "subjectName") var subjectName: String,
-    @ColumnInfo(name = "classesConducted") var classesConducted: String,
-    @ColumnInfo(name = "classesAttended") var classesAttended: String,
-    @ColumnInfo(name = "lastUpdated") var lastUpdated: String,
-    @ColumnInfo(name = "requirement") var requirement: String
+    var percentage: String = "",
+    var subjectName: String = "",
+    var classesConducted: String = "",
+    var classesAttended: String = "",
+    var lastUpdated: String = "",
+    var requirement: String = ""
+) : Serializable {
 
-): Serializable
+
+    @Ignore
+    var firebaseId: String = "" // Ignored by Room
+    // Secondary constructor for Firebase usage
+    @Ignore
+    constructor(
+        id: Int,
+        firebaseId: String,
+        percentage: String,
+        subjectName: String,
+        classesConducted: String,
+        classesAttended: String,
+        lastUpdated: String,
+        requirement: String
+    ) : this(id, percentage, subjectName, classesConducted, classesAttended, lastUpdated, requirement) {
+        this.firebaseId = firebaseId
+    }
+}
+
+
+
+//data class AttendanceFirebase(
+//   var id: String,
+//   var percentage: String,
+//   var subjectName: String,
+//   var classesConducted: String,
+//   var classesAttended: String,
+//   var lastUpdated: String,
+//   var requirement: String
+//): Serializable
