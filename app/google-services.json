@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "11213260090",
+    "project_id": "college-tracker-d0f21",
+    "storage_bucket": "college-tracker-d0f21.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11213260090:android:7cd711b6996639cfecfc03",
+        "android_client_info": {
+          "package_name": "com.collegetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt4ZEHZm6uk1iJS291d5Eex0X3_HdK_pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

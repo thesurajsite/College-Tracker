@@ -8,6 +8,7 @@ import Models.AttendanceViewModel
 import Notifications.PermissionManager
 import Notifications.createNotificationChannel
 import Notifications.scheduleDailyNotification
+import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
 import android.content.Context
@@ -15,6 +16,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Vibrator
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -22,12 +24,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityMainBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -37,6 +44,10 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,6 +69,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerAttendanceAdapter
     lateinit var viewModel: AttendanceViewModel
     private lateinit var permissionManager: PermissionManager
+    lateinit var auth: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +103,17 @@ class MainActivity : AppCompatActivity() {
         val floatingActionButton=findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val nothingToShowImage: ImageView = findViewById(R.id.nothingToShow)
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        auth=FirebaseAuth.getInstance()
+        val googleCardView = findViewById<CardView>(R.id.GoogleCardView)
+        val profileImage = findViewById<ImageView>(R.id.profileImage)
 
+        //Google Authentication
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.web_client_id))
+            .requestEmail()
+            .build()
+
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
 
 
         // SHARED PREFERENCES FOR WHICH ACTIVITY TO OPEN ON STARTUP
@@ -136,6 +158,56 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        }
+
+        // Fetch User Profile Image
+        val user = auth.currentUser
+        if(user!=null){
+            val photoUrl = user.photoUrl
+            if(photoUrl!=null){
+                Glide.with(this@MainActivity)
+                    .load(photoUrl)
+                    .into(profileImage)
+            }
+
+        }
+
+        googleCardView.setOnClickListener {
+            vibrator.vibrate(50)
+
+            val user = auth.currentUser
+            if(user==null){
+                googleSignInClient.signOut()
+                startActivityForResult(googleSignInClient.signInIntent, 123)
+            }
+            else{
+                val builder = AlertDialog.Builder(this)
+                    .setTitle("Logout")
+                    .setIcon(R.drawable.baseline_logout_24)
+                    .setMessage("Do you want to Logout ?")
+                    .setPositiveButton(
+                        "Yes"
+                    ) { dialogInterface, i ->
+                        try {
+
+                            Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show()
+                            auth.signOut()
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+
+
+                        } catch (e: Exception) {
+                            Toast.makeText(this, "Something Went Wrong", Toast.LENGTH_SHORT).show()
+                            Log.w("crash-attendance", e)
+                        }
+
+                    }.setNegativeButton("No")
+                    { dialogInterface, i ->
+                        TODO()
+                    }
+                builder.show()
+            }
         }
 
 
@@ -358,6 +430,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        if (requestCode == 123 && resultCode ==  RESULT_OK) {
+            Log.d("College Tracker", "onActivityResult")
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val account = task.getResult(ApiException::class.java)
+            firebaseAuthWithGoogle(account.idToken!!)
+
+        }
+
     }
 
     override fun onDestroy() {
@@ -432,5 +512,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "Signed in Successfully", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Some Error Occured", Toast.LENGTH_LONG).show()
+                Log.d("CollegeTracker", it.localizedMessage!!)
+            }
+    }
 
 }
