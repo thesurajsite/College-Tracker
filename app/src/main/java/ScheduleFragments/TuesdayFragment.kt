@@ -1,6 +1,7 @@
 package ScheduleFragments
 
 import Activities.Daily_Schedule
+import Activities.FragmentArrays
 import Activities.sharedPreferenceManager
 import Database.DatabaseHelper
 import Adapters.RecyclerScheduleAdapter
@@ -34,7 +35,7 @@ import kotlinx.coroutines.launch
 
 class TuesdayFragment : Fragment(), ScheduleItemClickListener {
 
-    private val arrScheduleTuesday = ArrayList<ScheduleModel>()
+    private var arrScheduleTuesday = ArrayList<ScheduleModel>()
     private lateinit var scheduleAdapter: RecyclerScheduleAdapter
     private lateinit var database: ScheduleDatabaseHelper
     private lateinit var attDatabase: DatabaseHelper //Attendance Database for AutoCompleteTextView
@@ -56,32 +57,11 @@ class TuesdayFragment : Fragment(), ScheduleItemClickListener {
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-        val scheduleActivity = activity as Daily_Schedule
-        val scheduleArray= scheduleActivity.scheduleArray
-
-        lifecycleScope.launch{
-            try {
-
-                for (schedule in scheduleArray) {
-                    val subjectId = schedule.subjectId
-                    val day = schedule.day
-                    val lecture = schedule.subject
-                    val time = schedule.time
-
-                    if(day=="tuesday") {
-                        arrScheduleTuesday.add(ScheduleModel(subjectId, day, lecture, time))
-                    }
-                }
-
-                scheduleAdapter.notifyDataSetChanged()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-        //Toast.makeText(context, "hii", Toast.LENGTH_SHORT).show()
+        arrScheduleTuesday = FragmentArrays.arrScheduleTuesday
 
         val tuesdayRecyclerView = view.findViewById<RecyclerView>(R.id.TuesdayRecyclerView)
         scheduleAdapter = RecyclerScheduleAdapter(requireContext(), this, arrScheduleTuesday)
+        scheduleAdapter.notifyDataSetChanged()
         tuesdayRecyclerView.adapter = scheduleAdapter
         tuesdayRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 

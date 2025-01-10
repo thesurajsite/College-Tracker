@@ -29,7 +29,6 @@ fun createNotificationChannel(context: Context) {
 fun scheduleDailyNotification(context: Context) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    scheduleNotification(context, alarmManager, 13, 0, 1)
     scheduleNotification(context, alarmManager, 17, 0, 2)
     scheduleNotification(context, alarmManager, 20, 0, 3)
 }

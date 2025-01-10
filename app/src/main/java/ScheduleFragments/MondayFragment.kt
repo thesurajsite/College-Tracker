@@ -1,6 +1,7 @@
 package ScheduleFragments
 
 import Activities.Daily_Schedule
+import Activities.FragmentArrays
 import Activities.sharedPreferenceManager
 import Database.DatabaseHelper
 import Adapters.RecyclerScheduleAdapter
@@ -57,35 +58,14 @@ class MondayFragment : Fragment(), ScheduleItemClickListener {
         val floatingActionButton=view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
 
-        val scheduleActivity = activity as Daily_Schedule
-        val scheduleArray= scheduleActivity.scheduleArray
-
-        lifecycleScope.launch{
-            try {
-
-                for (schedule in scheduleArray) {
-                    val subjectId = schedule.subjectId
-                    val day = schedule.day
-                    val lecture = schedule.subject
-                    val time = schedule.time
-
-                    if(day=="monday") {
-                        arrScheduleMonday.add(ScheduleModel(subjectId, day, lecture, time))
-                    }
-                }
-
-                scheduleAdapter.notifyDataSetChanged()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-        //Toast.makeText(context, "hii", Toast.LENGTH_SHORT).show()
-
+        arrScheduleMonday = FragmentArrays.arrScheduleMonday
 
         val mondayRecyclerView = view.findViewById<RecyclerView>(R.id.MondayRecyclerView)
         scheduleAdapter= RecyclerScheduleAdapter(requireContext(), this ,arrScheduleMonday)
+        scheduleAdapter.notifyDataSetChanged()
         mondayRecyclerView.adapter=scheduleAdapter
         mondayRecyclerView.layoutManager= LinearLayoutManager(requireContext())
+
 
         floatingActionButton.setOnClickListener {
             vibrator.vibrate(50)

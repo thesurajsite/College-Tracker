@@ -250,24 +250,24 @@ class MainActivity : AppCompatActivity() {
             minusConducted.setOnClickListener {
                 vibrator.vibrate(50)
                 tempConducted--
-                addConducted.setText(tempConducted.toString())
+                addConducted.setText("$tempConducted")
             }
             plusConducted.setOnClickListener {
                 vibrator.vibrate(50)
                 tempConducted++
-                addConducted.setText(tempConducted.toString())
+                addConducted.setText("$tempConducted")
             }
 
             minusAttended.setOnClickListener {
                 vibrator.vibrate(50)
                 tempAttended--
-                addAttended.setText(tempAttended.toString())
+                addAttended.setText("$tempAttended")
             }
 
             plusAttended.setOnClickListener {
                 vibrator.vibrate(50)
                 tempAttended++
-                addAttended.setText(tempAttended.toString())
+                addAttended.setText("$tempAttended")
             }
 
 
@@ -294,7 +294,7 @@ class MainActivity : AppCompatActivity() {
                     // PERCENATGE CALCULATION
                     percentageName =
                         ((attendedName.toDouble() / conductedName.toDouble()) * 100).toInt()
-                    percentageString = percentageName.toString() + "%"
+                    percentageString = "$percentageName%"
 
                     val currentTime=currentTime().toString()
 

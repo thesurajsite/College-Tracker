@@ -4,16 +4,21 @@ import Adapters.scheduleViewPagerAdapter
 import Models.ScheduleModel
 import Database.ScheduleDAO
 import Database.ScheduleDatabaseHelper
+import Models.ScheduleDataclass
+import ScheduleFragments.MondayFragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Vibrator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.collegetracker.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class Daily_Schedule : AppCompatActivity() {
@@ -21,7 +26,7 @@ class Daily_Schedule : AppCompatActivity() {
     //var database: ScheduleDatabaseHelper?=null
     private lateinit var scheduleDatabase: ScheduleDatabaseHelper
     private lateinit var scheduleDAO: ScheduleDAO
-    val scheduleArray=ArrayList<ScheduleModel>()
+    var scheduleArray=ArrayList<ScheduleDataclass>()
     private lateinit var sharedPreferenceManager:sharedPreferenceManager
 
 
@@ -32,21 +37,45 @@ class Daily_Schedule : AppCompatActivity() {
         // Database Initialization
         scheduleDatabase= ScheduleDatabaseHelper.getDB(this)!!
         scheduleDAO=scheduleDatabase.scheduleDao()
-        val scheduleList=scheduleDAO.getAllSchedule()
+        scheduleArray = ArrayList(scheduleDAO.getAllSchedule())
 
         sharedPreferenceManager=sharedPreferenceManager(this)
 
 
-        for (schedule in scheduleList) {
-            val subjectId = schedule.id
-            val day = schedule.day
-            val lecture = schedule.lecture
-            val time = schedule.time
+        lifecycleScope.launch(Dispatchers.IO){
+            try {
 
-            // this ArrayList is used in all fragments
-            scheduleArray.add(ScheduleModel(subjectId, day, lecture, time))
+                FragmentArrays.arrScheduleMonday.clear()
+                FragmentArrays.arrScheduleTuesday.clear()
+                FragmentArrays.arrScheduleWednesday.clear()
+                FragmentArrays.arrScheduleThursday.clear()
+                FragmentArrays.arrScheduleFriday.clear()
+                FragmentArrays.arrScheduleSaturday.clear()
+                FragmentArrays.arrScheduleSunday.clear()
 
+                for (schedule in scheduleArray) {
+                    val subjectId = schedule.id
+                    val day = schedule.day
+                    val lecture = schedule.lecture
+                    val time = schedule.time
+
+                    when (day) {
+                        "monday" -> FragmentArrays.arrScheduleMonday.add(ScheduleModel(subjectId, day, lecture, time))
+                        "tuesday" -> FragmentArrays.arrScheduleTuesday.add(ScheduleModel(subjectId, day, lecture, time))
+                        "wednesday" -> FragmentArrays.arrScheduleWednesday.add(ScheduleModel(subjectId, day, lecture, time))
+                        "thursday" -> FragmentArrays.arrScheduleThursday.add(ScheduleModel(subjectId, day, lecture, time))
+                        "friday" -> FragmentArrays.arrScheduleFriday.add(ScheduleModel(subjectId, day, lecture, time))
+                        "saturday" -> FragmentArrays.arrScheduleSaturday.add(ScheduleModel(subjectId, day, lecture, time))
+                        "sunday" -> FragmentArrays.arrScheduleSunday.add(ScheduleModel(subjectId, day, lecture, time))
+                    }
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
+
+
 
         val bottomNavigation2=findViewById<BottomNavigationView>(R.id.bottomNavigation2)
 
