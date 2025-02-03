@@ -89,39 +89,6 @@ class AddUpdateTasks : AppCompatActivity() {
             }
         }
 
-        binding.deleteButton.setOnClickListener {
-            vibrator.vibrate(50)
-
-            val builder = AlertDialog.Builder(this)
-                .setTitle("Delete Task")
-                .setIcon(R.drawable.baseline_delete_24)
-                .setMessage("Do you want to Delete this Task ?")
-                .setPositiveButton(
-                    "Yes"
-                ) { dialogInterface, i ->
-                    try {
-
-                        vibrator.vibrate(50)
-                        Toast.makeText(this, "Task Deleted", Toast.LENGTH_SHORT).show()
-                        viewModel.deleteTask(old_task)
-                        startActivity(Intent(this, TaskActivity::class.java))
-                        finish()
-
-
-                    } catch (e: Exception) {
-                        Toast.makeText(this, "Something Went wrong", Toast.LENGTH_SHORT).show()
-                        Log.w("crash-delete", e)
-                    }
-
-                }.setNegativeButton("No")
-                { dialogInterface, i ->
-                    vibrator.vibrate(50)
-                    Toast.makeText(this, "Deletion Cancelled", Toast.LENGTH_SHORT).show()
-                }
-            builder.show()
-
-        }
-
     }
 
     private fun spinner() {

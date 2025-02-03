@@ -12,10 +12,9 @@ android {
     defaultConfig {
         applicationId = "com.collegetracker"
         minSdk = 26
-        //noinspection EditedTargetSdkVersion
         targetSdk = 35
-        versionCode = 49
-        versionName = "3.0.1"
+        versionCode = 51
+        versionName = "3.0.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
