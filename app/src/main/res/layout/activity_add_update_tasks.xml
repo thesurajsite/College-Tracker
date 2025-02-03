@@ -24,10 +24,10 @@
             android:layout_marginRight="@dimen/_20sdp"
             android:fontFamily="@font/abel"
             android:gravity="center_horizontal"
-            android:text="Add-Update Task"
+            android:text="Add-Update Assignment"
             android:textColor="@color/white"
             android:textColorHint="#404040"
-            android:textSize="@dimen/_30sdp" />
+            android:textSize="@dimen/_25sdp" />
 
 
         <EditText
@@ -41,7 +41,7 @@
             android:background="@drawable/custom_input"
             android:fontFamily="@font/abel"
             android:gravity="start"
-            android:hint="Enter Task"
+            android:hint="Enter Subject"
             android:inputType="text"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_3sdp"
@@ -74,7 +74,7 @@
             android:background="@drawable/custom_input"
             android:fontFamily="@font/abel"
             android:gravity="start"
-            android:hint="Task Details..."
+            android:hint="Assignment Details..."
             android:inputType="text|textMultiLine"
             android:padding="@dimen/_10sdp"
             android:textColor="#FF404040"

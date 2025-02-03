@@ -8,17 +8,19 @@
         />
 
     <item
+        android:id="@+id/Tasks_btmNavigation"
+        android:title="Assignments"
+        android:icon="@drawable/to_do"
+        android:iconTint="@color/black"
+        />
+
+
+    <item
         android:id="@+id/Schedule_btmNavigation"
         android:title="Schedule"
         android:icon="@drawable/schedule"
          />
 
-    <item
-        android:id="@+id/Tasks_btmNavigation"
-        android:title="Tasks"
-        android:icon="@drawable/to_do"
-        android:iconTint="@color/black"
-         />
 
 
 </menu>

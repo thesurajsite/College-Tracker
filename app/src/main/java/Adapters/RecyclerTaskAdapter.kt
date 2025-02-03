@@ -1,9 +1,14 @@
 package Adapters
 
+import Activities.TaskActivity
 import Models.TaskDataClass
 import Models.TaskViewModel
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.graphics.Paint
 import android.os.Vibrator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,10 +57,14 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
         holder.taskName.isSelected= true
 
 
-        if(currentTask.isComplete == true)
+        if(currentTask.isComplete == true){
             holder.checkbox.isChecked=true
-        else
+            holder.taskName.paintFlags = holder.taskName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        }
+        else{
             holder.checkbox.isChecked=false
+            holder.taskName.paintFlags = holder.taskName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+        }
 
 
         if(currentTask.priority=="Low")
@@ -76,12 +85,46 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
             holder.vibrator.vibrate(50)
             if(holder.checkbox.isChecked){
                 viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName, currentTask.priority, currentTask.taskDetails, true))
-
+                holder.taskName.paintFlags = holder.taskName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
             else{
                 viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName, currentTask.priority, currentTask.taskDetails, false))
+                holder.taskName.paintFlags = holder.taskName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
 
+        }
+
+        holder.task_layout.setOnLongClickListener {
+            holder.vibrator.vibrate(50)
+
+            val builder = AlertDialog.Builder(context)
+                .setTitle("Delete Task")
+                .setIcon(R.drawable.baseline_delete_24)
+                .setMessage("Do you want to Delete this Task ?")
+                .setPositiveButton(
+                    "Yes"
+                ) { dialogInterface, i ->
+                    try {
+
+                        holder.vibrator.vibrate(50)
+                        Toast.makeText(context, "Task Deleted", Toast.LENGTH_SHORT).show()
+                        val task = TaskDataClass(currentTask.id, currentTask.taskName, currentTask.priority, currentTask.taskDetails, currentTask.isComplete)
+                        viewModel.deleteTask(task)
+
+
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Something Went wrong", Toast.LENGTH_SHORT).show()
+                        Log.w("crash-delete", e)
+                    }
+
+                }.setNegativeButton("No")
+                { dialogInterface, i ->
+                    holder.vibrator.vibrate(50)
+                    Toast.makeText(context, "Deletion Cancelled", Toast.LENGTH_SHORT).show()
+                }
+            builder.show()
+
+            true
         }
     }
 
