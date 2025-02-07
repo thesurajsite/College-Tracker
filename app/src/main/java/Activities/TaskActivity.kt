@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityTaskBinding
 
-class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener, PopupMenu.OnMenuItemClickListener {
+class TaskActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityTaskBinding
     private lateinit var database: DatabaseHelper
@@ -31,17 +31,17 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
     lateinit var vibrator: Vibrator
     private lateinit var sharedPreferenceManager:sharedPreferenceManager
 
-    private val updateTask= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-
-        if(result.resultCode == Activity.RESULT_OK){
-            val task= result.data?.getSerializableExtra("task") as? TaskDataClass
-            if(task!=null){
-                viewModel.updateTask(task)
-            }
-
-        }
-
-    }
+//    private val updateTask= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+//
+//        if(result.resultCode == Activity.RESULT_OK){
+//            val task= result.data?.getSerializableExtra("task") as? TaskDataClass
+//            if(task!=null){
+//                viewModel.updateTask(task)
+//            }
+//
+//        }
+//
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +62,9 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
         viewModel.allTasks.observe(this) { list->
 
             list?.let{
-                adapter.updateList(list)
+//                adapter.updateList(list)
+                val sortedList = it.sortedBy { task -> task.submissionISODate }
+                adapter.updateList(sortedList)
             }
         }
 
@@ -100,59 +102,66 @@ class TaskActivity : AppCompatActivity(), RecyclerTaskAdapter.TaskClickListener,
     private fun initUI() {
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter= RecyclerTaskAdapter(this, this, viewModel)
+        adapter= RecyclerTaskAdapter(this, viewModel)
         binding.recyclerView.adapter= adapter
 
 
-        val getContent= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+//        val getContent= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+//
+//            if(result.resultCode == Activity.RESULT_OK){
+//
+//                val task=result.data?.getSerializableExtra("task") as? TaskDataClass
+//                if(task!= null){
+//                    viewModel.insertTask(task)
+//                }
+//
+//            }
+//
+//        }
 
-            if(result.resultCode == Activity.RESULT_OK){
-
-                val task=result.data?.getSerializableExtra("task") as? TaskDataClass
-                if(task!= null){
-                    viewModel.insertTask(task)
-                }
-
-            }
-
-        }
+//        binding.floatingActionButton.setOnClickListener {
+//            vibrator.vibrate(50)
+//            val intent= Intent(this, AddUpdateTasks::class.java)
+//            getContent.launch(intent)
+//        }
 
         binding.floatingActionButton.setOnClickListener {
             vibrator.vibrate(50)
             val intent= Intent(this, AddUpdateTasks::class.java)
-            getContent.launch(intent)
+            intent.putExtra("isUpdate", false)
+            startActivity(intent)
         }
 
 
     }
 
-    override fun onItemClicked(task: TaskDataClass) {
-        vibrator.vibrate(50)
-        val intent= Intent(this, AddUpdateTasks::class.java)
-        intent.putExtra("current_task", task)
-        updateTask.launch(intent)
-    }
+//    override fun onItemClicked(task: TaskDataClass) {
+//        vibrator.vibrate(50)
+//        val intent= Intent(this, AddUpdateTasks::class.java)
+//        intent.putExtra("current_task", task)
+//        updateTask.launch(intent)
+//    }
 
-    override fun onLongItemClicked(task: TaskDataClass, taskRow: CardView) {
-        selectedTask = task
-        popUpDisplay(taskRow)
-    }
+//    override fun onLongItemClicked(task: TaskDataClass, taskRow: CardView) {
+//        selectedTask = task
+//        popUpDisplay(taskRow)
+//    }
 
 
-    private fun popUpDisplay(taskRow: CardView) {
-        val popup= PopupMenu(this, taskRow)
-        popup.setOnMenuItemClickListener(this)
-        popup.show()
+//    private fun popUpDisplay(taskRow: CardView) {
+//        val popup= PopupMenu(this, taskRow)
+//        popup.setOnMenuItemClickListener(this)
+//        popup.show()
+//
+//    }
 
-    }
-
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        if(item?.itemId == R.id.delete_task){
-
-            viewModel.deleteTask(selectedTask)
-            return true
-
-        }
-        return false
-    }
+//    override fun onMenuItemClick(item: MenuItem?): Boolean {
+//        if(item?.itemId == R.id.delete_task){
+//
+//            viewModel.deleteTask(selectedTask)
+//            return true
+//
+//        }
+//        return false
+//    }
 }

@@ -10,12 +10,11 @@
     app:cardCornerRadius="@dimen/_10sdp"
     android:backgroundTint="@color/white">
 
-
     <LinearLayout
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        app:layout_constraintBaseline_toBottomOf="parent"
         android:layout_margin="@dimen/_12sdp">
 
         <CheckBox
@@ -28,21 +27,35 @@
             android:checked="false"
             android:background="@android:color/transparent" />
 
-        <TextView
-            android:id="@+id/taskName"
-            android:layout_width="200dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/abel"
-            android:text="Subject Name"
-            android:textColor="@color/black"
-            android:textSize="25dp" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/taskName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/abel"
+                android:text="Subject Name"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/submissionDate"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/abel"
+                android:text="DOS: 25-Jun-2001"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
-
-
 
 
     <View

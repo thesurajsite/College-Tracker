@@ -16,7 +16,7 @@ class Repository(private val taskDao: TaskDAO) {
     }
 
     suspend fun update(task: TaskDataClass){
-        taskDao.update(task.id, task.taskName, task.priority, task.taskDetails, task.isComplete)
+        taskDao.update(task.id, task.taskName, task.submissionDate, task.submissionISODate ,task.priority, task.taskDetails, task.isComplete)
     }
 
 

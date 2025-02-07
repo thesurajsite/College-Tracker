@@ -10,7 +10,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities =[Attendance::class, TaskDataClass::class], version = 1)
+@Database(entities =[Attendance::class, TaskDataClass::class], version = 2)
 abstract class DatabaseHelper : RoomDatabase() {
     abstract fun attendanceDao(): AttendanceDAO
     abstract fun taskDao(): TaskDAO
@@ -27,11 +27,18 @@ abstract class DatabaseHelper : RoomDatabase() {
                     context!!.applicationContext,
                     DatabaseHelper::class.java, DB_NAME
                 )
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_1_2)
                     .allowMainThreadQueries()
                     .build()
             }
             return instance
+        }
+
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE task_table ADD COLUMN submissionDate TEXT DEFAULT '00-00-0000' NOT NULL")
+                database.execSQL("ALTER TABLE task_table ADD COLUMN submissionISODate TEXT DEFAULT '0000-00-00' NOT NULL")
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package Adapters
 
+import Activities.AddUpdateTasks
 import Activities.TaskActivity
 import Models.TaskDataClass
 import Models.TaskViewModel
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.collegetracker.R
 import com.google.android.gms.tasks.Task
 
-class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickListener, private val viewModel: TaskViewModel): RecyclerView.Adapter<RecyclerTaskAdapter.TaskViewHolder>() {
+class RecyclerTaskAdapter(private val context: Context, private val viewModel: TaskViewModel): RecyclerView.Adapter<RecyclerTaskAdapter.TaskViewHolder>() {
 
     private val TaskList:ArrayList<TaskDataClass> = ArrayList()
     private val FullList: ArrayList<TaskDataClass> = ArrayList()
@@ -55,6 +56,7 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
         val currentTask=TaskList[position]
         holder.taskName.text=currentTask.taskName
         holder.taskName.isSelected= true
+        holder.submissionDate.text="DOS: "+currentTask.submissionDate
 
 
         if(currentTask.isComplete == true){
@@ -68,7 +70,7 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
 
 
         if(currentTask.priority=="Low")
-            holder.task_layout.backgroundTintList = ContextCompat.getColorStateList(context, R.color.light_green)
+            holder.task_layout.backgroundTintList = ContextCompat.getColorStateList(context, R.color.white)
         else if(currentTask.priority=="Medium")
             holder.task_layout.backgroundTintList = ContextCompat.getColorStateList(context, R.color.light_yellow)
         else if(currentTask.priority=="High")
@@ -76,19 +78,33 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
         else holder.task_layout.backgroundTintList = ContextCompat.getColorStateList(context, R.color.white)
 
 
+//        holder.task_layout.setOnClickListener {
+//            listener.onItemClicked(TaskList[holder.adapterPosition])
+//        }
+
         holder.task_layout.setOnClickListener {
-            listener.onItemClicked(TaskList[holder.adapterPosition])
+            holder.vibrator.vibrate(50)
+            val intent= Intent(context, AddUpdateTasks::class.java)
+            intent.putExtra("isUpdate", true)
+            intent.putExtra("id", currentTask.id)
+            intent.putExtra("name", currentTask.taskName)
+            intent.putExtra("submissionDate", currentTask.submissionDate)
+            intent.putExtra("submissionISODate", currentTask.submissionISODate)
+            intent.putExtra("priority", currentTask.priority)
+            intent.putExtra("details", currentTask.taskDetails)
+            intent.putExtra("isComplete", currentTask.isComplete)
+            (context as TaskActivity).startActivity(intent)
         }
 
         
         holder.checkbox.setOnClickListener {
             holder.vibrator.vibrate(50)
             if(holder.checkbox.isChecked){
-                viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName, currentTask.priority, currentTask.taskDetails, true))
+                viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, true))
                 holder.taskName.paintFlags = holder.taskName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
             else{
-                viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName, currentTask.priority, currentTask.taskDetails, false))
+                viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, false))
                 holder.taskName.paintFlags = holder.taskName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
 
@@ -108,7 +124,7 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
 
                         holder.vibrator.vibrate(50)
                         Toast.makeText(context, "Task Deleted", Toast.LENGTH_SHORT).show()
-                        val task = TaskDataClass(currentTask.id, currentTask.taskName, currentTask.priority, currentTask.taskDetails, currentTask.isComplete)
+                        val task = TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, currentTask.isComplete)
                         viewModel.deleteTask(task)
 
 
@@ -132,13 +148,14 @@ class RecyclerTaskAdapter(private val context: Context, val listener: TaskClickL
 
         val task_layout=itemView.findViewById<CardView>(R.id.taskRow)
         val taskName=itemView.findViewById<TextView>(R.id.taskName)
+        val submissionDate=itemView.findViewById<TextView>(R.id.submissionDate)
         val checkbox= itemView.findViewById<CheckBox>(R.id.checkbox)
         val vibrator = itemView.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     }
 
-    interface TaskClickListener{
-        fun onItemClicked(task: TaskDataClass)
-        fun onLongItemClicked(task: TaskDataClass, taskRow: CardView)
-    }
+//    interface TaskClickListener{
+//        fun onItemClicked(task: TaskDataClass)
+//        fun onLongItemClicked(task: TaskDataClass, taskRow: CardView)
+//    }
 }

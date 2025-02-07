@@ -20,8 +20,8 @@ interface TaskDAO {
     @Query("SELECT * FROM task_table ORDER BY id ASC")
     fun getAllTask(): LiveData<List<TaskDataClass>>
 
-    @Query("UPDATE task_table SET taskName= :taskName, priority= :priority, taskDetails= :taskDetails, isComplete= :isComplete WHERE id= :id ")
-    suspend fun update(id: Int?, taskName: String?, priority: String?, taskDetails: String?, isComplete: Boolean?)
+    @Query("UPDATE task_table SET taskName= :taskName,submissionDate= :submissionDate, submissionISODate= :submissionISODate ,priority= :priority, taskDetails= :taskDetails, isComplete= :isComplete WHERE id= :id ")
+    suspend fun update(id: Int?, taskName: String?, submissionDate: String?, submissionISODate: String? ,priority: String?, taskDetails: String?, isComplete: Boolean?)
 
 
 }

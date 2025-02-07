@@ -16,6 +16,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -24,7 +25,7 @@
             android:layout_marginRight="@dimen/_20sdp"
             android:fontFamily="@font/abel"
             android:gravity="center_horizontal"
-            android:text="Add-Update Assignment"
+            android:text="Add Assignment"
             android:textColor="@color/white"
             android:textColorHint="#404040"
             android:textSize="@dimen/_25sdp" />
@@ -50,7 +51,27 @@
             android:textColorHint="#404040"
             android:textSize="@dimen/_20sdp" />
 
+        <TextView
+            android:id="@+id/submissionDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@drawable/custom_input"
+            android:fontFamily="@font/abel"
+            android:gravity="start"
+            android:hint="Submission Date"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_3sdp"
+            android:paddingBottom="@dimen/_3sdp"
+            android:textColor="#FF404040"
+            android:textColorHint="#404040"
+            android:textSize="@dimen/_20sdp" />
+
         <Spinner
+            android:visibility="gone"
             android:id="@+id/priority"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +90,7 @@
             android:layout_height="@dimen/_200sdp"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_20sdp"
             android:background="@drawable/custom_input"
             android:fontFamily="@font/abel"
