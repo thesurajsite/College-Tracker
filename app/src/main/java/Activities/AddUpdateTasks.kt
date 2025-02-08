@@ -18,6 +18,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityAddUpdateTasksBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -30,6 +34,8 @@ class AddUpdateTasks : AppCompatActivity() {
     private lateinit var task: TaskDataClass
     lateinit var viewModel: TaskViewModel
     lateinit var vibrator: Vibrator
+    val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val db: FirebaseFirestore by lazy { Firebase.firestore}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,15 +44,14 @@ class AddUpdateTasks : AppCompatActivity() {
         binding=ActivityAddUpdateTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel= ViewModelProvider(this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application)).get(TaskViewModel::class.java)
-
-
+        viewModel= ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application)).get(TaskViewModel::class.java)
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val USER_ID= auth.currentUser?.uid.toString()
         spinner()
 
         var isUpdate  = false
         var id=-1
+        var firebaseId = ""
         var name=""
         var submissionDate=""
         var isoDate=""
@@ -59,6 +64,7 @@ class AddUpdateTasks : AppCompatActivity() {
 
             if(isUpdate==true){
                 id=intent.getIntExtra("id", -1)
+                firebaseId = intent.getStringExtra("firebaseId").toString()
                 binding.title.text = "Update Assignment"
                 name= intent.getStringExtra("name").toString()
                 submissionDate= intent.getStringExtra("submissionDate").toString()
@@ -116,33 +122,41 @@ class AddUpdateTasks : AppCompatActivity() {
 
                 isoDate = convertCustomToIsoFormat(dateOfSubmission)
 
-                if(isUpdate==true){
-                    task=TaskDataClass(id, name, dateOfSubmission, isoDate, "Low", details, isComplete)
-                    viewModel.updateTask(task)
+                if(isUpdate==true){  // UPDATE THE EXISTING ASSIGNMENT
 
-                    Toast.makeText(this, "Assignment Updated", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, TaskActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    if(auth.currentUser==null){
+
+                        task=TaskDataClass(id,"", name, dateOfSubmission, isoDate, "Low", details, isComplete)
+                        viewModel.updateTask(task)
+
+                        Toast.makeText(this, "Assignment Updated", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, TaskActivity::class.java)
+                        startActivity(intent)
+                        finish()
+
+                    }
+                    else{
+                        task=TaskDataClass(0,firebaseId, name, dateOfSubmission, isoDate, "Low", details, isComplete)
+                        viewModel.updateFirebaseTask(task, this@AddUpdateTasks)
+                    }
                 }
-                else{
-                    task=TaskDataClass(null, name, dateOfSubmission, isoDate, "Low", details, false)
-                    viewModel.insertTask(task)
+                else{ // CREATE A NEW ASSIGNMENT
+                    if(auth.currentUser==null){
+                        task=TaskDataClass(null, name, dateOfSubmission, isoDate, "Low", details, false)
+                        viewModel.insertTask(task)
 
-                    Toast.makeText(this, "Assignment Created", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, TaskActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                        Toast.makeText(this, "Assignment Created", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, TaskActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    else{
+                        val firebaseId = db.collection("ASSIGNMENTS").document(USER_ID).collection("USER_ASSIGNMENTS").document().id
+                        task=TaskDataClass(0,firebaseId, name, dateOfSubmission, isoDate, "Low", details, isComplete)
+                        viewModel.createFirebaseTask(task, this@AddUpdateTasks)
+                    }
 
                 }
-
-//                if(priority!="Select Priority"){
-//                    val intent= Intent()
-//                    intent.putExtra("task", task)
-//                    setResult(Activity.RESULT_OK, intent)
-//                    finish()
-//                }
-//                else Toast.makeText(this, "Select Priority", Toast.LENGTH_SHORT).show()
             }
             else{
                 Toast.makeText(this, "Please Enter Subject", Toast.LENGTH_SHORT).show()

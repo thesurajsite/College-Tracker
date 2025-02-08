@@ -16,19 +16,19 @@
         android:layout_gravity="center_horizontal"/>
 
     <androidx.cardview.widget.CardView
-        android:visibility="gone"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
+        android:id="@+id/GoogleCardView"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_28sdp"
         app:cardCornerRadius="@dimen/_100sdp"
         android:layout_gravity="end"
         android:backgroundTint="@color/white"
         android:layout_marginRight="@dimen/_15sdp">
 
         <ImageView
+            android:id="@+id/profileImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/google"
-            android:padding="@dimen/_2sdp"/>
+            android:src="@drawable/google" />
 
     </androidx.cardview.widget.CardView>
 

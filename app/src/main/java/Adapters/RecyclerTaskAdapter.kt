@@ -4,6 +4,7 @@ import Activities.AddUpdateTasks
 import Activities.TaskActivity
 import Models.TaskDataClass
 import Models.TaskViewModel
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -21,11 +22,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.collegetracker.R
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 
 class RecyclerTaskAdapter(private val context: Context, private val viewModel: TaskViewModel): RecyclerView.Adapter<RecyclerTaskAdapter.TaskViewHolder>() {
 
     private val TaskList:ArrayList<TaskDataClass> = ArrayList()
     private val FullList: ArrayList<TaskDataClass> = ArrayList()
+    val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -87,6 +90,7 @@ class RecyclerTaskAdapter(private val context: Context, private val viewModel: T
             val intent= Intent(context, AddUpdateTasks::class.java)
             intent.putExtra("isUpdate", true)
             intent.putExtra("id", currentTask.id)
+            intent.putExtra("firebaseId", currentTask.firebaseId)
             intent.putExtra("name", currentTask.taskName)
             intent.putExtra("submissionDate", currentTask.submissionDate)
             intent.putExtra("submissionISODate", currentTask.submissionISODate)
@@ -100,12 +104,24 @@ class RecyclerTaskAdapter(private val context: Context, private val viewModel: T
         holder.checkbox.setOnClickListener {
             holder.vibrator.vibrate(50)
             if(holder.checkbox.isChecked){
-                viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, true))
-                holder.taskName.paintFlags = holder.taskName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                if(auth.currentUser==null){
+                    viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, true))
+                    holder.taskName.paintFlags = holder.taskName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                }
+                else{
+                    viewModel.updateFirebaseTaskCheckBox(TaskDataClass(0,currentTask.firebaseId, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, true), context as Activity)
+                    holder.taskName.paintFlags = holder.taskName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                }
             }
             else{
-                viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, false))
-                holder.taskName.paintFlags = holder.taskName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                if(auth.currentUser==null){
+                    viewModel.updateTask(TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, false))
+                    holder.taskName.paintFlags = holder.taskName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                }
+                else{
+                    viewModel.updateFirebaseTaskCheckBox(TaskDataClass(0,currentTask.firebaseId, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, false), context as Activity)
+                    holder.taskName.paintFlags = holder.taskName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                }
             }
 
         }
@@ -114,18 +130,23 @@ class RecyclerTaskAdapter(private val context: Context, private val viewModel: T
             holder.vibrator.vibrate(50)
 
             val builder = AlertDialog.Builder(context)
-                .setTitle("Delete Task")
+                .setTitle("Delete Assignment")
                 .setIcon(R.drawable.baseline_delete_24)
-                .setMessage("Do you want to Delete this Task ?")
+                .setMessage("Do you want to Delete this Assignment ?")
                 .setPositiveButton(
                     "Yes"
                 ) { dialogInterface, i ->
                     try {
-
                         holder.vibrator.vibrate(50)
-                        Toast.makeText(context, "Task Deleted", Toast.LENGTH_SHORT).show()
-                        val task = TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, currentTask.isComplete)
-                        viewModel.deleteTask(task)
+                        if(auth.currentUser==null){
+                            Toast.makeText(context, "Task Deleted", Toast.LENGTH_SHORT).show()
+                            val task = TaskDataClass(currentTask.id, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, currentTask.isComplete)
+                            viewModel.deleteTask(task)
+                        }
+                        else{
+                            val task = TaskDataClass(0, currentTask.firebaseId, currentTask.taskName,currentTask.submissionDate,currentTask.submissionISODate, currentTask.priority, currentTask.taskDetails, currentTask.isComplete)
+                            viewModel.deleteFirebaseTask(task, context as Activity)
+                        }
 
 
                     } catch (e: Exception) {

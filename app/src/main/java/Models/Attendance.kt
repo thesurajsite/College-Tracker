@@ -10,7 +10,6 @@ import java.io.Serializable
 data class Attendance(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0, // Used for Room
-
     var percentage: String = "",
     var subjectName: String = "",
     var classesConducted: String = "",
@@ -37,15 +36,3 @@ data class Attendance(
         this.firebaseId = firebaseId
     }
 }
-
-
-
-//data class AttendanceFirebase(
-//   var id: String,
-//   var percentage: String,
-//   var subjectName: String,
-//   var classesConducted: String,
-//   var classesAttended: String,
-//   var lastUpdated: String,
-//   var requirement: String
-//): Serializable

@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
         }
         else{
             val reference = db.collection("ATTENDANCE").document(USER_ID).collection("USER_ATTENDANCE")
-            reference.orderBy("subjectName", Query.Direction.DESCENDING).get()
+            reference.orderBy("subjectName", Query.Direction.ASCENDING).get()
                 .addOnSuccessListener {
                     //Toast.makeText(activity, "Contacts Fetched", Toast.LENGTH_SHORT).show()
 
