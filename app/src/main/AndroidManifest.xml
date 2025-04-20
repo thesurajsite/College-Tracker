@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-
 
     <application
         android:allowBackup="true"
@@ -19,8 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CollegeTracker"
         tools:targetApi="31">
-
-<!--    NOTIFICATION BROADCAST RECEIVER-->
+        <activity
+            android:name="Activities.SocialActivity"
+            android:exported="false" />
+        <!-- NOTIFICATION BROADCAST RECEIVER -->
         <receiver android:name="Notifications.NotificationReceiver" />
 
         <activity

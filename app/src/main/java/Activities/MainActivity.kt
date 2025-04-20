@@ -213,6 +213,11 @@ class MainActivity : AppCompatActivity() {
             googleAuthentication.googleAuth(this)
         }
 
+        val socialCardView = findViewById<CardView>(R.id.SocialCardView)
+        socialCardView.setOnClickListener {
+            startActivity(Intent(this, SocialActivity::class.java))
+        }
+
 
         floatingActionButton.setOnClickListener {
             vibrator.vibrate(50)
@@ -375,6 +380,8 @@ class MainActivity : AppCompatActivity() {
 
             return@setOnItemSelectedListener true
         }
+
+
 
     }
 
