@@ -102,11 +102,8 @@ class MainActivity : AppCompatActivity() {
         // Update App Open Count
         sharedPreferenceManager.updateAppOpenCount(sharedPreferenceManager.getAppOpenCount()+1)
 
-        val appOpenCount = sharedPreferenceManager.getAppOpenCount()
-        Toast.makeText(this, "$appOpenCount", Toast.LENGTH_SHORT).show()
-
         // Call in-app review
-        if(sharedPreferenceManager.getAppOpenCount()%20==0) InAppReview.showInAppReviewDialog(this)
+        if(sharedPreferenceManager.getAppOpenCount()%10==0) InAppReview.showInAppReviewDialog(this)
 
         // ViewModel
         viewModel=ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application))
@@ -130,18 +127,20 @@ class MainActivity : AppCompatActivity() {
         startupActivity.openStartupActivity(this)  //SHARED PREFERENCES FOR WHICH ACTIVITY TO OPEN ON STARTUP
         forNewUser.sharedPreferenceForNewUser(this, arrAttendance, database, adapter) //SHARED PREFERENCE FOR NEW USER, EXECUTES ONE TIME ONLY
 
-        // Notifications
-        if (permissionManager.hasNotificationPermission()) {
-            if (permissionManager.hasExactAlarmPermission()) {
-                // Create Notifications Channel
-                createNotificationChannel(this)
-                // Schedule Daily Notifications
-                scheduleDailyNotification(this)
+        // Call Notifications Permission
+        if(sharedPreferenceManager.getAppOpenCount()%15==0){
+            if (permissionManager.hasNotificationPermission()) {
+                if (permissionManager.hasExactAlarmPermission()) {
+                    // Create Notifications Channel
+                    createNotificationChannel(this)
+                    // Schedule Daily Notifications
+                    scheduleDailyNotification(this)
+                } else {
+                    permissionManager.requestExactAlarmPermission(this)
+                }
             } else {
-                permissionManager.requestExactAlarmPermission(this)
+                permissionManager.requestNotificationPermission(this)
             }
-        } else {
-            permissionManager.requestNotificationPermission(this)
         }
 
 
