@@ -27,15 +27,14 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-
 class AddUpdateTasks : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddUpdateTasksBinding
     private lateinit var task: TaskDataClass
     lateinit var viewModel: TaskViewModel
     lateinit var vibrator: Vibrator
-    val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
-    private val db: FirebaseFirestore by lazy { Firebase.firestore}
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +43,8 @@ class AddUpdateTasks : AppCompatActivity() {
         binding=ActivityAddUpdateTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        auth = FirebaseAuth.getInstance()
+        db = Firebase.firestore
         viewModel= ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application)).get(TaskViewModel::class.java)
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         val USER_ID= auth.currentUser?.uid.toString()

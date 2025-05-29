@@ -56,6 +56,18 @@ class sharedPreferenceManager(private val context : Context): SharedPreferenceHa
         editor.apply()
     }
 
+    override fun getAppOpenCount(): Int {
+        val pref: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        return pref.getInt("appOpenCount", 0)
+    }
+
+    override fun updateAppOpenCount(count: Int) {
+        val pref: SharedPreferences = getSharedPreferences("COLLEGE_TRACKER", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putInt("appOpenCount", count)
+        editor.apply()
+    }
+
     override fun getSharedPreferences(s: String, modePrivate: Int): SharedPreferences {
         return context.getSharedPreferences(s, modePrivate)
     }

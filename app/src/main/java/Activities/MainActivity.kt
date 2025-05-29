@@ -6,6 +6,7 @@ import Models.AttendenceModel
 import Adapters.RecyclerAttendanceAdapter
 import Functions.ForNewUser
 import Functions.GoogleAuthentication
+import Functions.InAppReview
 import Functions.StartupActivity
 import Models.AttendanceViewModel
 import Notifications.PermissionManager
@@ -94,11 +95,18 @@ class MainActivity : AppCompatActivity() {
             appUpdateManager.registerListener(installStateUpdateListener)
         }
 
-        checkForAppUpdate()
-
         //Initialization of Database
         database = DatabaseHelper.getDB(applicationContext) ?: throw IllegalStateException("Unable to create database instance")
         sharedPreferenceManager=sharedPreferenceManager(this)
+
+        // Update App Open Count
+        sharedPreferenceManager.updateAppOpenCount(sharedPreferenceManager.getAppOpenCount()+1)
+
+        val appOpenCount = sharedPreferenceManager.getAppOpenCount()
+        Toast.makeText(this, "$appOpenCount", Toast.LENGTH_SHORT).show()
+
+        // Call in-app review
+        if(sharedPreferenceManager.getAppOpenCount()%20==0) InAppReview.showInAppReviewDialog(this)
 
         // ViewModel
         viewModel=ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application))

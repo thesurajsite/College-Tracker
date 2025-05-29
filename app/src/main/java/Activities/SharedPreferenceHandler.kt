@@ -17,6 +17,9 @@ interface SharedPreferenceHandler {
     fun getNavigationCode(): Int
     fun updateNavigationCode(activityInt: Int)
 
+    fun getAppOpenCount(): Int
+    fun updateAppOpenCount(updatedID: Int)
+
     fun getSharedPreferences(s: String, modePrivate: Int): SharedPreferences
 
 }
