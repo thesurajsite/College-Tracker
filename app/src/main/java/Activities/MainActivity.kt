@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         sharedPreferenceManager.updateAppOpenCount(sharedPreferenceManager.getAppOpenCount()+1)
 
         // Call in-app review
-        if(sharedPreferenceManager.getAppOpenCount()%10==0) InAppReview.showInAppReviewDialog(this)
+        if(sharedPreferenceManager.getAppOpenCount()>=10) InAppReview.showInAppReviewDialog(this)
 
         // ViewModel
         viewModel=ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application))
