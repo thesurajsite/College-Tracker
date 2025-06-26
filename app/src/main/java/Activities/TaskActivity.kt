@@ -20,6 +20,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -39,13 +40,12 @@ class TaskActivity : AppCompatActivity(){
     private lateinit var database: DatabaseHelper
     lateinit var viewModel: TaskViewModel
     lateinit var adapter: RecyclerTaskAdapter
-    lateinit var selectedTask: TaskDataClass
     lateinit var vibrator: Vibrator
     private lateinit var sharedPreferenceManager:sharedPreferenceManager
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     val USER_ID= auth.currentUser?.uid.toString()
     private val db: FirebaseFirestore by lazy { Firebase.firestore}
-    private val googleAuthentication: GoogleAuthentication by lazy { GoogleAuthentication(this) }
+    private val googleAuthentication: GoogleAuthentication by lazy { GoogleAuthentication() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +60,8 @@ class TaskActivity : AppCompatActivity(){
         val profileImage = findViewById<ImageView>(R.id.profileImage)
         val googleCardView = findViewById<CardView>(R.id.GoogleCardView)
 
+        window.statusBarColor = ResourcesCompat.getColor(resources, R.color.purple, theme)
+        window.navigationBarColor = ResourcesCompat.getColor(resources, R.color.white, theme)
         viewModel= ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(applicationContext as Application))
             .get(TaskViewModel::class.java)
 
@@ -123,6 +125,13 @@ class TaskActivity : AppCompatActivity(){
                     vibrator.vibrate(50)
                     sharedPreferenceManager.updateNavigationCode(2)
                     startActivity(Intent(this, Daily_Schedule::class.java))
+                    finish()
+                }
+
+                R.id.Productivity_btmNavigation ->{
+                    vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(4)
+                    startActivity(Intent(this, ProductivityActivity::class.java))
                     finish()
                 }
 

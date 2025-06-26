@@ -11,6 +11,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Vibrator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.collegetracker.R
@@ -40,6 +41,8 @@ class Daily_Schedule : AppCompatActivity() {
         scheduleArray = ArrayList(scheduleDAO.getAllSchedule())
 
         sharedPreferenceManager=sharedPreferenceManager(this)
+        window.statusBarColor = ResourcesCompat.getColor(resources, R.color.purple, theme)
+        window.navigationBarColor = ResourcesCompat.getColor(resources, R.color.white, theme)
 
 
         lifecycleScope.launch(Dispatchers.IO){
@@ -152,6 +155,13 @@ class Daily_Schedule : AppCompatActivity() {
                     vibrator.vibrate(50)
                     sharedPreferenceManager.updateNavigationCode(3)
                     startActivity(Intent(this, TaskActivity::class.java))
+                    finish()
+                }
+
+                R.id.Productivity_btmNavigation ->{
+                    vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(4)
+                    startActivity(Intent(this, ProductivityActivity::class.java))
                     finish()
                 }
             }

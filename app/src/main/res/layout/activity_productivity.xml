@@ -2,14 +2,29 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Activities.TaskActivity"
-    android:background="@color/purple">
+    android:background="@color/purple"
+    tools:context="Activities.ProductivityActivity">
 
     <include
-        layout="@layout/task_toolbar_layout"
-        android:id="@+id/toolbar"
+        layout="@layout/productivity_toolbar_layout"
+        android:id="@+id/toolbar"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_weight="1"
+        android:layout_marginBottom="30dp"
+        app:srcCompat="@drawable/floatbutton"
+        android:tint="@color/black"
+        android:backgroundTint="@color/white"
+        android:layout_marginRight="45dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,6 +51,7 @@
             android:progressDrawable="@android:drawable/progress_horizontal"
             style="?android:attr/progressBarStyleLarge" />
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:visibility="visible"
@@ -45,48 +61,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/list_item_assignment"
-
-            />
-
-        <TextView
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp"
-            android:fontFamily="@font/abel"
-            android:text="Logout to See offline Assignments "
-            android:background="@drawable/custom_input"
-            android:padding="@dimen/_2sdp"
-            android:paddingLeft="@dimen/_3sdp"
-            android:paddingRight="@dimen/_3sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recyclerView"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_30sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:layout_weight="1"
-        android:layout_marginBottom="30dp"
-        app:srcCompat="@drawable/floatbutton"
-        android:tint="@color/black"
-        android:backgroundTint="@color/white"
-        android:layout_marginRight="45dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
@@ -97,6 +76,5 @@
         app:itemIconTint="@color/bottom_navigation_icon_color"
         app:itemTextColor="@color/bottom_navigation_icon_color"
         app:menu="@menu/bottom_navigation_menu"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

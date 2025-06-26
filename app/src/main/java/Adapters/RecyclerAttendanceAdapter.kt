@@ -69,16 +69,11 @@ class RecyclerAttendanceAdapter(val context: Context,val arrAttendance: ArrayLis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item_attendance, parent, false))
-
     }
 
     override fun getItemCount(): Int {
         return arrAttendance.size
-
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

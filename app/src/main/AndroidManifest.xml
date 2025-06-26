@@ -19,9 +19,15 @@
         android:theme="@style/Theme.CollegeTracker"
         tools:targetApi="31">
         <activity
-            android:name="Activities.SocialActivity"
+            android:name="Activities.AddTasksDayCardActivity"
             android:exported="false" />
-        <!-- NOTIFICATION BROADCAST RECEIVER -->
+        <activity
+            android:name="Activities.ProductivityActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CollegeTracker" />
+        <activity
+            android:name="Activities.SocialActivity"
+            android:exported="false" /> <!-- NOTIFICATION BROADCAST RECEIVER -->
         <receiver android:name="Notifications.NotificationReceiver" />
 
         <activity

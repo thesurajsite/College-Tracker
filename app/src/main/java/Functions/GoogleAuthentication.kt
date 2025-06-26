@@ -18,7 +18,7 @@ import android.content.Context
 import androidx.core.content.ContextCompat.getString
 
 
-class GoogleAuthentication(context: Context) {
+class GoogleAuthentication() {
 
     lateinit var auth: FirebaseAuth
 
@@ -87,4 +87,6 @@ class GoogleAuthentication(context: Context) {
                 Log.d("CollegeTracker", it.localizedMessage ?: "Unknown failure")
             }
     }
+
+
 }

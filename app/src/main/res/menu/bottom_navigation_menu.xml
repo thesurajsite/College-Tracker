@@ -8,6 +8,12 @@
         />
 
     <item
+        android:id="@+id/Productivity_btmNavigation"
+        android:title="Productivity"
+        android:icon="@drawable/productivity"
+        />
+
+    <item
         android:id="@+id/Tasks_btmNavigation"
         android:title="Assignments"
         android:icon="@drawable/to_do"

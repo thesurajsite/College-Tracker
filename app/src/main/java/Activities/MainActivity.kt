@@ -30,6 +30,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -79,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val permissionManager: PermissionManager by lazy { PermissionManager(this) }
     private val db: FirebaseFirestore by lazy { Firebase.firestore}
-    private val googleAuthentication: GoogleAuthentication by lazy { GoogleAuthentication(this) }
+    private val googleAuthentication: GoogleAuthentication by lazy { GoogleAuthentication() }
     private val startupActivity: StartupActivity by lazy { StartupActivity(this) }
     private val forNewUser: ForNewUser by lazy { ForNewUser(this) }
 
@@ -98,6 +100,9 @@ class MainActivity : AppCompatActivity() {
         //Initialization of Database
         database = DatabaseHelper.getDB(applicationContext) ?: throw IllegalStateException("Unable to create database instance")
         sharedPreferenceManager=sharedPreferenceManager(this)
+        window.statusBarColor = ResourcesCompat.getColor(resources, R.color.purple, theme)
+        window.navigationBarColor = ResourcesCompat.getColor(resources, R.color.white, theme)
+
 
         // Update App Open Count
         sharedPreferenceManager.updateAppOpenCount(sharedPreferenceManager.getAppOpenCount()+1)
@@ -143,7 +148,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
+        checkForAppUpdate()
 
         adapter.notifyItemChanged(arrAttendance.size-1)
         adapter.notifyDataSetChanged()
@@ -381,6 +386,13 @@ class MainActivity : AppCompatActivity() {
                     vibrator.vibrate(50)
                     sharedPreferenceManager.updateNavigationCode(3)
                     startActivity(Intent(this, TaskActivity::class.java))
+                    finish()
+                }
+
+                R.id.Productivity_btmNavigation ->{
+                    vibrator.vibrate(50)
+                    sharedPreferenceManager.updateNavigationCode(4)
+                    startActivity(Intent(this, ProductivityActivity::class.java))
                     finish()
                 }
             }

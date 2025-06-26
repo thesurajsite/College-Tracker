@@ -21,7 +21,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.collegetracker.R
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 
 class RecyclerTaskAdapter(private val context: Context, private val viewModel: TaskViewModel): RecyclerView.Adapter<RecyclerTaskAdapter.TaskViewHolder>() {
@@ -34,7 +33,7 @@ class RecyclerTaskAdapter(private val context: Context, private val viewModel: T
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
 
         return TaskViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.list_item_task, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.list_item_assignment, parent, false)
         )
     }
 
