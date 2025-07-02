@@ -4,6 +4,7 @@ import Activities.MainActivity
 import Adapters.DayCardRecyclerAdapter
 import Adapters.RecyclerAttendanceAdapter
 import Functions.GoogleAuthentication
+import Models.DayCard
 import Models.ProductivityViewModel
 import android.app.DatePickerDialog
 import android.content.Context
@@ -47,7 +48,7 @@ class ProductivityActivity : AppCompatActivity() {
         binding = ActivityProductivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val dayCardNameList = mutableListOf<String>()
+        val dayCardNameList = mutableListOf<DayCard>()
         vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
         productivityViewModel = ProductivityViewModel()
         sharedPreferenceManager = sharedPreferenceManager(this)
@@ -89,7 +90,7 @@ class ProductivityActivity : AppCompatActivity() {
                     val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                     val formattedDate = sdf.format(selectedCalendar.time)
 
-                    if(dayCardNameList.contains(formattedDate)){
+                    if(dayCardNameList.any { it.date == formattedDate }){
                         Toast.makeText(this, "Already Exists", Toast.LENGTH_SHORT).show()
                     }else{
                         productivityViewModel.CreateDayCard(formattedDate, this)

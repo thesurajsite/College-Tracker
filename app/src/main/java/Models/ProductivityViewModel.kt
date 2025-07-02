@@ -1,6 +1,7 @@
 package Models
 
 import android.content.Context
+import android.health.connect.datatypes.units.Percentage
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -22,19 +23,19 @@ class ProductivityViewModel : ViewModel() {
     val USER_ID= auth.currentUser?.uid.toString()
     private val db: FirebaseFirestore by lazy { Firebase.firestore}
 
-    private val _dayCardList = MutableLiveData<List<String>>()
-    val dayCardList : LiveData<List<String>> get() = _dayCardList
+    private val _dayCardList = MutableLiveData<List<DayCard>>()
+    val dayCardList : LiveData<List<DayCard>> get() = _dayCardList
 
     private val _taskList = MutableLiveData<List<DayTask>>()
     val taskList : MutableLiveData<List<DayTask>> get() = _taskList
 
     fun CreateDayCard(date: String, context: Context) {
-        if (USER_ID.isEmpty()) {
+        if (USER_ID.isEmpty() || USER_ID == "null") {
             Toast.makeText(context, "Please Login", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val dayCard = DayCard(date)
+        val dayCard = DayCard(date, "0")
         db.collection("PRODUCTIVITY").document(USER_ID).collection("DAY_CARDS").document(date).set(dayCard)
             .addOnSuccessListener {
                 Toast.makeText(context, "DayCard Created", Toast.LENGTH_SHORT).show()
@@ -45,12 +46,31 @@ class ProductivityViewModel : ViewModel() {
             }
     }
 
+    fun DeleteDayCard(date: String, context: Context) {
+        db.collection("PRODUCTIVITY").document(USER_ID).collection("DAY_CARDS").document(date).delete()
+            .addOnSuccessListener {
+                Toast.makeText(context, "DayCard Deleted", Toast.LENGTH_SHORT).show()
+                FetchDayCards(context)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to Delete: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
+    fun UpdateDayCard(date: String, percentage: String, context: Context) {
+        val dayCard = DayCard(date, percentage)
+        db.collection("PRODUCTIVITY").document(USER_ID).collection("DAY_CARDS").document(date).set(dayCard)
+            .addOnSuccessListener {
+                FetchDayCards(context)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to update: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     fun FetchDayCards(context: Context) {
         db.collection("PRODUCTIVITY").document(USER_ID).collection("DAY_CARDS").get()
             .addOnSuccessListener { snapshot ->
-
                 val dayCards = mutableListOf<DayCard>()
                 for (document in snapshot.documents) {
                     val dayCard = document.toObject(DayCard::class.java)
@@ -63,7 +83,6 @@ class ProductivityViewModel : ViewModel() {
                 val sortedList = dayCards
                     .filter { !it.date.isNullOrEmpty() }
                     .sortedByDescending { inputFormat.parse(it.date) }
-                    .map { it.date!! }
 
                 _dayCardList.value = sortedList
             }
@@ -81,8 +100,11 @@ class ProductivityViewModel : ViewModel() {
 
         taskCollectionRef.document(taskId).set(taskWithId)
             .addOnSuccessListener {
-                Toast.makeText(context, "Task Added", Toast.LENGTH_SHORT).show()
                 FetchTaskList(date) // update the task list
+                // update percentage in DayCard
+                fetchCompletePercentForDayCard(date) { percentage->
+                    UpdateDayCard(date, percentage.toString(), context)
+                }
             }
             .addOnFailureListener { e ->
                 Toast.makeText(context, "Failed to add task: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -96,13 +118,33 @@ class ProductivityViewModel : ViewModel() {
 
         taskCollectionRef.document(taskId!!).set(updatedTask)
             .addOnSuccessListener {
-                //Toast.makeText(context, "Updated", Toast.LENGTH_SHORT).show()
+                // update percentage in DayCard
+                fetchCompletePercentForDayCard(date) { percentage->
+                    UpdateDayCard(date, percentage.toString(), context)
+                }
             }
             .addOnFailureListener { e ->
                 Toast.makeText(context, "Failed to add task: ${e.message}", Toast.LENGTH_SHORT).show()
                 Log.e("AddTaskToDayCard", "Error", e)
             }
     }
+
+    fun DeleteTask(date: String, taskId: String, context: Context) {
+        db.collection("PRODUCTIVITY").document(USER_ID).collection("DAY_CARDS").document(date).collection("TASKS").document(taskId).delete()
+            .addOnSuccessListener {
+                Toast.makeText(context, "Task Deleted", Toast.LENGTH_SHORT).show()
+                FetchTaskList(date)
+                // update percentage in DayCard
+                fetchCompletePercentForDayCard(date) { percentage->
+                    UpdateDayCard(date, percentage.toString(), context)
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to delete task: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("DeleteTaskFromDayCard", "Error", e)
+            }
+    }
+
 
     fun FetchTaskList(date: String) {
         db.collection("PRODUCTIVITY").document(USER_ID).collection("DAY_CARDS").document(date).collection("TASKS").get()
@@ -118,13 +160,7 @@ class ProductivityViewModel : ViewModel() {
     }
 
     fun fetchCompletePercentForDayCard(date: String, onResult: (Int) -> Unit) {
-        val taskRef = db.collection("PRODUCTIVITY")
-            .document(USER_ID)
-            .collection("DAY_CARDS")
-            .document(date)
-            .collection("TASKS")
-
-        taskRef.get()
+        db.collection("PRODUCTIVITY").document(USER_ID).collection("DAY_CARDS").document(date).collection("TASKS").get()
             .addOnSuccessListener { snapshot ->
                 val tasks = snapshot.toObjects(DayTask::class.java)
                 val total = tasks.size
@@ -139,13 +175,11 @@ class ProductivityViewModel : ViewModel() {
             }
     }
 
-
-
-
 }
 
 data class DayCard(
     val date: String?="",
+    val percentage: String?=""
 )
 
 data class DayTask(

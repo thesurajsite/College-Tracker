@@ -1,6 +1,7 @@
 package Functions
 
 import Activities.Daily_Schedule
+import Activities.ProductivityActivity
 import Activities.TaskActivity
 import Activities.sharedPreferenceManager
 import android.content.Context
@@ -23,6 +24,10 @@ class StartupActivity(context: Context) {
         }
         else if(activityCode==3){
             val intent = Intent(context, TaskActivity::class.java)
+            context.startActivity(intent)
+        }
+        else if(activityCode==4){
+            val intent = Intent(context, ProductivityActivity::class.java)
             context.startActivity(intent)
         }
 

@@ -13,8 +13,8 @@ android {
         applicationId = "com.collegetracker"
         minSdk = 26
         targetSdk = 35
-        versionCode = 54
-        versionName = "3.0.5"
+        versionCode = 55
+        versionName = "3.0.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
