@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.collegetracker.R
 import com.collegetracker.databinding.ActivityProductivityBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -159,6 +161,17 @@ class ProductivityActivity : AppCompatActivity() {
         super.onResume()
         productivityViewModel.FetchDayCards(this)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 888 && resultCode ==  RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val account = task.getResult(ApiException::class.java)
+            googleAuthentication.firebaseAuthWithGoogle(account.idToken!!, this)
+        }
+
     }
 
 }

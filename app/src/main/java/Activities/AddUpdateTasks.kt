@@ -80,21 +80,6 @@ class AddUpdateTasks : AppCompatActivity() {
                 binding.saveButton.setText("Update Task")
             }
 
-//            old_task=intent.getSerializableExtra("current_task") as TaskDataClass
-//            binding.taskName.setText(old_task.taskName)
-//            binding.taskDetails.setText(old_task.taskDetails)
-//            binding.submissionDate.setText(old_task.submissionDate)
-
-//            if(old_task.priority=="Low")
-//                binding.priority.setSelection(1)
-//            else if(old_task.priority == "Medium")
-//                binding.priority.setSelection(2)
-//            else if (old_task.priority == "High")
-//                binding.priority.setSelection(3)
-//            else binding.priority.setSelection(1)
-
-//            isUpdate=true
-
         }catch (e: Exception){
             e.printStackTrace()
         }
