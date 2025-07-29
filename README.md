@@ -60,6 +60,6 @@
 
 **Suraj Verma**  
 Android Developer | Kotlin Enthusiast  
-[Email](mailto:thesurajsite@gmail.com)  
+[thesurajsite@gmail.com](mailto:thesurajsite@gmail.com)  
 [LinkedIn](https://linkedin.com/in/thesurajsite)  
 [Twitter/X](https://x.com/AndroidDevSuraj)
