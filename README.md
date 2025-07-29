@@ -3,7 +3,7 @@
 **College Tracker** is your all-in-one student productivity app, built to help you stay on top of your academic life. With powerful attendance tracking, assignment management, daily schedules, and productivity insights, College Tracker ensures you're never caught off guard.
 
 🚀 **Already trusted by 5000+ students on the Play Store!**  
-📲 **App Link**: [College Tracker on Play Store](https://play.google.com/store/apps/details?id=com.yourapp.package.name)
+📲 **App Link**: [College Tracker on Play Store](https://play.google.com/store/apps/details?id=com.collegetracker)
 
 ---
 
