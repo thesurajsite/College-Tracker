@@ -32,8 +32,8 @@
 
 ## 📸 Screenshots
 
-| Attendance Tracker | Target Calculator | Productivity Tracker | Assignment Tracker | Schedule Tracker |
-|--------------------|-------------------|----------------------|--------------------|------------------|
+| Attendance Tracker |  Target Calculator  | Productivity Tracker | Assignment Tracker |  Schedule Tracker  |
+|--------------------|---------------------|----------------------|--------------------|--------------------|
 | ![Attendance Tracker](./Screenshots/image1.png) | ![Target Calculator](./Screenshots/image2.png) | ![Productivity Tracker](./Screenshots/image3.png) | ![Assignment Tracker](./Screenshots/image4.png) | ![Schedule Tracker](./Screenshots/image5.png) |
 
 ---
